@@ -1,51 +1,40 @@
-var infoData={};
-var titleData={};
-//получаем номер ИНН
-var inn= window.location.pathname.replace('inn:','').replace(/\//g, '');
 
-makeTitle()
-makeButtons();
+makeTitle()   //Вывести заголовок
+makeButtons();//Вывести кнопки
 
-function makeButtons() {//Для кнопок
+
+//Формирование заголовка
+function makeTitle() {
     $.ajax({
-        url: INFO.serverAdr + "data/"+inn,
-        type: "GET",
-        contentType: "application/json",
-        success: function (users) {
-            var rows= "";
-            $.each(users, function (index, user) {
-                rows+= makeButton(user);
-                infoData[index]=user;
-            })
-            $(".fields").append(rows);
-            console.log(infoData);
-         }
+        url: INFO.serverAdr + "api/user/"+page.inn.name,
+        type: "GET", contentType: "application/json",
+        success: function (dataset) {
+            var titleData=dataset[0]['NAME_FULL'];
+            $(".title").html("<p>"+titleData+
+            " взаимодействует со следующими подразделениями: </p>");
+        },
+        error: function (jqXHR, exception) {
+            console.log("Ошибка: "+jqXHR+"; exception: "+exception);}
     });
 }
-function makeTitle() {//Для заголовка
+
+//Формирование списка кнопок
+function makeButtons() {
     $.ajax({
-        url: INFO.serverAdr + "api/user/"+inn,
-        type: "GET",
-        contentType: "application/json",
-        success: function (users) {
-            $.each(users, function (index, user) {
-                titleData[user.INN]=user;
+        url: INFO.serverAdr + "data/"+page.inn.name,
+        type: "GET", contentType: "application/json",
+        success: function (dataset) {
+            var list= "";
+            $.each(dataset, function (index, data) {
+                var rowOtdel=data["OTDEL"];
+                var button=cookOtdel(rowOtdel);
+                list+= "<a class='link' href="+INFO.clientAdr+"otdel:"+
+                    page.inn.name+":"+rowOtdel+">"+button.name+"</a>";
             })
-            $("#name").append(titleData[inn]['NAME_FULL']);
-         }
+            $(".fields").html(list);
+        },
+        error: function (jqXHR, exception) {
+            console.log("Ошибка: "+jqXHR+"; exception: "+exception);}
     });
-}
-function makeButton (data) {
-    var podrVal, buttonName;
-    switch (data.OTDEL) {
-        case "PRAVO": 
-        podrVal='PRAVO';
-        buttonName="Правовой отдел"; break;
-        case "KEZO":  
-        podrVal='KEZO'; 
-        buttonName="Комитет имущественных и земельных отношений"; break;
-        default: console.log("Error with data.OTDEL: " + data.OTDEL);
-    }
-    return  "<a class='link' href="+INFO.clientAdr+"otdel:"+inn+":"+podrVal+">"+buttonName+"</a>";
 }
 

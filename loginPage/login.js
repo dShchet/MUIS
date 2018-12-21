@@ -1,9 +1,9 @@
-// Получение всех пользователей
+
+//Проверка логина
 function checkLoginInfo(login, pass) {
     $.ajax({
-        url: "http://localhost:8080/api/login/"+login+'.'+pass,
-        type: "GET",
-        contentType: "application/json",
+        url: INFO.clientAdr+"api/login/"+login+'.'+pass,
+        type: "GET", contentType: "application/json",
         success: function (data) {
             console.log(data);
           if (data=="wrong"){$(".loginBlock").addClass('invalidCode');}
@@ -11,7 +11,7 @@ function checkLoginInfo(login, pass) {
             $(".loginBlock").removeClass('invalidCode');
             Cookies.set('miusLogged', 'Logged');
             setTimeout(function(){
-                window.location.href="/sudpret"
+                window.location.href=INFO.clientAdr+"search"
               },200);
             }else{$(".loginBlock").addClass('invalidCode');}
             console.log(data + " pass");
@@ -24,14 +24,19 @@ function checkLoginInfo(login, pass) {
     });
 }
 
+//Обработчик инпут логина
 $('#inputLogin').keyup(function(){
   if(!$("#inputLogin").val()){$(".loginWrap").addClass('empty')}else{
       $(".loginWrap").removeClass('empty');}
 })
+
+//Обработчик инпут пасса
 $('#inputPass').keyup(function(){
   if(!$("#inputPass").val()){$(".passWrap").addClass('empty')}else{
       $(".passWrap").removeClass('empty');}
 })
+
+//Обработчик сабмита
 $(".loginForm .btn").click(function(e){
     e.preventDefault();
     var inputLogin  = $("#inputLogin").val();
@@ -42,7 +47,3 @@ $(".loginForm .btn").click(function(e){
       $(".passWrap").removeClass('empty');}
     checkLoginInfo(inputLogin, inputPass);
 })
-
-// загрузка пользователей
-// GetUsers();
-// info(5036094403);

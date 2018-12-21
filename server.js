@@ -3,17 +3,17 @@
 // https://pm2.io
 
 //CONFIG
-var defaultPort=8099;
+var defaultPort=8080;
 var dbConfig = {
   user: 'sa',
   password: 'kl193011',
   server: 'RUBICON',
   options: {
     encrypt: true,
-    database: 'MUIS0'
+    database: 'MUIS'
   }
 };
-var isUserASystAdmin = true;//change on false if you not
+var isUserASystAdmin = true;//change on false if you are not
 
 
 //Initiallising node modules
@@ -28,7 +28,7 @@ app.use('*/lib/',                       express.static(__dirname + '/lib'));
 app.use('/',                            express.static(__dirname + '/loginPage'));
 app.use('/logout',                      express.static(__dirname + '/logoutPage'));
 app.use('/choice',                      express.static(__dirname + '/choicePage'));
-app.use('/sudpret',                     express.static(__dirname + "/sudpretPage"));
+app.use('/search',                      express.static(__dirname + "/searchPage"));
 app.use('/inn:innId',                   express.static(__dirname + '/innPage'));
 app.use('/otdel:innId:otdelId',         express.static(__dirname + '/otdelPage'));
 app.use('/delo:innId:otdelId:arbitrag', express.static(__dirname + '/deloPage'));
@@ -62,7 +62,7 @@ function sqlStreamWrap(res, query){
 }
 
 var mainBase=dbConfig.options.database;
-if(isUserASystAdmin){base='USE ['+ mainBase +']'} else { base = "" }
+if(isUserASystAdmin){base='USE ['+ mainBase +'] '} else { base = "" }
 
 
 //GG876RAO_FranVV
@@ -159,19 +159,19 @@ app.get("/api/otdel/:otdelId", function (req, res) {
   sqlStreamWrap(res, query);
 });
 
-//Get case details by innID and podrasdName
+//Get case details by innID and category
 // http://localhost:8080/api/delo/5036094403.arbtrg
 app.get("/api/delo/:innId.:catId", function (req, res) {
   var innId  = req.params["innId"];
   var catId  = req.params["catId"];
   var table="";
   if(catId=='arbitr')     {table = "[GET_PRAVO_ARBITRATION]";}
-  if(catId=='landLease')  {table = "[GET_PRAVO_ISP_ROOM_RENTAL]";}
-  if(catId=='roomRental') {table = "[GET_PRAVO_ISP_LAND_LEASE]";}
+  if(catId=='landLease')  {table = "[GET_PRAVO_ISP_LAND_LEASE]";}
+  if(catId=='roomRental') {table = "[GET_PRAVO_ISP_ROOM_RENTAL]";}
   if(catId=='general')    {table = "[GET_PRAVO_GEN_JURISD]";}
   if(catId=='assigned')   {table = "[GET_PRAVO_CAS_SCHE_DES]";}
   if(catId=='viewed')     {table = "[GET_PRAVO_CASES_RREVIEW]";}
-  if(table&&innId){
+  if(table && innId){
     var query = base+"SELECT * FROM [dbo]."+table+" ('"+innId+"')";
     sqlStreamWrap(res, query);
   }else{
@@ -180,7 +180,7 @@ app.get("/api/delo/:innId.:catId", function (req, res) {
 });
 
 // LOGIN
- app.get("/api/login/:login.:pass", function(req , res){
+app.get("/api/login/:login.:pass", function(req , res){
   var login = req.params["login"];
   var pass  = req.params["pass"];
   // if((login=="f")&&(pass=="n")){return res.send("right");

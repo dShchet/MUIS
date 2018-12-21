@@ -1,6 +1,6 @@
 .search{    
     overflow: auto;
-    margin-bottom: 20px;}
+    margin-bottom: 10px;}
 .search input{
     margin-top: 10px;
     border: 1px solid grey;
@@ -20,20 +20,22 @@
     color: #00000057;
     font-style: italic;
 }
-.search input:focus{}
 .table{
     width: 100%;
-    border: 1px solid grey;
-    border-collapse: collapse;}
-.table tr td{border-bottom: 1px solid grey;}
-.table tr:last-child td{border: none;}
-.table td{padding: 10px 15px;}
-.table button{float: right;}
-.table button:hover{}
-.table {}
-.table b{font-weight: 500;}
-.table p{}
-.table a{text-decoration: none;color: #353535;}
+    border: 1px solid grey;}
+.result .result-row{overflow: auto;border: 1px solid grey;border-bottom:none}
+/* .result .result-row .result-data{border-bottom: 1px solid grey;} */
+.result .result-row:last-child{border-bottom:1px solid grey}
+.result .result-data{
+    padding: 10px 15px;
+    float: left;
+    width: calc(100% - 50px);}
+.result .result-info{    float: right;
+    width: 50px;
+    min-height: 58px;}
+.result button{float: right;}
+.result b{font-weight: 500;}
+.result a{text-decoration: none;color: #353535;}
 .nopopup .popupWrapWrap{opacity: 0;pointer-events: none;}
 .title{margin-bottom: 15px;
     font-size: 25px;
@@ -41,18 +43,19 @@
 .popup .fields{max-height: calc(100vh - 150px);
     overflow: auto;padding-right: 20px;}
 .popup .fields div{margin-bottom: 10px;}
-.popup .fields p{}
 .popup .fields b{font-weight: normal;font-size: 18px;}
 .popup .close{position: absolute;cursor: pointer;}    
 .filterInn,
 .infoBtn{
+    float: right;
     font-size: 0px;
     background-image: url(../icons/info.svg);
     background-color: #fff;
-    width: 25px;
-    height: 25px;
+    width: 30px;
+    height: 30px;
     background-size: contain;
     background-repeat: no-repeat;}
+    .result  .infoBtn{margin:14px 14px;}
 .infoBtn:hover{background-image: url(../icons/info-h.svg);}
 .hidden{position: absolute;left:-99999px;}
 .hidden p{width: 1px;height: 1px;}
@@ -65,7 +68,8 @@
     background-size: contain;
     background-repeat: no-repeat;}
 @media(max-width:550px){
-    .sudpretPage .mainWrap{padding: 0px;}
-    .sudpretPage .main{padding: 30px 15px;}
-    .sudpretPage .popup .fields{    max-height: calc(100vh - 85px);}
+    .searchPage .mainWrap{padding: 0px;}
+    .searchPage .main{padding: 30px 15px;}
+    .searchPage .popup .fields{    max-height: calc(100vh - 85px);}
 }
+.searchPage .result .center{margin-bottom: 15px;}

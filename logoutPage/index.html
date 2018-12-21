@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width" />
     <title></title>
     <link rel="shortcut icon" href="../lib/favicon.ico" type="image/x-icon">
-    <script src="../lib/js.cookie.js"></script>
+    <script src="../lib/js.cookie.js"></script>  
+    <script src="../lib/config.js"></script>
   </head>
   <body class="nopopup" >
     <script>
         Cookies.remove('miusLogged');
-        var url="http://localhost:8080/";
-        window.location.replace(url);
+        window.location.replace(INFO.clientAdr);
     </script>
   </body>
 </html>

@@ -16,17 +16,12 @@
     <meta name="theme-color" content="#ffffff">
     <script src="../lib/jquery-3.3.1.min.js"></script>
     <script src="../lib/js.cookie.js"></script>
+    <script src="../lib/config.js"></script>
+    <script src="../lib/main.js"></script>
     <link rel="stylesheet" href="../lib/styles/main.css">
-    <link rel="stylesheet" href="../lib/styles/sudpret.css">
+    <link rel="stylesheet" href="../lib/styles/search.css">
   </head>
-  <script>
-        var logged = Cookies.get('miusLogged');
-        if(logged!='Logged'){
-            var url="http://localhost:8080/";
-            window.location.replace(url);
-        }
-  </script>
-  <body class="nopopup sudpretPage" >
+  <body class="nopopup searchPage" >
     <div class="popupWrapWrap">
       <div class="shadow"></div>
       <div class="popupWrap">
@@ -38,6 +33,7 @@
         </div>
       </div>
     </div>
+    <div class="breadcrumbsWrap"><div class="breadcrumbs"></div></div>
     <div class="menuWrap">
       <div class="menuLeft">
         <div class="menuHeader">
@@ -45,13 +41,15 @@
             <div class="menuClose"></div>
         </div>
         <div class="menuItems">
-          <a href="http://localhost/DeloOwner/" class="menuItem">Поиск по "ДЕЛО"</a>
-          <a href="http://localhost:8080/sudpret/" class="menuItem">Поиск организаций</a>
-          <a href="javascript:void(0);" class="menuItem">Пункт 3</a>
-          <a href="javascript:void(0);" class="menuItem">Пункт 4</a>
+            <a href="http://localhost/DeloOwner/" class="menuItem">Поиск по "ДЕЛО"</a>
+            <a href="search/" class="menuItem menuItem2">Поиск организаций</a>
+              <script>$('.menuItem2').attr("href", INFO.clientAdr+$('.menuItem2').attr('href'));</script>
+            <a href="javascript:void(0);" class="menuItem">Пункт 3</a>
+            <a href="javascript:void(0);" class="menuItem">Пункт 4</a>
+          </div>
+          <a class="menuLogoff" href="logout/">Выйти</a>
+          <script>$('.menuLogoff').attr("href", INFO.clientAdr+$('.menuLogoff').attr('href'));</script>
         </div>
-        <a class="menuLogoff" href="http://localhost:8080/logout">Выйти</a>
-      </div>
       <div class="menuShadow"></div>
     </div> 
     <div class="mainWrapWrap">
@@ -71,15 +69,11 @@
             <input type="text" id="filterName" name="filterName" placeholder="например: ИНТАРКОМ ПЛЮС">
             </label>
           </div>
-          <table class="table ">
-            <tbody>
-            </tbody>
-          </table>
+          <div class="result"><div class="center">Начните искать</div></div>
         </div>
       </div>
     </div>
-    <script src="../lib/main.js"></script>
-    <script src="sudpret.js"></script>
+    <script src="search.js"></script>
     <div class="hidden">
       <p></p>
       <p></p>

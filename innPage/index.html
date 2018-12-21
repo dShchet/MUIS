@@ -18,13 +18,11 @@
     <meta name="theme-color" content="#ffffff">
     <script src="../lib/jquery-3.3.1.min.js"></script>
     <script src="../lib/js.cookie.js"></script>
+    <script src="../lib/config.js"></script>
     <script src="../lib/main.js"></script>
     <link rel="stylesheet" href="../lib/styles/main.css">
     <link rel="stylesheet" href="../lib/styles/otdel.css">
   </head>
-  <script>
-
-  </script>
   <body class="innPage" >
     <div class="menuWrap">
       <div class="menuLeft">
@@ -33,13 +31,15 @@
           <div class="menuClose"></div>
         </div>
         <div class="menuItems">
-          <a href="http://localhost/DeloOwner/" class="menuItem">Поиск по "ДЕЛО"</a>
-          <a href="http://localhost:8080/sudpret/" class="menuItem">Поиск организаций</a>
-          <a href="javascript:void(0);" class="menuItem">Пункт 3</a>
-          <a href="javascript:void(0);" class="menuItem">Пункт 4</a>
+            <a href="http://localhost/DeloOwner/" class="menuItem">Поиск по "ДЕЛО"</a>
+            <a href="search/" class="menuItem menuItem2">Поиск организаций</a>
+              <script>$('.menuItem2').attr("href", INFO.clientAdr+$('.menuItem2').attr('href'));</script>
+            <a href="javascript:void(0);" class="menuItem">Пункт 3</a>
+            <a href="javascript:void(0);" class="menuItem">Пункт 4</a>
+          </div>
+          <a class="menuLogoff" href="logout/">Выйти</a>
+          <script>$('.menuLogoff').attr("href", INFO.clientAdr+$('.menuLogoff').attr('href'));</script>
         </div>
-        <a class="menuLogoff" href="http://localhost:8080/logout">Выйти</a>
-      </div>
       <div class="menuShadow"></div>
     </div>
     <div class="mainWrapWrap">
@@ -49,13 +49,14 @@
       <div class="nameBlock nameBlock-big" title="Муниципальная Информационная Система">Муниципальная Информационная Система</div>
       <button class="btn btnMenu"></button>
     </div>
+    <div class="breadcrumbsWrap"><div class="breadcrumbs"></div></div>
     <div class="mainWrap">
       <div class="main">
         <div class="title">
-          <b id="name"></b>
-          <p>взаимодействует со следующими подразделениями:</p>
+            <div class="center">загрузка...</div>
         </div>
         <div class="fields">
+            <div class="center">загрузка...</div>
         </div>
       </div>
     </div>
