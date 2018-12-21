@@ -22,16 +22,15 @@ var bodyParser = require("body-parser");
 var sql = require("mssql");
 var app = express();
 app.use(bodyParser.json());
-
-app.use('/lib/',                        express.static(__dirname + '/lib'));
-app.use('*/lib/',                       express.static(__dirname + '/lib'));
-app.use('/',                            express.static(__dirname + '/loginPage'));
-app.use('/logout',                      express.static(__dirname + '/logoutPage'));
-app.use('/choice',                      express.static(__dirname + '/choicePage'));
-app.use('/search',                      express.static(__dirname + "/searchPage"));
-app.use('/inn:innId',                   express.static(__dirname + '/innPage'));
-app.use('/otdel:innId:otdelId',         express.static(__dirname + '/otdelPage'));
-app.use('/delo:innId:otdelId:arbitrag', express.static(__dirname + '/deloPage'));
+app.use(express.static(__dirname + '/html'));
+app.use('/js',                          express.static( __dirname + '/js'));
+app.use('/styles',                      express.static( __dirname + '/styles'));
+app.use('/',                            express.static((__dirname + '/html'),{index:'login.html'}));
+app.use('/logout',                      express.static((__dirname + '/html'),{index:'logout.html'}));
+app.use('/search',                      express.static((__dirname + '/html'),{index:'search.html'}));
+app.use('/inn:innId',                   express.static((__dirname + '/html'),{index:'inn.html'}));
+app.use('/otdel:innId:otdelId',         express.static((__dirname + '/html'),{index:'otdel.html'}));
+app.use('/delo:innId:otdelId:arbitrag', express.static((__dirname + '/html'),{index:'delo.html'}));
 
 //CORS Middleware
 app.use(function (req, res, next) {
@@ -152,6 +151,7 @@ app.get("/data/:innId", function (req, res) {
   // executeQuery(res, query);
   sqlStreamWrap(res, query);
 });
+
 app.get("/api/otdel/:otdelId", function (req, res) {
   var otdelId  = req.params["otdelId"];
   var query = base+"SELECT * FROM [dbo].[GET_OTDEL_PRAVO] ('"+otdelId+"') ";

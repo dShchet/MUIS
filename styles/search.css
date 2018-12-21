@@ -49,19 +49,19 @@
 .infoBtn{
     float: right;
     font-size: 0px;
-    background-image: url(../icons/info.svg);
+    background-image: url( icons/info.svg);
     background-color: #fff;
     width: 30px;
     height: 30px;
     background-size: contain;
     background-repeat: no-repeat;}
     .result  .infoBtn{margin:14px 14px;}
-.infoBtn:hover{background-image: url(../icons/info-h.svg);}
+.infoBtn:hover{background-image: url( icons/info-h.svg);}
 .hidden{position: absolute;left:-99999px;}
 .hidden p{width: 1px;height: 1px;}
-.hidden p:nth-child(1){background-image: url(../icons/info-h.svg);}
-.hidden p:nth-child(2){background-image: url(../icons/cancel.svg)}
-.close{    background-image: url(../icons/cancel.svg);
+.hidden p:nth-child(1){background-image: url( icons/info-h.svg);}
+.hidden p:nth-child(2){background-image: url( icons/cancel.svg)}
+.close{    background-image: url( icons/cancel.svg);
     font-size: 0px;
     width: 20px;
     height: 20px;
