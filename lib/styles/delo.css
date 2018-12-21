@@ -1,0 +1,19 @@
+.deloPage .fields div{    width: 100%;
+    overflow: auto;
+    margin: 0px 0px 7px;
+}
+.deloPage .main .fields{display:block;}
+.deloPage .fields b{    font-size: 24px;
+    font-weight: 400;
+    line-height: 33px;
+    display: block;}
+.deloPage .fields p{    font-size: 17px;
+    color: #000000d6;
+    font-weight: 400;
+    line-height: 22px;
+    display: block;}
+.deloPage .title b{font-weight: 400;}
+@media(max-width:550px){
+    .deloPage .mainWrap{padding: 0px;}
+    .otdelPage .main {padding: 40px 15px 20px;}
+}

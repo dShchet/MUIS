@@ -1,0 +1,71 @@
+.search{    
+    overflow: auto;
+    margin-bottom: 20px;}
+.search input{
+    margin-top: 10px;
+    border: 1px solid grey;
+    width: 100%;
+    padding: 5px 15px;
+}
+.search input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #00000057;
+    font-style: italic;
+    opacity: 1; /* Firefox */
+}
+.search input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #00000057;
+    font-style: italic;
+}
+.search input::-ms-input-placeholder { /* Microsoft Edge */
+    color: #00000057;
+    font-style: italic;
+}
+.search input:focus{}
+.table{
+    width: 100%;
+    border: 1px solid grey;
+    border-collapse: collapse;}
+.table tr td{border-bottom: 1px solid grey;}
+.table tr:last-child td{border: none;}
+.table td{padding: 10px 15px;}
+.table button{float: right;}
+.table button:hover{}
+.table {}
+.table b{font-weight: 500;}
+.table p{}
+.table a{text-decoration: none;color: #353535;}
+.nopopup .popupWrapWrap{opacity: 0;pointer-events: none;}
+.title{margin-bottom: 15px;
+    font-size: 25px;
+    text-align: center}
+.popup .fields{max-height: calc(100vh - 150px);
+    overflow: auto;padding-right: 20px;}
+.popup .fields div{margin-bottom: 10px;}
+.popup .fields p{}
+.popup .fields b{font-weight: normal;font-size: 18px;}
+.popup .close{position: absolute;cursor: pointer;}    
+.filterInn,
+.infoBtn{
+    font-size: 0px;
+    background-image: url(../icons/info.svg);
+    background-color: #fff;
+    width: 25px;
+    height: 25px;
+    background-size: contain;
+    background-repeat: no-repeat;}
+.infoBtn:hover{background-image: url(../icons/info-h.svg);}
+.hidden{position: absolute;left:-99999px;}
+.hidden p{width: 1px;height: 1px;}
+.hidden p:nth-child(1){background-image: url(../icons/info-h.svg);}
+.hidden p:nth-child(2){background-image: url(../icons/cancel.svg)}
+.close{    background-image: url(../icons/cancel.svg);
+    font-size: 0px;
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat;}
+@media(max-width:550px){
+    .sudpretPage .mainWrap{padding: 0px;}
+    .sudpretPage .main{padding: 30px 15px;}
+    .sudpretPage .popup .fields{    max-height: calc(100vh - 85px);}
+}

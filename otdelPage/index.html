@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>МуИС</title>
+    <link rel="shortcut icon" href="../lib/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="../lib/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../lib/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../lib/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../lib/favicons/site.webmanifest">
+    <link rel="mask-icon" href="../lib/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="../lib/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="lib\favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <script src="../lib/jquery-3.3.1.min.js"></script>
+    <script src="../lib/js.cookie.js"></script>
+    <link rel="stylesheet" href="../lib/styles/main.css">
+    <link rel="stylesheet" href="../lib/styles/otdel.css">
+  </head>
+  <script>
+        var logged = Cookies.get('miusLogged');
+        if(logged!='Logged'){
+            var url="http://localhost:8080/";
+            window.location.replace(url);
+        }
+  </script>
+  <body class="otdelPage" >
+    <div class="menuWrap">
+      <div class="menuLeft">
+        <div class="menuHeader">
+            <div class="menuTitle" title="Муниципальная Информационная Система">МуИС</div>
+            <div class="menuClose"></div>
+        </div>
+        <div class="menuItems">
+          <a href="http://localhost/DeloOwner/" class="menuItem">Поиск по "ДЕЛО"</a>
+          <a href="http://localhost:8080/sudpret/" class="menuItem">Поиск организаций</a>
+          <a href="javascript:void(0);" class="menuItem">Пункт 3</a>
+          <a href="javascript:void(0);" class="menuItem">Пункт 4</a>
+        </div>
+        <a class="menuLogoff" href="http://localhost:8080/logout">Выйти</a>
+      </div>
+      <div class="menuShadow"></div>
+    </div> 
+    <div class="mainWrapWrap">
+      <div class="header">
+        <div class="logo" title="Муниципальная Информационная Система"></div>
+        <div class="nameBlock nameBlock-sm" title="Муниципальная Информационная Система">МуИС</div>
+         <div class="nameBlock nameBlock-big" title="Муниципальная Информационная Система">Муниципальная Информационная Система</div>
+      <button class="btn btnMenu"></button>
+    </div>
+    <div class="mainWrap">
+      <div class="main">
+        <div class="title">
+          <b id="name"></b>
+          <p>в</p>
+          <b id="otdel"></b>
+          <p>рассматривает дела в следующих категориях:</p>
+        </div>
+        <div class="fields">
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="../lib/main.js"></script>
+  <script src="otdel.js"></script>
+</html>
+
