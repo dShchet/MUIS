@@ -36,27 +36,9 @@
 .result button{float: right;}
 .result b{font-weight: 500;}
 .result a{text-decoration: none;color: #353535;}
-.nopopup .popupWrapWrap{opacity: 0;pointer-events: none;}
 .title{margin-bottom: 15px;
     font-size: 25px;
     text-align: center}
-.popup .fields{max-height: calc(100vh - 150px);
-    overflow: auto;padding-right: 20px;}
-.popup .fields div{margin-bottom: 10px;}
-.popup .fields b{font-weight: normal;font-size: 18px;}
-.popup .close{position: absolute;cursor: pointer;}    
-.filterInn,
-.infoBtn{
-    float: right;
-    font-size: 0px;
-    background-image: url( icons/info.svg);
-    background-color: #fff;
-    width: 30px;
-    height: 30px;
-    background-size: contain;
-    background-repeat: no-repeat;}
-    .result  .infoBtn{margin:14px 14px;}
-.infoBtn:hover{background-image: url( icons/info-h.svg);}
 .hidden{position: absolute;left:-99999px;}
 .hidden p{width: 1px;height: 1px;}
 .hidden p:nth-child(1){background-image: url( icons/info-h.svg);}
@@ -70,6 +52,13 @@
 @media(max-width:550px){
     .searchPage .mainWrap{padding: 0px;}
     .searchPage .main{padding: 30px 15px;}
-    .searchPage .popup .fields{    max-height: calc(100vh - 85px);}
 }
 .searchPage .result .center{margin-bottom: 15px;}
+.searchPage .infoBtn {margin:14px 14px;}
+.searchPage .infoBtn {
+    float: right;
+    font-size: 0px;
+    margin: 14px 14px;
+    width: 30px;
+    height: 30px;
+}

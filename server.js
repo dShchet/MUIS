@@ -135,13 +135,23 @@ app.get("/api/filterName/:nameId", function (req, res) {
   console.log("GET Filter Data");
 });
 
-//GET One
+//GET info on one
 // http://localhost:8080/api/user/29
 app.get("/api/user/:userId", function (req, res) {
   // var query = "select * from [user]";
   var userID  = req.params["userId"];
-  var query = base+"SELECT TOP 10 [INN] , [NAME_FULL] , [NAME_SHORT] , [LEGAL_ADDR] , [TELEPHON]  FROM  ["+mainBase+"].[dbo].[REGCARD]  WHERE [INN] = '" + userID+"'";
-  console.log("GET with ID: " + userID);
+  var query = base+"SELECT * FROM  ["+mainBase+"].[dbo].[REGCARD]  WHERE [INN] = '" + userID+"'";
+  console.log("GET all with ID: " + userID);
+  sqlStreamWrap(res, query);
+});
+
+//GET Title
+// http://localhost:8080/api/userTitle/29
+app.get("/api/userTitle/:userId", function (req, res) {
+  // var query = "select * from [user]";
+  var userID  = req.params["userId"];
+  var query = base+"SELECT TOP 5 [INN] , [NAME_FULL] , [NAME_SHORT]  FROM  ["+mainBase+"].[dbo].[REGCARD]  WHERE [INN] = '" + userID+"'";
+  console.log("GET title with ID: " + userID);
   sqlStreamWrap(res, query);
 });
 

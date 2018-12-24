@@ -28,6 +28,12 @@ button,.btn{cursor: pointer;}
     -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
     transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
 }
+.nopopup .popupWrapWrap{opacity: 0;pointer-events: none;}
+.popFields{max-height: calc(100vh - 150px);
+    overflow: auto;padding-right: 20px;}
+.popFields div{margin-bottom: 10px;}
+.popFields b{font-weight: normal;font-size: 18px;}
+.popup .close{position: absolute;cursor: pointer;}    
 body:before{
     content: "";
     position: absolute;
@@ -590,4 +596,18 @@ transition: all 0.2s linear 0s;}
 }
 .menuLogoff:hover{
     background-color: #019eec;
+}
+.infoBtn{
+    /* float: right; */
+    font-size: 0px;
+    background-image: url( icons/info.svg);
+    background-color: #fff;
+    /* width: 30px; */
+    /* height: 30px; */
+    background-size: contain;
+    background-repeat: no-repeat;}
+
+.infoBtn:hover{background-image: url( icons/info-h.svg);}
+@media(max-width:550px){
+    .popFields{    max-height: calc(100vh - 85px);}
 }

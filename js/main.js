@@ -8,10 +8,10 @@ if(logged!='Logged'){
 //определение страницы и хлебных крошек
 var page={inn:{},otdel:{},delo:{},};
 page.path=window.location.pathname;
-if(page.path.startsWith("/search"))      {page.deep=1;page.name="search"
-}else if(page.path.startsWith("/inn"))   {page.deep=2;page.name="inn"
-}else if(page.path.startsWith("/otdel")) {page.deep=3;page.name="otdel"
-}else if(page.path.startsWith("/delo"))  {page.deep=4;page.name="delo"
+if(page.path.startsWith("/search"))      {page.deep=1; page.name="search"
+}else if(page.path.startsWith("/inn"))   {page.deep=2; page.name="inn"
+}else if(page.path.startsWith("/otdel")) {page.deep=3; page.name="otdel"
+}else if(page.path.startsWith("/delo"))  {page.deep=4; page.name="delo"
 }else{console.log("error! wrong page.path: " + page.path);}
 
   if(page.deep > 0){//Search page and deeper

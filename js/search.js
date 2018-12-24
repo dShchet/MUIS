@@ -64,21 +64,27 @@ function toFilter(inn, name) {
 //при нажатии на (I)
 function info(inn) {
     $('body').toggleClass('nopopup');
-    $('.popup .fields').empty();
+    $('.popFields').empty();
     var data=infoData[inn];
     var text="";
     if(data.NAME_FULL){text+="<div><b>Название: </b><p>"+data.NAME_FULL+"</p></div>"}
     if(data.INN){text+="<div><b>ИНН:</b><p>"+data.INN+"</p></div>"}
     if(data.KPP){text+="<div><b>KПП: </b><p>"+data.KPP+"</p></div>"}
-    if(data.LEGAL_ADDR){text+="<div><b>Адрес: </b><p>"+data.LEGAL_ADDR+"</p></div>"}
-    if(data.TELEPHON){text+="<div><b>Телефон: </b><p>"+data.TELEPHON+"</p></div>"}
+    if(data.LEGAL_ADDR){text+="<div><b>Юридический адрес: </b><p>"+data.LEGAL_ADDR+"</p></div>"}
+    if(data.TELEPHON){text+="<div><b>Телефон(ы): </b><p>"+data.TELEPHON+"</p></div>"}
     if(data.BANK){text+="<div><b>Банк:</b><p>"+data.BANK+"</p></div>"}
     if(data.BANK_ACCOUNT){text+="<div><b>Банковский счет: </b><p>"+data.BANK_ACCOUNT+"</p></div>"}
+    if(data.BOSS){text+="<div><b>Руководитель: </b><p>"+data.BOSS+"</p></div>"}
     if(data.BIK){text+="<div><b>БИК: </b><p>"+data.BIK+"</p></div>"}
     if(data.KOR_ACCOUNT){text+="<div><b>КОР Счет:</b><p>"+data.KOR_ACCOUNT+"</p></div>"}
     if(data.OGRN){text+="<div><b>ОГРН: </b><p>"+data.OGRN+"</p></div>"}
     if(data.Е_MAIL){text+="<div><b>Email: </b><p>"+data.Е_MAIL+"</p></div>"}
-    $('.popup .fields').append(text);
+    if(data.ADM_FLAG){
+        if(data.ADM_FLAG==1){
+            text+="<div><b>Данное юридическое лицо принадлежит Администрации</b></div>"
+        }
+    }
+    $('.popFields').append(text);
 }
 
 //сформировать строчку одной компании

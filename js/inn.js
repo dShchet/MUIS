@@ -6,7 +6,7 @@ makeButtons();//Вывести кнопки
 //Формирование заголовка
 function makeTitle() {
     $.ajax({
-        url: INFO.serverAdr + "api/user/"+page.inn.name,
+        url: INFO.serverAdr + "api/userTitle/"+page.inn.name,
         type: "GET", contentType: "application/json",
         success: function (dataset) {
             var titleData=dataset[0]['NAME_FULL'];
