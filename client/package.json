@@ -4,9 +4,10 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
-    "express": "^4.16.4",
     "body-parser": "^1.18.3",
-    "mssql": "^4.2.2",
+    "express": "^4.16.4",
+    "i-promise": "^1.1.0",
+    "mssql": "^4.3.0",
     "routes": "^2.1.0"
   },
   "devDependencies": {},

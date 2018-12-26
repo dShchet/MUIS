@@ -1,0 +1,14 @@
+C:\Users\Denis\Desktop\SharpServer\SharpServer\obj\Debug\SharpServer.csprojAssemblyReference.cache
+C:\Users\Denis\Desktop\SharpServer\SharpServer\obj\Debug\SharpServer.csproj.CoreCompileInputs.cache
+C:\Users\Denis\Desktop\SharpServer\SharpServer\bin\Debug\SharpServer.exe.config
+C:\Users\Denis\Desktop\SharpServer\SharpServer\bin\Debug\SharpServer.exe
+C:\Users\Denis\Desktop\SharpServer\SharpServer\bin\Debug\SharpServer.pdb
+C:\Users\Denis\Desktop\SharpServer\SharpServer\obj\Debug\SharpServer.exe
+C:\Users\Denis\Desktop\SharpServer\SharpServer\obj\Debug\SharpServer.pdb
+C:\Users\Denis\Desktop\MUIS\SharpServer\bin\Debug\SharpServer.exe.config
+C:\Users\Denis\Desktop\MUIS\SharpServer\bin\Debug\SharpServer.exe
+C:\Users\Denis\Desktop\MUIS\SharpServer\bin\Debug\SharpServer.pdb
+C:\Users\Denis\Desktop\MUIS\SharpServer\obj\Debug\SharpServer.csprojAssemblyReference.cache
+C:\Users\Denis\Desktop\MUIS\SharpServer\obj\Debug\SharpServer.csproj.CoreCompileInputs.cache
+C:\Users\Denis\Desktop\MUIS\SharpServer\obj\Debug\SharpServer.exe
+C:\Users\Denis\Desktop\MUIS\SharpServer\obj\Debug\SharpServer.pdb

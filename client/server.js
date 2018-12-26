@@ -50,11 +50,11 @@ var server = app.listen(process.env.PORT || defaultPort, function () {
 
 var sqlStreamOpen=true;
 function sqlStreamWrap(res, query){
+  // sqlStreamWrap(res, query)
     if(sqlStreamOpen==false){
-      console.log('open? '+sqlStreamOpen+' waiting '+query);
-        setTimeout(function (){sqlStreamWrap(res, query)}, 50)
+        setTimeout(function (){sqlStreamWrap(res, query)}, 0)
     }else{
-      console.log('open? '+sqlStreamOpen+' go '+query);
+      console.log(query);
         sqlStreamOpen=false;
         executeQuery(res, query);
     }
@@ -68,24 +68,21 @@ if(isUserASystAdmin){base='USE ['+ mainBase +'] '} else { base = "" }
 //Function to connect to database and execute query
 var executeQuery = function (res, query) {
   sql.connect(dbConfig, function (err) {
-    if (err) {
-      console.log("Error while connecting database :- " + err);
-      res.send(err);sqlStreamOpen=true;
-    } else {
-      // create Request object
+    if (!err){
       var request = new sql.Request();
-      // query to the database
       request.query(query, function (err, result) {
-        if (err) {
-          res.send(err);
-          console.log("Error while querying database :- " + err);
-          sql.close();sqlStreamOpen=true;
-        } else {
+        if (!err) {
           res.send(result.recordset);
-          console.log("executed Query");
-          sql.close();sqlStreamOpen=true;
+        } else {
+          console.log("querying database error: " + err);
+          res.send(err);
         }
+        sqlStreamOpen=true;
+        sql.close();
       });
+    }else {
+      console.log("connecting to database error:- " + err);
+      res.send(err);sqlStreamOpen=true;
     }
   });
 }
@@ -94,7 +91,7 @@ var executeQuery = function (res, query) {
 // http://localhost:8080/api/users
 app.get("/api/users", function (req, res) {
   // var query = "select * from [user]";
-  var query = base+"SELECT TOP 100 [INN], [NAME_SHORT], [NAME_FULL], [LEGAL_ADDR], [TELEPHON], [Е_MAIL], [KPP], [BANK], [BANK_ACCOUNT], [KOR_ACCOUNT], [BIK], [OGRN], [BOSS]  FROM ["+mainBase+"].[dbo].[REGCARD]"
+  var query = base+"SELECT TOP 100 * FROM ["+mainBase+"].[dbo].[REGCARD]"
   sqlStreamWrap(res, query);
   console.log("GET ALL");
 });
@@ -106,19 +103,19 @@ app.get("/api/filter/:innId.:nameId", function (req, res) {
   var innId  = req.params["innId"];
   var nameId  = req.params["nameId"];
   if((innId!="ALL")&&(nameId!="ALL")){
-    var query = base+"SELECT TOP 100 [INN], [NAME_SHORT], [NAME_FULL], [LEGAL_ADDR], [TELEPHON], [Е_MAIL], [KPP], [BANK], [BANK_ACCOUNT], [KOR_ACCOUNT], [BIK], [OGRN], [BOSS]  FROM ["+mainBase+"].[dbo].[REGCARD] WHERE [NAME_FULL] LIKE '%"+ nameId +"%'" + "AND [INN] LIKE"+ "'%"+ innId+"%'";
+    var query = base+"SELECT TOP 100 * FROM ["+mainBase+"].[dbo].[REGCARD] WHERE [NAME_FULL] LIKE '%"+ nameId +"%'" + "AND [INN] LIKE"+ "'%"+ innId+"%'";
     console.log("GET ALL");
   }
   if(innId=="ALL"){
-    var query = base+"SELECT TOP 100 [INN], [NAME_SHORT], [NAME_FULL], [LEGAL_ADDR], [TELEPHON], [Е_MAIL], [KPP], [BANK], [BANK_ACCOUNT], [KOR_ACCOUNT], [BIK], [OGRN], [BOSS]  FROM ["+mainBase+"].[dbo].[REGCARD] WHERE [NAME_FULL] LIKE '%"+ nameId +"%'";
+    var query = base+"SELECT TOP 100 * FROM ["+mainBase+"].[dbo].[REGCARD] WHERE [NAME_FULL] LIKE '%"+ nameId +"%'";
     console.log("GET by Name");
   }
   if(nameId=="ALL"){
-    var query = base+"SELECT TOP 100 [INN], [NAME_SHORT], [NAME_FULL], [LEGAL_ADDR], [TELEPHON], [Е_MAIL], [KPP], [BANK], [BANK_ACCOUNT], [KOR_ACCOUNT], [BIK], [OGRN], [BOSS]  FROM ["+mainBase+"].[dbo].[REGCARD] WHERE [INN] LIKE '%"+ innId +"%'";
+    var query = base+"SELECT TOP 100 * FROM ["+mainBase+"].[dbo].[REGCARD] WHERE [INN] LIKE '%"+ innId +"%'";
     console.log("GET by INN");
   }
   if((innId=="ALL")&&(nameId=="ALL")){
-    var query = base+"SELECT TOP 100 [INN], [NAME_SHORT], [NAME_FULL], [LEGAL_ADDR], [TELEPHON], [Е_MAIL], [KPP], [BANK], [BANK_ACCOUNT], [KOR_ACCOUNT], [BIK], [OGRN], [BOSS]  FROM ["+mainBase+"].[dbo].[REGCARD]";
+    var query = base+"SELECT TOP 100 * FROM ["+mainBase+"].[dbo].[REGCARD]";
     console.log("GET ALL");
   }
   sqlStreamWrap(res, query);

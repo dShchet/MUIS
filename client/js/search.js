@@ -20,9 +20,7 @@ $("#filterInn, #filterName").keyup(function(e){
 })
 
 //обработчик скрытия попапа
-$(".close, .shadow").click(function(){
-    $('body').toggleClass('nopopup');
-})
+$(".close, .shadow").click(function(){$('body').toggleClass('nopopup');})
 
 //фильтрация по инн или названию
 function toFilter(inn, name) {

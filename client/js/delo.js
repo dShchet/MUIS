@@ -4,6 +4,11 @@ var casesNumber //количество дел
 GetTitle()
 GetCases();
 
+//обработчик скрытия попапа
+$(".close, .shadow").click(function(){
+    $('body').toggleClass('nopopup');
+})
+
 //Собрать заголовок
 function GetTitle() {
     $(".result").html("<div class='center'>Загрузка...</div>");
@@ -40,11 +45,6 @@ function GetCases() {
             console.log("Ошибка: "+jqXHR+"; exception: "+exception);},
     });
 }
-
-//обработчик скрытия попапа
-$(".close, .shadow").click(function(){
-    $('body').toggleClass('nopopup');
-})
 
 //Сформировать одно дело
 function makeOneCase(data) {
