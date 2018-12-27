@@ -1,0 +1,77 @@
+.casePage {}
+.casePage .popup{    max-width: 650px;}
+.casePage .main{max-width: 1040px;}
+.casePage .main>.title{    font-size: 20px;
+    margin-bottom: 20px;}
+.casePage .caseShort{
+    border: 2px solid darkgrey;
+    border-bottom: none;
+    cursor: pointer;
+}
+.casePage .caseDate-short{padding: 5px 15px;}
+.casePage .table{    
+    border-collapse: collapse;
+    width: 100%;}
+.casePage tr{}
+.casePage tr:nth-child(1){}
+.casePage td p{
+    color: #000000d6;
+    display: inline-block;
+    margin-right: 10px;
+}
+.casePage .main b{
+    font-size: 18px;
+    font-weight: 400;
+    color: #000000d6;
+    float: right;
+}
+.casePage td{    padding: 8px 15px;}
+.casePage td:nth-child(1){background-color: #f4f3f4;}
+.casePage td:nth-child(2){background-color: #f9f5ec;}
+.casePage .caseDetails{
+    position: relative;
+    border: 2px solid darkgrey;
+    border-top: none;
+    overflow: hidden;
+}
+.casePage .caseDetails:after{
+    content:"";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    -webkit-box-shadow: inset 1px 3px 7px 0px rgba(0, 0, 0, 0.47);
+       -moz-box-shadow: inset 1px 3px 7px 0px rgba(0, 0, 0, 0.47);
+            box-shadow: inset 1px 3px 7px 0px rgba(0, 0, 0, 0.47);
+    pointer-events: none;
+}
+.casePage .caseDetails>div{    padding: 5px 15px;}
+.casePage .caseDetails>div:nth-child(odd) {background-color: #fff;}
+.casePage .caseDetails>div:nth-child(even){background-color: #f4f3f4;}
+.casePage .caseDetails>div:first-child{padding-top: 15px;}
+.casePage .caseDetails>div:last-child{padding-bottom: 15px;}
+.casePage .caseDetails p{display: inline;}
+.casePage .caseDetails.closed{
+    height: 0px;
+}
+.casePage .caseShort:hover,
+.casePage .caseShort:hover+.caseDetails{
+    border-color:#008cd2;   
+}
+.casePage .case:not(:last-child){ 
+    margin-bottom: 15px;
+}
+.casePage .infoBtn{    
+    width: 17px;
+    height: 17px;
+    font-size: 0px;
+    line-height: 0px;
+    float: left;
+    margin-right: 5px;
+    top: 2px;
+    position: relative;
+}
+.casePage .fields.oneCase .caseDetails.closed{
+    height: auto;
+}

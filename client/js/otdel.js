@@ -29,10 +29,10 @@ function makeButtons() {//Для кнопок
             var listHtml = "";
             $.each(dataset, function (index, category) {
                 var rowOtdel=category["OTDEL_PRAVO"];
-                var delo=cookDelo(rowOtdel);
+                var data=cookCase(rowOtdel);
                 listHtml +="<a class='link' href="+
-                    INFO.clientAdr+"delo:"+page.inn.name+
-                    ":"+page.otdel.raw+":"+delo.url+" >"+delo.name+"</a>"
+                    INFO.clientAdr+"case:"+page.inn.name+
+                    ":"+page.otdel.raw+":"+data.url+" >"+data.name+"</a>"
             })
             $(".fields").html(listHtml);
         },error: function (jqXHR, exception) {

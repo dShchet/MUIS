@@ -28,9 +28,10 @@ app.use('/styles',                      express.static( __dirname + '/styles'));
 app.use('/',                            express.static((__dirname + '/html'),{index:'login.html'}));
 app.use('/logout',                      express.static((__dirname + '/html'),{index:'logout.html'}));
 app.use('/search',                      express.static((__dirname + '/html'),{index:'search.html'}));
+app.use('/delo',                      express.static((__dirname + '/html'),{index:'delo.html'}));
 app.use('/inn:innId',                   express.static((__dirname + '/html'),{index:'inn.html'}));
 app.use('/otdel:innId:otdelId',         express.static((__dirname + '/html'),{index:'otdel.html'}));
-app.use('/delo:innId:otdelId:arbitrag', express.static((__dirname + '/html'),{index:'delo.html'}));
+app.use('/case:innId:otdelId:arbitrag', express.static((__dirname + '/html'),{index:'case.html'}));
 
 //CORS Middleware
 app.use(function (req, res, next) {
@@ -145,7 +146,6 @@ app.get("/api/user/:userId", function (req, res) {
 //GET Title
 // http://localhost:8080/api/userTitle/29
 app.get("/api/userTitle/:userId", function (req, res) {
-  // var query = "select * from [user]";
   var userID  = req.params["userId"];
   var query = base+"SELECT TOP 5 [INN] , [NAME_FULL] , [NAME_SHORT]  FROM  ["+mainBase+"].[dbo].[REGCARD]  WHERE [INN] = '" + userID+"'";
   console.log("GET title with ID: " + userID);
@@ -167,8 +167,8 @@ app.get("/api/otdel/:otdelId", function (req, res) {
 });
 
 //Get case details by innID and category
-// http://localhost:8080/api/delo/5036094403.arbtrg
-app.get("/api/delo/:innId.:catId", function (req, res) {
+// http://localhost:8080/api/case/5036094403.arbtrg
+app.get("/api/case/:innId.:catId", function (req, res) {
   var innId  = req.params["innId"];
   var catId  = req.params["catId"];
   var table="";
@@ -182,7 +182,7 @@ app.get("/api/delo/:innId.:catId", function (req, res) {
     var query = base+"SELECT * FROM [dbo]."+table+" ('"+innId+"')";
     sqlStreamWrap(res, query);
   }else{
-    console.log("noSuchData/api/delo: "+"category: " + catId+" innId: "+innId); 
+    console.log("noSuchData/api/case: "+"category: " + catId+" innId: "+innId); 
     res.send('noSuchData')}
 });
 

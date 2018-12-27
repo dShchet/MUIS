@@ -12,16 +12,16 @@
     <link rel="mask-icon" href="../styles/favicons/safari-pinned-tab.svg" color="#5bbad5">
     <link rel="shortcut icon" href="../styles/favicons/favicon.ico">
     <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-config" content="../styles/favicons/browserconfig.xml">
+    <meta name="msapplication-config" content="lib/favicons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
     <script src="../js/jquery-3.3.1.min.js"></script>
     <script src="../js/js.cookie.js"></script>
     <script src="../js/config.js"></script>
     <script src="../js/main.js"></script>
     <link rel="stylesheet" href="../styles/main.css">
-    <link rel="stylesheet" href="../styles/search.css">
+    <link rel="stylesheet" href="../styles/case.css">
   </head>
-  <body class="nopopup searchPage" >
+  <body class="nopopup casePage" >
     <div class="popupWrapWrap">
       <div class="shadow"></div>
       <div class="popupWrap">
@@ -33,7 +33,6 @@
         </div>
       </div>
     </div>
-    <div class="breadcrumbsWrap"><div class="breadcrumbs"></div></div>
     <div class="menuWrap">
       <div class="menuLeft">
         <div class="menuHeader">
@@ -41,44 +40,40 @@
             <div class="menuClose"></div>
         </div>
         <div class="menuItems">
-            <a href="delo/" class="menuItem menuItem1">Поиск по "ДЕЛО"</a>
+          <a href="delo/" class="menuItem menuItem1">Поиск по "ДЕЛО"</a>
             <script>$('.menuItem1').attr("href", INFO.clientAdr+$('.menuItem1').attr('href'));</script>
-            <a href="search/" class="menuItem menuItem2">Поиск организаций</a>
-              <script>$('.menuItem2').attr("href", INFO.clientAdr+$('.menuItem2').attr('href'));</script>
-            <a href="javascript:void(0);" class="menuItem">Пункт 3</a>
-            <a href="javascript:void(0);" class="menuItem">Пункт 4</a>
-          </div>
-          <a class="menuLogoff" href="logout/">Выйти</a>
-          <script>$('.menuLogoff').attr("href", INFO.clientAdr+$('.menuLogoff').attr('href'));</script>
+          <a href="search/" class="menuItem menuItem2">Поиск организаций</a>
+           <script>$('.menuItem2').attr("href", INFO.clientAdr+$('.menuItem2').attr('href'));</script>
+          <a href="javascript:void(0);" class="menuItem">Пункт 3</a>
+          <a href="javascript:void(0);" class="menuItem">Пункт 4</a>
         </div>
+        <a class="menuLogoff" href="logout/">Выйти</a>
+        <script>$('.menuLogoff').attr("href", INFO.clientAdr+$('.menuLogoff').attr('href'));</script>
+      </div>
       <div class="menuShadow"></div>
     </div> 
     <div class="mainWrapWrap">
       <div class="header">
-        <div class="logo" title="Муниципальная Информационная Система"></div>
-        <div class="nameBlock nameBlock-sm" title="Муниципальная Информационная Система">МуИС</div>
-        <div class="nameBlock nameBlock-big" title="Муниципальная Информационная Система">Муниципальная Информационная Система</div>
-        <button class="btn btnMenu"></button>
+         <div class="logo" title="Муниципальная Информационная Система"></div>
+         <div class="nameBlock nameBlock-sm" title="Муниципальная Информационная Система">МуИС</div>
+         <div class="nameBlock nameBlock-big" title="Муниципальная Информационная Система">Муниципальная Информационная Система</div>
+          <button class="btn btnMenu"></button>
       </div>
+      <div class="breadcrumbsWrap"><div class="breadcrumbs"></div></div>
       <div class="mainWrap">
         <div class="main">
-          <div class="search">
-            <div class="title">Поиск организаций</div>
-            <label for="filterInn">По ИНН:
-            <input type="text" id="filterInn" name="filterInn" placeholder="например: 5036094403"></label>
-            <label for="filterName">По названию:
-            <input type="text" id="filterName" name="filterName" placeholder="например: ИНТАРКОМ ПЛЮС">
-            </label>
+          <div class="title">
+              <div class="center">загрузка...</div>
           </div>
-          <div class="result"><div class="center">Начните искать</div></div>
+          <div class="fields">
+              <div class="center">загрузка...</div>
+          </div>
         </div>
       </div>
-    </div>
-    <script src="../js/search.js"></script>
-    <div class="hidden">
-      <p></p>
-      <p></p>
-    </div>
   </body>
+  <script src="../js/case.js"></script>
 </html>
-
+<div class="moreWrap">
+  <div class="moreBlock">
+    
+  

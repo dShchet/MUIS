@@ -14,42 +14,80 @@ namespace SharpServer
         //Обработать запрос
         private void processReq(TcpClient Client, string reqType, Dictionary<string, string> Dict)
         {
-            if ((Dict.ContainsKey("need")) && (Dict.ContainsKey("some2")))
+            if ((Dict.ContainsKey("need"))&&(Dict["need"]=="search"))
             {
                 Console.WriteLine("processing Req");
-                
+                string EOSsourceVal;// "Vocabulary"
+                string EOSdateFrom; //от
+                string EOSdateTo; //до
 
-                string EOSsourceVal = "Table"; //"Vocabulary"
-                string EOSdateFrom = "01/01/1998"; //от
-                string EOSdateTo = "01/01/2018"; //до
+                if (Dict.ContainsKey("source")) { EOSsourceVal = Dict["source"]; } else { EOSsourceVal = "Table"; }
+                if (Dict.ContainsKey("dateFrom")) { EOSdateFrom = Dict["dateFrom"]; } else { EOSdateFrom = "01/01/1998"; }
+                if (Dict.ContainsKey("dateTo")) { EOSdateTo = Dict["dateTo"]; } else { EOSdateTo = "01/01/2018"; }
+                Console.WriteLine("Dict " + "source "+ Dict["source"]+ "dateFrom"+ Dict["dateFrom"]+ "dateTo"+ Dict["dateTo"]);
+                //dynamic ResultSet = EOSSearch(EOSsourceVal, EOSdateFrom, EOSdateTo);
+                string ResultSet = EOSSearch(EOSsourceVal, EOSdateFrom, EOSdateTo);
+                Console.WriteLine("Got EOS data ");
+                //if (ResultSet.ErrCode < 0)
+                //{
+                //    string errorText= "error: " + ResultSet.ErrCode.ToString() + "\n" + ResultSet.ErrText;
+                //    SendError(Client, errorText);
+                //}
+                //else{
+                    Console.WriteLine("ResultSet-[");
+                    //Console.WriteLine(ResultSet);
+                    //Console.WriteLine("ResultSet.Length is " + ResultSet.Length);
+                    Console.WriteLine("ResultSet-]");
+                    //string json = "{" +
+                    //"\"reqType\": \"" + reqType + "\"," +
+                    //"\"NEED\": \"" + Dict["need"] + "\"," +
+                    //"\"some2\": \"" + Dict["some2"] + "\"}";
+                    //for (int i = 0; i < ResultSet.Length; i++)
+                    //{
+                    //    Console.WriteLine("ResultSet.Item " + i +" "+ResultSet.Item(i).RegNum);
+                    //}
+                    Console.WriteLine("start sending ResultSet is back. ResultSet is "+ ResultSet);
+                    SendResp(Client, 200, "application / text", ResultSet);
 
-                EOSSearch(EOSsourceVal, EOSdateFrom, EOSdateTo);
-
-                string json = "{" +
-                    "\"reqType\": \"" + reqType + "\"," +
-                    "\"NEED\": \"" + Dict["need"] + "\"," +
-                    "\"some2\": \"" + Dict["some2"] + "\"}";
-                SendResp(Client, 200, "application / json", json);
+                //}
             }
             else
             {
-                Console.WriteLine("error: doesnt contain Need");
-                SendResp(Client, 400, "application / text", "error: doesnt contain 'need'");
+                SendError(Client, "error: incorrect params in request");
             }
-
         }
+        
         //Отправить запрос
         private void SendResp(TcpClient Client, int Code, string format, string json)
         {
-            string Headers = "HTTP/1.1 " + Code + " \nContent-Type: " + format + "\n\n";
-            byte[] HeadersBuffer = Encoding.ASCII.GetBytes(Headers);
-            Client.GetStream().Write(HeadersBuffer, 0, HeadersBuffer.Length);
-            byte[] jsonBuffer = Encoding.ASCII.GetBytes(json);
-            Client.GetStream().Write(jsonBuffer, 0, jsonBuffer.Length);
-            Client.Close();
+            try
+            {
+                UTF8Encoding utf8 = new UTF8Encoding();
+                string Headers = "HTTP/1.1 " + Code + " \nContent-Type: " + format + " \nAccess-Control-Allow-Origin: *"+
+                    " \nAccess-Control-Allow-Headers: Content-Type"+
+                    " \nAccess-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS" +
+                    "\n\n";
+                byte[] HeadersBuffer = utf8.GetBytes(Headers);
+                Client.GetStream().Write(HeadersBuffer, 0, HeadersBuffer.Length);
+                byte[] jsonBuffer = utf8.GetBytes(json);
+                Client.GetStream().Write(jsonBuffer, 0, jsonBuffer.Length);
+                Client.Close();
+            }
+            catch {
+                Console.WriteLine("Connection closed: Exception with SendResp");
+                Client.Close();
+            }
+        }
+        
+        //Отправить ошибку
+        private void SendError(TcpClient Client, string errorText)
+        {
+            Console.WriteLine(errorText);
+            SendResp(Client, 400, "application / text", errorText);
+            
         }
 
-        static void EOSSearch(string Source, string dateFrom, string dateTo)
+        public dynamic EOSSearch(string Source, string dateFrom, string dateTo)
         {
             Type headType = Type.GetTypeFromProgID("Eapi.Head");//создать класса головных объектов
             dynamic head = null;
@@ -73,9 +111,11 @@ namespace SharpServer
             }
 
             if (head == null)
+            {
                 Console.WriteLine(//Обычно возникает если логин не верный
-                    "Не удалось установить соединение с БД ДЕЛО.\n" +
-                    "Хранимые процедуры доступны только на просмотр.");
+                "Не удалось установить соединение с БД ДЕЛО.\n" +
+                "Хранимые процедуры доступны только на просмотр.");
+            }
             try
             {
                 dynamic ResultSet = head.GetResultSet; //создание хранилища 
@@ -88,16 +128,11 @@ namespace SharpServer
                 //Задание критериев отбора (необходимо)
                 ResultSet.Source.Params["Rc.DocDate"] = dateFrom + ":" + dateTo;//фильрация по дате
                 ResultSet.Fill();//Выполнение SQL Запросов и запись данных
-
-                if (ResultSet.ErrCode < 0)
-                {//обработка ошибок
-                    Console.WriteLine("Ошибка: " + ResultSet.ErrCode.ToString() + "\n" + ResultSet.ErrText);
-                }
-                else
-                {
-                    Console.WriteLine("Всего значений: " + ResultSet.ItemCnt.ToString());
-                    Console.WriteLine("Номер РК : " + ResultSet.Item(5).RegNum + "\n" + "RK содержание: " + ResultSet.Item(5).Contents);
-                }
+                
+                Console.WriteLine("ResultSet.Item(2).RegNum is  [" + ResultSet.Item(2).RegNum + "]");
+                return ResultSet.Item(2).RegNum;
+                //return ResultSet;
+                
                 //Application.EnableVisualStyles();
                 //Application.SetCompatibleTextRenderingDefault(false);
                 //Application.Run(new frmMain(head));
@@ -105,17 +140,20 @@ namespace SharpServer
             catch (Exception)
             {
                 head = null;
+                return "";
             }
             finally
             {
                 if (head != null && head.Active)
                 {
-                    head.Close();//закртыть соединение
+                    head.Close();//закрыть соединение
+
                 }
             }
         }
-            // Конструктор класса. Ему нужно передавать принятого клиента от TcpListener
-            public Client(TcpClient Client)
+
+        // Конструктор класса. Ему нужно передавать принятого клиента от TcpListener
+        public Client(TcpClient Client)
         {
             string Request = "";
             byte[] Buffer = new byte[1024];
@@ -129,26 +167,33 @@ namespace SharpServer
                 }
                 
             }
-
-            Match ReqMatch = Regex.Match(Request, @"^\w+\s+([^\s\?]+)[^\s]*\s+HTTP/.*|");
-            
-            string RequestUri = ReqMatch.Groups[0].Value;
-
-
-            string[] tokens = RequestUri.Split(' ');
-            string reqType = tokens[0];
-            string paramsString = (tokens[1]);
-
-            var matches = Regex.Matches(paramsString, @"[\?&](([^&=]+)=([^&=#]*))", RegexOptions.Compiled);
-            Dictionary<string, string> Dict = matches.Cast<Match>().ToDictionary(
-                m => Uri.UnescapeDataString(m.Groups[2].Value),
-                m => Uri.UnescapeDataString(m.Groups[3].Value)
-            );
-            
-            if (Dict.ContainsKey("need"))
+            Console.WriteLine("-----------------------------");
+            Console.WriteLine("New Request [" + Request + "]");
+            string[] RequestArr = Request.Split(' ');
+            Console.WriteLine("RequestArr.Length [" + RequestArr.Length + "]");
+            string reqType = Request.Split(' ')[0];
+            Console.WriteLine(" reqType [" + reqType + "]");
+            try
             {
-                processReq(Client, reqType, Dict);}
-            else { Console.WriteLine("error: paramsArr['need'] not exist"); }
+            string paramsString = Request.Split(' ')[1];
+                if (paramsString!="/") {
+                    Console.WriteLine(" paramsString [" + paramsString + "]");
+
+                    var matches = Regex.Matches(paramsString, @"[\?&](([^&=]+)=([^&=#]*))", RegexOptions.Compiled);
+                    Dictionary<string, string> Dict = matches.Cast<Match>().ToDictionary(
+                        m => Uri.UnescapeDataString(m.Groups[2].Value),
+                        m => Uri.UnescapeDataString(m.Groups[3].Value)
+                    );
+
+                    if (Dict.ContainsKey("need"))
+                    {
+                        processReq(Client, reqType, Dict);
+                    }
+                    else {SendError(Client, "Error: not exist paramsArr['need']"); }
+                }
+                else {SendError(Client, "Error with Request, there is no params");}
+            }
+            catch {SendError(Client, "Error with Request");}
         }
 
     }

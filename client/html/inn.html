@@ -31,7 +31,8 @@
           <div class="menuClose"></div>
         </div>
         <div class="menuItems">
-            <a href="http://localhost/DeloOwner/" class="menuItem">Поиск по "ДЕЛО"</a>
+            <a href="delo/" class="menuItem menuItem1">Поиск по "ДЕЛО"</a>
+              <script>$('.menuItem1').attr("href", INFO.clientAdr+$('.menuItem1').attr('href'));</script>
             <a href="search/" class="menuItem menuItem2">Поиск организаций</a>
               <script>$('.menuItem2').attr("href", INFO.clientAdr+$('.menuItem2').attr('href'));</script>
             <a href="javascript:void(0);" class="menuItem">Пункт 3</a>

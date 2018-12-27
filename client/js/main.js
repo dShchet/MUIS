@@ -6,12 +6,13 @@ if(logged!='Logged'){
     window.location.replace(loginUrl);
 }
 //определение страницы и хлебных крошек
-var page={inn:{},otdel:{},delo:{},};
+var page={inn:{},otdel:{},case:{},};
 page.path=window.location.pathname;
 if(page.path.startsWith("/search"))      {page.deep=1; page.name="search"
+}else if(page.path.startsWith("/delo"))  {page.deep=1; page.name="delo"
 }else if(page.path.startsWith("/inn"))   {page.deep=2; page.name="inn"
 }else if(page.path.startsWith("/otdel")) {page.deep=3; page.name="otdel"
-}else if(page.path.startsWith("/delo"))  {page.deep=4; page.name="delo"
+}else if(page.path.startsWith("/case"))  {page.deep=4; page.name="case"
 }else{console.log("error! wrong page.path: " + page.path);}
 
   if(page.deep > 0){//Search page and deeper
@@ -32,14 +33,14 @@ if(page.path.startsWith("/search"))      {page.deep=1; page.name="search"
     page.breadcrumbs=page.searchLink+
     "<a href='"+page.inn.link+"/'>"+page.inn.name+"</a><span>/</span>"+
     "<i>"+page.otdel.name+"</i>";} 
-} if(page.deep > 3){//Delo page
-  page.delo.raw= page.pathCLean.split(':')[2];
-  page.delo.name=cookDelo(page.delo.raw)["name"]
-  if(page.name=="delo"){
+} if(page.deep > 3){//case page
+  page.case.raw= page.pathCLean.split(':')[2];
+  page.case.name=cookCase(page.case.raw)["name"]
+  if(page.name=="case"){
     page.breadcrumbs= page.searchLink+
     "<a href='"+page.inn.link+"/'>"+page.inn.name+"</a><span>/</span>"+
     "<a href='"+page.otdel.link+"/'>"+page.otdel.name+"</a><span>/</span>"+
-    "<i>"+page.delo.name+"</i>";
+    "<i>"+page.case.name+"</i>";
   }
 }
 
@@ -58,23 +59,23 @@ function cookOtdel(rawOtdel){
   return otdel;
 }
 
-//arbitr/PRAVO_ARBITRATION-->delo={url:"arbitr", name: 'Арбитраж'}
-function cookDelo(rawDelo){
-  var delo={};
-        if((rawDelo=="arbitr")    ||(rawDelo=="PRAVO_ARBITRATION")){
-            delo.url="arbitr";     delo.name= 'Арбитраж';
-  }else if((rawDelo=="landLease") ||(rawDelo=="PRAVO_ISP_LAND_LEASE")){
-            delo.url="landLease";  delo.name= 'Аренда земли';
-  }else if((rawDelo=="roomRental")||(rawDelo=="PRAVO_ISP_ROOM_RENTAL")){
-            delo.url="roomRental"; delo.name= 'Аренда помещений';
-  }else if((rawDelo=="general")   ||(rawDelo=="PRAVO_CAS_SCHE_DES")){
-            delo.url="general";    delo.name='Дела общей юрисдикции';
-  }else if((rawDelo=="assigned")  ||(rawDelo=="PRAVO_CAS_SCHED_VAC")){
-            delo.url="assigned";   delo.name='Назначенные дела';
-  }else if((rawDelo=="viewed")    ||(rawDelo=="PRAVO_CASES_RREVIEW")){ 
-            delo.url="viewed";     delo.name='Дела на рассмотрении';
-  }else{console.log("error! wrong rawDelo: " + rawDelo);}
-  return delo;
+//arbitr/PRAVO_ARBITRATION-->data={url:"arbitr", name: 'Арбитраж'}
+function cookCase(rawCase){
+  var data={};
+        if((rawCase=="arbitr")    ||(rawCase=="PRAVO_ARBITRATION")){
+            data.url="arbitr";     data.name= 'Арбитраж';
+  }else if((rawCase=="landLease") ||(rawCase=="PRAVO_ISP_LAND_LEASE")){
+            data.url="landLease";  data.name= 'Аренда земли';
+  }else if((rawCase=="roomRental")||(rawCase=="PRAVO_ISP_ROOM_RENTAL")){
+            data.url="roomRental"; data.name= 'Аренда помещений';
+  }else if((rawCase=="general")   ||(rawCase=="PRAVO_CAS_SCHE_DES")){
+            data.url="general";    data.name='Дела общей юрисдикции';
+  }else if((rawCase=="assigned")  ||(rawCase=="PRAVO_CAS_SCHED_VAC")){
+            data.url="assigned";   data.name='Назначенные дела';
+  }else if((rawCase=="viewed")    ||(rawCase=="PRAVO_CASES_RREVIEW")){ 
+            data.url="viewed";     data.name='Дела на рассмотрении';
+  }else{console.log("error! wrong rawCase: " + rawCase);}
+  return data;
 }
 
 $(function() {//после загрузки страницы
