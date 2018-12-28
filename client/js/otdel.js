@@ -13,8 +13,8 @@ function makeTitle() {
             $.each(dataset, function (index, data) {
                 titleData[data.INN]=data;})
                 $(".title").html(titleData[page.inn.name]['NAME_FULL']+
-                "<p>в</p>"+page.otdel.name+
-                "рассматривает дела в следующих категориях:</p>");
+                " <p>в</p> "+page.otdel.title+
+                " рассматривает дела в следующих категориях:</p>");
         },error: function (jqXHR, exception) {
             console.log("Ошибка: "+jqXHR+"; exception: "+exception);}
     });

@@ -227,15 +227,5 @@ function bindInfoBtns(){
     })
 }
 
-//перевести дату в правильный формат
-function fixDate(date , format){
-    if(format=="long"){
-        var dateOpt = {year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'};
-    }else if(format=="num"){
-        var dateOpt = {year: 'numeric', month: 'numeric', day: 'numeric'};
-    }else if(format=="weekday"){
-        var dateOpt = {year: 'numeric', month: 'numeric', day: 'numeric',weekday: 'long'};
-    }else{console.log("error: wrong date format: "+format)}
-    return new Date(date).toLocaleString("ru", dateOpt);
-}
+
 

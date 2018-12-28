@@ -26,8 +26,8 @@ if(page.path.startsWith("/search"))      {page.deep=1; page.name="search"
   }
 } if(page.deep > 2){//Otdel page and deeper
   page.otdel.raw=page.pathCLean.split(':')[1];
-  if(page.otdel.raw=="PRAVO"){page.otdel.name="Правовой отдел";page.otdel.title="Правовом отделе"}
-  if(page.otdel.raw=="KEZO" ){page.otdel.name="КИЗО";page.otdel.title="Комитете имущественных и земельных отношений"}
+  page.otdel.name =cookOtdel(page.otdel.raw)["name"];
+  page.otdel.title=cookOtdel(page.otdel.raw)["title"];
   page.otdel.link=INFO.clientAdr+"otdel:"+page.inn.name+":"+page.otdel.raw;
   if(page.name=="otdel"){
     page.breadcrumbs=page.searchLink+
@@ -48,34 +48,57 @@ console.log(page);
 
 //"PRAVO"-->"Правовой отдел"
 function cookOtdel(rawOtdel){
-  var otdel={};
-        if(rawOtdel=="PRAVO"){
-    otdel.name= "Правовой отдел"; 
-    otdel.title="Правовом отделе";
-  }else if(rawOtdel=="KEZO"){
-    otdel.name= "КИЗО";           
-    otdel.title= "Комитете имущественных и земельных отношений";
-  }else{console.log("error! wrong rawOtdel: " + rawOtdel);}
-  return otdel;
+  var data={};
+  for (var i = 0, len = INFO.templ.otdel.length; i < len; i++) {
+    if(rawOtdel==INFO.templ.otdel[i][0]){
+      data.name =INFO.templ.otdel[i][1];
+      data.title=INFO.templ.otdel[i][2];
+    }
+  }
+  if(data=={}){console.log("error! wrong rawOtdel: " + rawOtdel);}
+  return data;
 }
 
 //arbitr/PRAVO_ARBITRATION-->data={url:"arbitr", name: 'Арбитраж'}
+
 function cookCase(rawCase){
   var data={};
-        if((rawCase=="arbitr")    ||(rawCase=="PRAVO_ARBITRATION")){
-            data.url="arbitr";     data.name= 'Арбитраж';
-  }else if((rawCase=="landLease") ||(rawCase=="PRAVO_ISP_LAND_LEASE")){
-            data.url="landLease";  data.name= 'Аренда земли';
-  }else if((rawCase=="roomRental")||(rawCase=="PRAVO_ISP_ROOM_RENTAL")){
-            data.url="roomRental"; data.name= 'Аренда помещений';
-  }else if((rawCase=="general")   ||(rawCase=="PRAVO_CAS_SCHE_DES")){
-            data.url="general";    data.name='Дела общей юрисдикции';
-  }else if((rawCase=="assigned")  ||(rawCase=="PRAVO_CAS_SCHED_VAC")){
-            data.url="assigned";   data.name='Назначенные дела';
-  }else if((rawCase=="viewed")    ||(rawCase=="PRAVO_CASES_RREVIEW")){ 
-            data.url="viewed";     data.name='Дела на рассмотрении';
-  }else{console.log("error! wrong rawCase: " + rawCase);}
+  for (var i = 0, len = INFO.templ.case.length; i < len; i++) {
+    if((rawCase==INFO.templ.case[i][0])||(rawCase==INFO.templ.case[i][1])){
+      data.url =INFO.templ.case[i][0];
+      data.name=INFO.templ.case[i][2];
+    }
+  }
+  if(data=={}){console.log("error! wrong rawCase: " + rawCase);}
   return data;
+
+  // var data={};
+  //       if((rawCase=="arbitr")    ||(rawCase=="PRAVO_ARBITRATION")){
+  //           data.url="arbitr";     data.name= 'Арбитраж';
+  // }else if((rawCase=="landLease") ||(rawCase=="PRAVO_ISP_LAND_LEASE")){
+  //           data.url="landLease";  data.name= 'Аренда земли';
+  // }else if((rawCase=="roomRental")||(rawCase=="PRAVO_ISP_ROOM_RENTAL")){
+  //           data.url="roomRental"; data.name= 'Аренда помещений';
+  // }else if((rawCase=="general")   ||(rawCase=="PRAVO_CAS_SCHE_DES")){
+  //           data.url="general";    data.name='Дела общей юрисдикции';
+  // }else if((rawCase=="assigned")  ||(rawCase=="PRAVO_CAS_SCHED_VAC")){
+  //           data.url="assigned";   data.name='Назначенные дела';
+  // }else if((rawCase=="viewed")    ||(rawCase=="PRAVO_CASES_RREVIEW")){ 
+  //           data.url="viewed";     data.name='Дела на рассмотрении';
+  // }else{console.log("error! wrong rawCase: " + rawCase);}
+  // return data;
+}
+
+//перевести дату в правильный формат
+function fixDate(date , format){
+  if(format=="long"){
+      var dateOpt = {year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'};
+  }else if(format=="num"){
+      var dateOpt = {year: 'numeric', month: 'numeric', day: 'numeric'};
+  }else if(format=="weekday"){
+      var dateOpt = {year: 'numeric', month: 'numeric', day: 'numeric',weekday: 'long'};
+  }else{console.log("error: wrong date format: "+format)}
+  return new Date(date).toLocaleString("ru", dateOpt);
 }
 
 $(function() {//после загрузки страницы

@@ -42,7 +42,7 @@ function toFilter(inn, name) {
             if(amount==0){$(".result").html("<div class='center'>Ничего не найдено</div>");}
             if((amount>0)||(amount<100)){
                 var naideno= "Найдено ";
-                var lastDigit=amount.toString().split('').pop();console.log(lastDigit);
+                var lastDigit=amount.toString().split('').pop();
                 if (lastDigit=="1"){var zapis=" запись";naideno= "Найдена ";}
                 if ((lastDigit=="5")||(lastDigit=="6")||(lastDigit=="7")||(lastDigit=="8")||(lastDigit=="9")||(lastDigit=="0")){
                     var zapis=" записей"}
