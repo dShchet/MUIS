@@ -27,8 +27,8 @@ function deloOneGet(isn){
             data=data[0];
             var row= ""+
                 "<div class='result-row' data-rowid='" + data.ISN + "'>"+
-                    "<div class='result-data'><b>" + data.RegNum + "</b>"+"<b style='float:right'>" + data.DocDate.split(' ')[0] + "</b>"+
-                        "<p>" + data.Contents + "</p>"+
+                    "<div class='result-data'><b>" + data.REGNUM + "</b>"+"<b style='float:right'>" + data.DOCDATE.split(' ')[0] + "</b>"+
+                        "<p>" + data.CONTENTS + "</p>"+
                     "</div>"+
                 "</div>";
             $(".result").html(row);            
