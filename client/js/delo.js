@@ -20,6 +20,7 @@ $(".close, .shadow").click(function(){$('body').toggleClass('nopopup');});
 function toFilter(need, source, dateFrom, dateTo) {
     $(".result").html("<div class='center'>Загрузка...</div>");
     amount=0//Сбросить количество
+    console.log(INFO.deloAdr+"?need="+need+"&source="+source+"&dateFrom="+dateFrom+"&dateTo="+dateTo);
     $.ajax({
         url: INFO.deloAdr+"?need="+need+
         "&source="+source+"&dateFrom="+dateFrom+"&dateTo="+dateTo,
@@ -55,7 +56,7 @@ function bindDelos(){
     $('.result-row').click(function(){
         var sel = getSelection().toString();
         if(!sel){
-            var deloOneLink = INFO.clientAdr+"delo:" + $(this).data('rowid');
+            var deloOneLink = INFO.clientAdr+"delo:" + $(this).data('rsisn')+"&type:"+$(this).data('rstype');
             window.location = deloOneLink;
         }
     })
@@ -63,7 +64,7 @@ function bindDelos(){
 
 //сформировать строчку одной компании
 function printRow(data) {
-    var row= "<div class='result-row' data-rowid='" + data.ISN + "'>"+
+    var row= "<div class='result-row' data-rsisn='" + data.ISN + "' data-rstype='" + data.DOCKIND + "'>"+
                 "<div class='result-data'><b>" + data.RegNum + "</b>"+"<b style='float:right'>" + data.DocDate + "</b>"+
                     "<p>" + data.Contents + "</p>"+
                 "</div>"+

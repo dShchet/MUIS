@@ -29,11 +29,14 @@ namespace SharpServer
             }
             else if ((Dict.ContainsKey("need")) && (Dict["need"] == "one"))
             {
-                if (Dict.ContainsKey("isn")) {
+                if (Dict.ContainsKey("isn") && Dict.ContainsKey("rcType"))
+                {
                     string isnTemp = Dict["isn"];
+                    string rcType = Dict["rcType"];
                     int isn = System.Convert.ToInt32(isnTemp);
                     //Console.WriteLine("isn is " + "[" + isn + "]");
-                    string returnJson = EOSOneGet(isn);
+                    //Console.WriteLine("isn rcTypeTemp " + "[" + rcType + "]");
+                    string returnJson = EOSOneGet(isn, rcType);
                     //Console.WriteLine("returnJson is " + "[" + returnJson + "]");
                     SendResp(Client, 200, "application / json", returnJson, reqType);
                 } else {
@@ -124,14 +127,26 @@ namespace SharpServer
                 string superJson = "[";
                 for (int i = 0; i < ItemCnt; i++)
                 {
+                    var item = ResultSet.Item(i);
                     if (i > 0) { superJson = superJson + ","; }
-                    Dictionary<string, string> tempDictionary = new Dictionary<string, string>
-                    {
-                        {"ISN", ResultSet.Item(i).ISN.ToString() },
-                        {"RegNum", ResultSet.Item(i).RegNum },
-                        {"DocDate", ResultSet.Item(i).DocDate.ToString() },
-                        {"Contents", ResultSet.Item(i).Contents.Replace("\"", "&quot;") }
-                    };
+                    Dictionary<string, string> tempDictionary = new Dictionary<string, string>();
+                        try { tempDictionary.Add("ISN", item.ISN.ToString() ); } catch { }
+                        try { tempDictionary.Add("RegNum", item.RegNum); } catch { }
+                        try { tempDictionary.Add("DocDate", item.DocDate.ToString()); } catch { }
+                        try { tempDictionary.Add("DOCKIND", item.DOCKIND.ToString()); } catch {
+                                tempDictionary.Add("DOCKIND", "RCOUT");
+                            }
+                        try { tempDictionary.Add("Contents", item.Contents.Replace("\"", "&quot;")); } catch { }
+                    try
+                    {if (item.CORRESPCNT > 0)
+                        {
+                            string sign = "";
+                            //try { sign += item.CORRESP[0].ORGANIZ.Replace("\"", "&quot;"); } catch { }
+                            try { sign += /*" " +*/ item.CORRESP[0].SIGN; } catch { }
+                            tempDictionary.Add("Sign", sign);
+                        }
+                    }
+                    catch { }
                     var kvs = tempDictionary.Select(kvp => string.Format("\"{0}\":\"{1}\"", kvp.Key, string.Concat("", kvp.Value)));
                     string jsonChar = string.Concat("{", string.Join(",", kvs), "}");
                     superJson = superJson + jsonChar;
@@ -156,7 +171,7 @@ namespace SharpServer
             }
         }
 
-        public string EOSOneGet(int isn)
+        public string EOSOneGet(int isn, string rcType)
         {
             Type headType = Type.GetTypeFromProgID("Eapi.Head");//создать класса головных объектов
             dynamic head = null;
@@ -187,37 +202,119 @@ namespace SharpServer
             }
             try
             {
+                dynamic item;
+                if (rcType == "RcIn")
+                {
+                    item = head.GetRow("RcIn", isn);
+                }
+                else if (rcType == "RCOUT")
+                {
+                    item = head.GetRow("RcOut", isn);
+                }
+                else if (rcType == "RCLET")
+                {
+                    item = head.GetRow("RcLet", isn);
+                }
+                else { Console.WriteLine("errror: wrong rcType");
+                    item = head.GetRow("RcIn", isn);
+                }
 
-                dynamic MyRcIn = head.GetRow("RcIn", isn);
+                    //Console.WriteLine(MyRcCOntainer.REGNUM);
+                    //Console.WriteLine(MyRcCOntainer.DocDate.ToString());
+                    //Console.WriteLine(MyRcCOntainer.Contents.Replace("\"", "&quot;"));
+                    //Console.WriteLine(MyRcCOntainer.REGNUM);
 
-                //Console.WriteLine(MyRcIn.REGNUM);
-                //Console.WriteLine(MyRcIn.DocDate.ToString());
-                //Console.WriteLine(MyRcIn.Contents.Replace("\"", "&quot;"));
-                //Console.WriteLine(MyRcIn.REGNUM);
-                
-                //Console.WriteLine("still good3");
-                string superJson = "[";
+                    //Console.WriteLine("still good3");
+                    string superJson = "[";
                 //string superJson = "[{\"everything\":\"is good\"}]";
                 //superJson = "{\"evrething\":\"is good\"}";
                 //for (int i = 0; i < ItemCnt; i++)
                 //{
                 superJson += "{";
                 //superJson += "\"ISN\"" + ":" + "\"" + isn.ToString() + "\"" + ",";
-                //superJson += "\"RegNum\"" + ":" + "\"" + MyRcIn.RegNum + "\"" + ",";
-                //superJson += "\"DocDate\"" + ":" + "\"" + MyRcIn.DocDate.ToString() + "\"" + ",";
-                //superJson += "\"Contents\"" + ":" + "\"" + MyRcIn.Contents.Replace("\"", "&quot;") + "\"";
-                //Console.WriteLine(MyRcIn.CORRESP444);
-                Console.WriteLine("MyRcIn.CORRESP");
-                //if (MyRcIn.CORRESP[0].KIND == 1) {
-                //var item = MyRcIn.CORRESP[0];
-                var item = MyRcIn;
+                //superJson += "\"RegNum\"" + ":" + "\"" + MyRcCOntainer.RegNum + "\"" + ",";
+                //superJson += "\"DocDate\"" + ":" + "\"" + MyRcCOntainer.DocDate.ToString() + "\"" + ",";
+                //superJson += "\"Contents\"" + ":" + "\"" + MyRcCOntainer.Contents.Replace("\"", "&quot;") + "\"";
+                //Console.WriteLine(MyRcCOntainer.CORRESP444);
+                Console.WriteLine("MyRcCOntainer.CORRESP");
+                //if (MyRcCOntainer.CORRESP[0].KIND == 1) {
+                //var item = MyRcCOntainer.CORRESP[0];
+                string DOCKIND;
                 try { superJson += "\"ISN\":\"" + item.isn.ToString() + "\""; } catch { Console.WriteLine("nN ISN"); }
+                try { DOCKIND = item.DOCKIND.ToString();  superJson += ",\"DOCKIND\":\"" + rcType + "\"";}
+                catch
+                {
+                    DOCKIND = "RCOUT";
+                    superJson += ",\"DOCKIND\":\"" + DOCKIND + "\"";
+                }
                 try { Console.WriteLine("DOCGROUP  " + item.DOCGROUP.ToString()); } catch { Console.WriteLine("nN DOCGROUP"); }
                 try { superJson += ",\"REGNUM\":\"" + item.REGNUM.ToString() + "\""; } catch { Console.WriteLine("nN REGNUM"); }
                 try { superJson += ",\"ORDERNUM\":\"" + item.ORDERNUM.ToString() + "\""; } catch { Console.WriteLine("nN ORDERNUM"); }
                 try { superJson += ",\"SPECIMEN\":\"" + item.SPECIMEN.ToString() + "\""; } catch { Console.WriteLine("nN SPECIMEN"); }
                 try { superJson += ",\"DOCDATE\":\"" + item.DOCDATE.ToString() + "\""; } catch { Console.WriteLine("nN DOCDATE"); }
-                try { superJson += ",\"DOCKIND\":\"" + item.DOCKIND.ToString() + "\""; } catch { Console.WriteLine("nN DOCKIND"); }
+                if (DOCKIND == "RCOUT") {
+                    Console.WriteLine("PERSONSIGNSCNT now");
+                    try { superJson += ",\"PERSONSIGN\":\"" + item.PERSONSIGN.ToString() + "\""; } catch { Console.WriteLine("nN PERSONSIGNSCNT"); }
+
+                    try { superJson += ",\"PERSONSIGNSCNT\":\"" + item.PERSONSIGNSCNT.ToString() + "\""; } catch { Console.WriteLine("nN PERSONSIGNSCNT"); }
+
+                    try { superJson += ",\"PERSONSIGNS\":\"" + item.PERSONSIGNS.ToString() + "\""; } catch { Console.WriteLine("nN PERSONSIGNSCNT"); }
+                    try { superJson += ",\"EXECUTOR\":\"" + item.PERSONSIGNS.ToString() + "\""; } catch { Console.WriteLine("nN PERSONSIGNSCNT"); }
+                    try { superJson += ",\"PERSONSIGNS\":\"" + item.PERSONSIGNS.ToString() + "\""; } catch { Console.WriteLine("nN PERSONSIGNSCNT"); }
+                    try
+                    {
+                        if (item.PERSONSIGNSCNT > 0)
+                        {
+                        superJson += ",\"PERSONSIGNS\":[";
+                            for (int i = 0; i < item.PERSONSIGNSCNT; i++)
+                            {
+                                if (i != 0) { superJson += ",{"; } else { superJson += "{"; }
+                                var currItem = item.PERSONSIGNS[i];
+                                try {
+                                    superJson += "\"WHO_SIGN\":{";
+                                    try{ superJson += "\"ISN\":\"" + currItem.WHO_SIGN.ISN + "\""; } catch { }
+                                    try{ superJson += ",\"NAME\":\"" + currItem.WHO_SIGN.NAME + "\"";}catch { }
+                                    superJson += "}";
+                                } catch { Console.WriteLine("nN ISN"); }
+                                try { superJson += ",\"ORDERNUM\":\"" + currItem.ORDERNUM + "\""; } catch { Console.WriteLine("nN ORDERNUM"); }
+                                superJson += "}";
+                            }
+                            superJson += "]";
+                        }
+                    }
+                    catch { }
+
+                }
+                try
+                {
+                    superJson += ",\"EXECUTOR\":{";
+                    try { superJson += "\"ISN\":\"" + item.EXECUTOR.ISN + "\""; } catch { }
+                    try { superJson += ",\"NAME\":\"" + item.EXECUTOR.NAME + "\""; } catch { }
+                    superJson += "}";
+                }
+                catch { Console.WriteLine("nN CARDCNT"); }
+                try
+                {
+                    superJson += ",\"VISACNT\":\"" + item.VISACNT.ToString() + "\"";
+                    if (item.VISACNT > 0)
+                    {
+                        superJson += ",\"VISA\":[";
+                        for (int i = 0; i < item.VISACNT; i++)
+                        {
+                            if (i != 0) { superJson += ",{"; } else { superJson += "{"; }
+                            var currItem = item.VISA[i];
+                            try { superJson += "\"ISN\":\"" + currItem.ISN + "\""; } catch { Console.WriteLine("nN ISN"); }
+                            superJson += ",\"EMPLOY\":{";
+                                try { superJson += "\"ISN\":\"" + currItem.EMPLOY.ISN + "\""; } catch { }
+                                try { superJson += ",\"NAME\":\"" + currItem.EMPLOY.NAME + "\""; } catch { }
+                            superJson += "}";
+                            superJson += "}";
+                        }
+                        superJson += "]";
+                    }
+                }
+                catch { Console.WriteLine("nN ADDRESSESCNT"); }
+
                 try { superJson += ",\"CONSIST\":\"" + item.CONSIST.ToString() + "\""; } catch { Console.WriteLine("nN CONSIST"); }
                 try { superJson += ",\"CONTENTS\":\"" + item.CONTENTS.ToString() + "\""; } catch { Console.WriteLine("nN CONTENTS"); }
                 try { Console.WriteLine("CARDREG  " + item.CARDREG.ToString()); } catch { Console.WriteLine("nN CARDREG"); }
@@ -225,23 +322,25 @@ namespace SharpServer
                 try { superJson += ",\"ACCESSMODE\":\"" + item.ACCESSMODE.ToString() + "\""; } catch { Console.WriteLine("nN ACCESSMODE"); }
                 try { Console.WriteLine("SECURITY  " + item.SECURITY.ToString()); } catch { Console.WriteLine("nN SECURITY"); }
                 try { Console.WriteLine("ADDRESSEE  " + item.ADDRESSEE.ToString()); } catch { Console.WriteLine("nN ADDRESSEE"); }
-                try { superJson += ",\"ADDRESSESCNT\":\"" + item.ADDRESSESCNT.ToString() + "\""; } catch { Console.WriteLine("nN ADDRESSESCNT"); }
-                try { Console.WriteLine("ADDRESSES  " + item.ADDRESSES.ToString()); } catch { Console.WriteLine("nN ADDRESSES"); }
-                if (item.ADDRESSESCNT > 0)
-                {
-                    superJson += ",\"ADDRESSES\":[";
-                    for (int i = 0; i < item.ADDRESSESCNT; i++)
+                try {
+                    superJson += ",\"ADDRESSESCNT\":\"" + item.ADDRESSESCNT.ToString() + "\"";
+                    if (item.ADDRESSESCNT > 0)
                     {
-                        if (i != 0) { superJson += ",{"; } else { superJson += "{"; }
-                        var currItem = item.ADDRESSES[i];
-                        try { superJson += "\"ISN\":\"" + currItem.ISN + "\""; } catch { Console.WriteLine("nN ISN"); }
-                        try { superJson += ",\"NAME\":\"" + currItem.NAME + "\""; } catch { Console.WriteLine("nN NAME"); }
-                        try { superJson += ",\"SURNAME\":\"" + currItem.SURNAME + "\""; } catch { Console.WriteLine("nN SURNAME"); }
-                        try { superJson += ",\"POST\":\"" + currItem.POST + "\""; } catch { Console.WriteLine("nN POST"); }
-                        superJson += "}";
+                        superJson += ",\"ADDRESSES\":[";
+                        for (int i = 0; i < item.ADDRESSESCNT; i++)
+                        {
+                            if (i != 0) { superJson += ",{"; } else { superJson += "{"; }
+                            var currItem = item.ADDRESSES[i];
+                            try { superJson += "\"ISN\":\"" + currItem.ISN + "\""; } catch { Console.WriteLine("nN ISN"); }
+                            try { superJson += ",\"NAME\":\"" + currItem.NAME + "\""; } catch { Console.WriteLine("nN NAME"); }
+                            try { superJson += ",\"SURNAME\":\"" + currItem.SURNAME + "\""; } catch { Console.WriteLine("nN SURNAME"); }
+                            try { superJson += ",\"POST\":\"" + currItem.POST + "\""; } catch { Console.WriteLine("nN POST"); }
+                            superJson += "}";
+                        }
+                        superJson += "]";
                     }
-                    superJson += "]";
-                }
+                } catch { Console.WriteLine("nN ADDRESSESCNT"); }
+                
                 try { Console.WriteLine("DELIVERY  " + item.DELIVERY.ToString()); } catch { Console.WriteLine("nN DELIVERY"); }
                 try { superJson += ",\"TELEGRAM\":\"" + item.TELEGRAM.ToString() + "\""; } catch { Console.WriteLine("nN TELEGRAM"); }
                 try { superJson += ",\"NOTE\":\"" + item.NOTE.ToString() + "\""; } catch { Console.WriteLine("nN NOTE"); }
@@ -250,99 +349,130 @@ namespace SharpServer
                 try { superJson += ",\"PLANDATE\":\"" + item.PLANDATE.ToString() + "\""; } catch { Console.WriteLine("nN PLANDATE"); }
                 try { superJson += ",\"FACTDATE\":\"" + item.FACTDATE.ToString() + "\""; } catch { Console.WriteLine("nN FACTDATE"); }
                 try { superJson += ",\"DELTA\":\"" + item.DELTA.ToString() + "\""; } catch { Console.WriteLine("nN DELTA"); }
-                try { superJson += ",\"CARDCNT\":\"" + item.CARDCNT.ToString() + "\""; } catch { Console.WriteLine("nN CARDCNT"); }
-                if (item.CARDCNT > 0)
-                {
-                    superJson += ",\"CARD\":[";
-                    for (int i = 0; i < item.CARDCNT; i++)
+                try {
+                    superJson += ",\"CARDCNT\":\"" + item.CARDCNT.ToString() + "\"";
+                    if (item.CARDCNT > 0)
                     {
-                        if (i != 0) { superJson += ",{"; } else { superJson += "{"; }
-                        var currItem = item.CARD[i];
-                        try { superJson += "\"DATE\":\"" + currItem.DATE + "\""; } catch { Console.WriteLine("nN ISN"); }
-                        superJson += "}";
-                    }
-                    superJson += "]";
-                }
-                try { Console.WriteLine("CARD  " + item.CARD.ToString()); } catch { Console.WriteLine("nN CARD"); }
-                try { superJson += ",\"CORRESPCNT\":\"" + item.CORRESPCNT.ToString() + "\""; } catch { Console.WriteLine("nN CORRESPCNT"); }
-                try { Console.WriteLine("CORRESPCNT  " + item.CORRESPCNT); } catch { Console.WriteLine("nN CORRESPCNT"); }
-                try { Console.WriteLine("CORRESP  " + item.CORRESP.ToString()); } catch { Console.WriteLine("nN CORRESP"); }
-                if (item.CORRESPCNT > 0) { 
-                    superJson += ",\"CORRESP\":[";
-                    for (int i = 0; i < item.CORRESPCNT; i++)
-                    {
-                        if (i != 0) { superJson += ",{"; }else{ superJson += "{"; }
-                        var currItem = item.CORRESP[i];
-                        if (currItem.KIND == 1)
+                        superJson += ",\"CARD\":[";
+                        for (int i = 0; i < item.CARDCNT; i++)
                         {
-                            try { superJson += "\"ISN\":\"" + currItem.ORGANIZ.ISN + "\""; } catch { Console.WriteLine("nN ORGANIZ.ISN"); }
-                            try { superJson += ",\"ORGANIZ\":\"" + currItem.ORGANIZ.NAME.Replace("\"", "&quot;") + "\""; } catch { Console.WriteLine("nN ORGANIZ.NAME"); }
-                            try { superJson += ",\"OUTNUM\":\"" + currItem.OUTNUM.ToString() + "\""; } catch { Console.WriteLine("nN OUTNUM"); }
-                            try { superJson += ",\"OUTDATE\":\"" + currItem.OUTDATE.ToString() + "\""; } catch { Console.WriteLine("nN OUTDATE"); }
-                            try { superJson += ",\"SIGN\":\"" + currItem.SIGN.ToString() + "\""; } catch { Console.WriteLine("nN SIGN"); }
-                            try { superJson += ",\"NOTE\":\"" + currItem.NOTE.ToString() + "\""; } catch { Console.WriteLine("nN NOTE"); }
+                            if (i != 0) { superJson += ",{"; } else { superJson += "{"; }
+                            var currItem = item.CARD[i];
+                            try { superJson += "\"DATE\":\"" + currItem.DATE + "\""; } catch { Console.WriteLine("nN ISN"); }
+                            superJson += "}";
                         }
-                        else{ /*Вид записи: 1 – информация о Корреспонденте документа; 2 – информация о сопроводительном документа; Записи первого вида могут принадлежать только РК вида "Входящий" от организаций, второго вида – как "Входящим" от организаций так и "Письмам" от физических лиц.*/}
-
-                        superJson += "}";
+                        superJson += "]";
                     }
-                    superJson += "]";
-                }
+                } catch { Console.WriteLine("nN CARDCNT"); }
+                try {
+                    superJson += ",\"CORRESPCNT\":\"" + item.CORRESPCNT.ToString() + "\"";
+                    if (item.CORRESPCNT > 0)
+                    {
+                        superJson += ",\"CORRESP\":[";
+                        for (int i = 0; i < item.CORRESPCNT; i++)
+                        {
+                            if (i != 0) { superJson += ",{"; } else { superJson += "{"; }
+                            var currItem = item.CORRESP[i];
+                            if (currItem.KIND == 1)
+                            {
+                                try { superJson += "\"ISN\":\"" + currItem.ORGANIZ.ISN + "\""; } catch { Console.WriteLine("nN ORGANIZ.ISN"); }
+                                try { superJson += ",\"ORGANIZ\":\"" + currItem.ORGANIZ.NAME.Replace("\"", "&quot;") + "\""; } catch { Console.WriteLine("nN ORGANIZ.NAME"); }
+                                try { superJson += ",\"OUTNUM\":\"" + currItem.OUTNUM.ToString() + "\""; } catch { Console.WriteLine("nN OUTNUM"); }
+                                try { superJson += ",\"OUTDATE\":\"" + currItem.OUTDATE.ToString() + "\""; } catch { Console.WriteLine("nN OUTDATE"); }
+                                try { superJson += ",\"SIGN\":\"" + currItem.SIGN.ToString() + "\""; } catch { Console.WriteLine("nN SIGN"); }
+                                try { superJson += ",\"NOTE\":\"" + currItem.NOTE.ToString() + "\""; } catch { Console.WriteLine("nN NOTE"); }
+                            }
+                            else { /*Вид записи: 1 – информация о Корреспонденте документа; 2 – информация о сопроводительном документа; Записи первого вида могут принадлежать только РК вида "Входящий" от организаций, второго вида – как "Входящим" от организаций так и "Письмам" от физических лиц.*/}
+
+                            superJson += "}";
+                        }
+                        superJson += "]";
+                    }
+                } catch { Console.WriteLine("nN CORRESPCNT"); }
+                
                 try { superJson += ",\"LINKCNT\":\"" + item.LINKCNT.ToString() + "\""; } catch { Console.WriteLine("nN LINKCNT"); }
                 try { Console.WriteLine("LINKREF  " + item.LINKREF.ToString()); } catch { Console.WriteLine("nN LINKREF"); }
-                try { superJson += ",\"RUBRICCNT\":\"" + item.RUBRICCNT.ToString() + "\""; } catch { Console.WriteLine("nN RUBRICCNT"); }
-                if (item.RUBRICCNT > 0)
-                {
-                    superJson += ",\"RUBRIC\":[";
-                    for (int i = 0; i < item.RUBRICCNT; i++)
+                try {
+                    superJson += ",\"RUBRICCNT\":\"" + item.RUBRICCNT.ToString() + "\"";
+                    if (item.RUBRICCNT > 0)
                     {
-                        if (i != 0) { superJson += ",{"; } else { superJson += "{"; }
-                        var currItem = item.RUBRIC[i];
-                        try { superJson += "\"ISN\":\"" + currItem.ISN + "\""; } catch { Console.WriteLine("nN ISN"); }
-                        try { superJson += ",\"NAME\":\"" + currItem.NAME + "\""; } catch { Console.WriteLine("nN NAME"); }
-                        superJson += "}";
+                        superJson += ",\"RUBRIC\":[";
+                        for (int i = 0; i < item.RUBRICCNT; i++)
+                        {
+                            if (i != 0) { superJson += ",{"; } else { superJson += "{"; }
+                            var currItem = item.RUBRIC[i];
+                            try { superJson += "\"ISN\":\"" + currItem.ISN + "\""; } catch { Console.WriteLine("nN ISN"); }
+                            try { superJson += ",\"NAME\":\"" + currItem.NAME + "\""; } catch { Console.WriteLine("nN NAME"); }
+                            superJson += "}";
+                        }
+                        superJson += "]";
                     }
-                    superJson += "]";
-                }
+                } catch { Console.WriteLine("nN RUBRICCNT"); }
                 try { superJson += ",\"ADDPROPSRUBRICCNT\":\"" + item.ADDPROPSRUBRICCNT.ToString() + "\""; } catch { Console.WriteLine("nN ADDPROPSRUBRICCNT"); }
                 try { Console.WriteLine("ADDPROPSRUBRIC  " + item.ADDPROPSRUBRIC.ToString()); } catch { Console.WriteLine("nN ADDPROPSRUBRIC"); }
                 try { superJson += ",\"VALUEADDPROPSRUBRIC\":\"" + item.VALUEADDPROPSRUBRIC.ToString() + "\""; } catch { Console.WriteLine("nN VALUEADDPROPSRUBRIC"); }
-                try { superJson += ",\"ADDRCNT\":\"" + item.ADDRCNT.ToString() + "\""; } catch { Console.WriteLine("nN ADDRCNT"); }
-                if (item.ADDRCNT > 0)
-                {
-                    superJson += ",\"ADDR\":[";
-                    for (int i = 0; i < item.ADDRCNT; i++)
+                try {
+                    superJson += ",\"ADDRCNT\":\"" + item.ADDRCNT.ToString() + "\"";
+                    if (item.ADDRCNT > 0)
                     {
-                        if (i != 0) { superJson += ",{"; } else { superJson += "{"; }
-                        var currItem = item.ADDR[i];
-                        try { superJson += "\"ISN\":\"" + currItem.ISN + "\""; } catch { Console.WriteLine("nN ISN"); }
-                        try { superJson += ",\"PERSON\":\"" + currItem.PERSON + "\""; } catch { Console.WriteLine("nN PERSON"); }
-                        try { superJson += ",\"REG_N\":\"" + currItem.REG_N + "\""; } catch { Console.WriteLine("nN REG_N"); }
-                        try { superJson += ",\"NOTE\":\"" + currItem.NOTE + "\""; } catch { Console.WriteLine("nN NOTE"); }
-                        try { superJson += ",\"REG_DATE\":\"" + currItem.REG_DATE + "\""; } catch { Console.WriteLine("nN REG_DATE"); }
-                        try { superJson += ",\"KINDADDR\":\"" + currItem.KINDADDR + "\""; } catch { Console.WriteLine("nN KINDADDR"); }
-                        if (currItem.KINDADDR == "ORGANIZ")
+                        superJson += ",\"ADDR\":[";
+                        for (int i = 0; i < item.ADDRCNT; i++)
                         {
-                            try { superJson += ",\"NAME\":\"" + currItem.ADDRESSEE.NAME + "\""; } catch { Console.WriteLine("nN NAME "); }
-                            try { superJson += ",\"ADDRESS\":\"" + currItem.ADDRESSEE.ADDRESS + "\""; } catch { Console.WriteLine("nN ADDRESS"); }
-                            try { superJson += ",\"EMAIL\":\"" + currItem.ADDRESSEE.EMAIL + "\""; } catch { Console.WriteLine("nN EMAIL "); }
+                            if (i != 0) { superJson += ",{"; } else { superJson += "{"; }
+                            var currItem = item.ADDR[i];
+                            try { superJson += "\"ISN\":\"" + currItem.ISN + "\""; } catch { Console.WriteLine("nN ISN"); }
+                            try { superJson += ",\"PERSON\":\"" + currItem.PERSON + "\""; } catch { Console.WriteLine("nN PERSON"); }
+                            try { superJson += ",\"REG_N\":\"" + currItem.REG_N + "\""; } catch { Console.WriteLine("nN REG_N"); }
+                            try { superJson += ",\"NOTE\":\"" + currItem.NOTE + "\""; } catch { Console.WriteLine("nN NOTE"); }
+                            try { superJson += ",\"REG_DATE\":\"" + currItem.REG_DATE + "\""; } catch { Console.WriteLine("nN REG_DATE"); }
+                            try { superJson += ",\"DATE_UPD\":\"" + currItem.DATE_UPD + "\""; } catch { Console.WriteLine("nN REG_DATE"); }
+                            try { superJson += ",\"ANSWER_DATE\":\"" + currItem.ANSWER_DATE + "\""; } catch { Console.WriteLine("nN REG_DATE"); }
+                            try { superJson += ",\"SENDDATE \":\"" + currItem.SENDDATE + "\""; } catch { Console.WriteLine("nN REG_DATE"); }
+                            try { superJson += ",\"DATE_CR\":\"" + currItem.DATE_CR + "\""; } catch { Console.WriteLine("nN REG_DATE"); }
+                            try {
+                                    superJson += ",\"DELIVERY\":{";
+                                    try { superJson += "\"ISN\":\"" + currItem.DELIVERY.ISN + "\""; } catch { Console.WriteLine("nN NAME "); }
+                                    try { superJson += ",\"NAME\":\"" + currItem.DELIVERY.NAME + "\""; } catch { Console.WriteLine("nN NAME "); }
+                                    superJson += "}";
+                            } catch { Console.WriteLine("nN DELIVERY"); }
+                            try { superJson += ",\"KINDADDR\":\"" + currItem.KINDADDR + "\""; } catch { Console.WriteLine("nN KINDADDR"); }
+                            if (currItem.KINDADDR == "ORGANIZ")
+                            {
+                                try {
+                                    superJson += ",\"ORGANIZ\":{";
+                                    try { superJson += "\"ISN\":\"" + currItem.ADDRESSEE.ISN + "\""; } catch { Console.WriteLine("nN NAME "); }
+                                    try { superJson += ",\"FULLNAME\":\"" + currItem.ADDRESSEE.FULLNAME + "\""; } catch { Console.WriteLine("nN NAME "); }
+                                    try { superJson += ",\"POSTINDEX\":\"" + currItem.ADDRESSEE.POSTINDEX + "\""; } catch { Console.WriteLine("nN NAME "); }
+                                    try { superJson += ",\"LAW_ADDRESS\":\"" + currItem.ADDRESSEE.LAW_ADDRESS + "\""; } catch { Console.WriteLine("nN NAME "); }
+                                    try { superJson += ",\"INN\":\"" + currItem.ADDRESSEE.INN + "\""; } catch { Console.WriteLine("nN NAME "); }
+                                    try { superJson += ",\"OKPO\":\"" + currItem.ADDRESSEE.OKPO + "\""; } catch { Console.WriteLine("nN NAME "); }
+                                    try { superJson += ",\"OKONH\":\"" + currItem.ADDRESSEE.OKONH + "\""; } catch { Console.WriteLine("nN NAME "); }
+                                    try { superJson += ",\"CITY\":\"" + currItem.ADDRESSEE.CITY + "\""; } catch { Console.WriteLine("nN NAME "); }
+                                    try { superJson += ",\"OKONH\":\"" + currItem.ADDRESSEE.OKONH + "\""; } catch { Console.WriteLine("nN NAME "); }
+                                    try { superJson += ",\"NAME\":\"" + currItem.ADDRESSEE.NAME + "\""; } catch { Console.WriteLine("nN NAME "); }
+                                    try { superJson += ",\"ADDRESS\":\"" + currItem.ADDRESSEE.ADDRESS + "\""; } catch { Console.WriteLine("nN ADDRESS"); }
+                                    try { superJson += ",\"EMAIL\":\"" + currItem.ADDRESSEE.EMAIL + "\""; } catch { Console.WriteLine("nN EMAIL "); }
+                                    superJson += "}";
+                                } catch { Console.WriteLine("nN ORGANIZ"); }
+                            }
+                            if (currItem.KINDADDR == "CITIZEN")
+                            {
+                                try { superJson += ",\"NAME\":\"" + currItem.ADDRESSEE.NAME + "\""; } catch { Console.WriteLine("nN NAME "); }
+                                try { superJson += ",\"ADDRESS\":\"" + currItem.ADDRESSEE.ADDRESS + "\""; } catch { Console.WriteLine("nN ADDRESS"); }
+                                try { superJson += ",\"EMAIL\":\"" + currItem.ADDRESSEE.EMAIL + "\""; } catch { Console.WriteLine("nN EMAIL "); }
+                            }
+                            if (currItem.KINDADDR == "DEPARTMENT")
+                            {
+                                try { superJson += ",\"NAME\":\"" + currItem.ADDRESSEE.NAME + "\""; } catch { Console.WriteLine("nN NAME "); }
+                                try { superJson += ",\"ADDRESS\":\"" + currItem.ADDRESSEE.ADDRESS + "\""; } catch { Console.WriteLine("nN ADDRESS"); }
+                                try { superJson += ",\"EMAIL\":\"" + currItem.ADDRESSEE.EMAIL + "\""; } catch { Console.WriteLine("nN EMAIL "); }
+                            }
+                            superJson += "}";
                         }
-                        if (currItem.KINDADDR == "CITIZEN")
-                        {
-                            try { superJson += ",\"NAME\":\"" + currItem.ADDRESSEE.NAME + "\""; } catch { Console.WriteLine("nN NAME "); }
-                            try { superJson += ",\"ADDRESS\":\"" + currItem.ADDRESSEE.ADDRESS + "\""; } catch { Console.WriteLine("nN ADDRESS"); }
-                            try { superJson += ",\"EMAIL\":\"" + currItem.ADDRESSEE.EMAIL + "\""; } catch { Console.WriteLine("nN EMAIL "); }
-                        }
-                        if (currItem.KINDADDR == "DEPARTMENT")
-                        {
-                            try { superJson += ",\"NAME\":\"" + currItem.ADDRESSEE.NAME + "\""; } catch { Console.WriteLine("nN NAME "); }
-                            try { superJson += ",\"ADDRESS\":\"" + currItem.ADDRESSEE.ADDRESS + "\""; } catch { Console.WriteLine("nN ADDRESS"); }
-                            try { superJson += ",\"EMAIL\":\"" + currItem.ADDRESSEE.EMAIL + "\""; } catch { Console.WriteLine("nN EMAIL "); }
-                        }
-                        superJson += "}";
+                        superJson += "]";
                     }
-                    superJson += "]";
-                }
+                } catch { Console.WriteLine("nN ADDRCNT"); }
+                
                 try { superJson += ",\"FILESCNT\":\"" + item.FILESCNT.ToString() + "\""; } catch { Console.WriteLine("nN FILESCNT"); }
                 try { Console.WriteLine("FILES  " + item.FILES.ToString()); } catch { Console.WriteLine("nN FILES"); }
                 try { superJson += ",\"JOURNACQCNT\":\"" + item.JOURNACQCNT.ToString() + "\""; } catch { Console.WriteLine("nN JOURNACQCNT"); }
@@ -353,21 +483,24 @@ namespace SharpServer
                 try { superJson+= ",\"CARDVIEW\":\"" + item.CARDVIEW.ToString() + "\""; } catch { Console.WriteLine("nN CARDVIEW"); }
                 try { superJson += ",\"ALLRESOL\":\"" + item.ALLRESOL.ToString() + "\""; } catch { Console.WriteLine("nN ALLRESOL"); }
                 try { superJson += ",\"RESOLCNT\":\"" + item.RESOLCNT.ToString() + "\""; } catch { Console.WriteLine("nN RESOLCNT"); }
-                try { superJson += ",\"PROTCNT\":\"" + item.PROTCNT.ToString() + "\""; } catch { Console.WriteLine("nN RESOLCNT"); }
-                if (item.PROTCNT > 0)
-                {
-                    superJson += ",\"PROTOCOL(\":[";
-                    for (int i2 = 0; i2 < item.PROTCNT; i2++)
+                try {
+                    superJson += ",\"PROTCNT\":\"" + item.PROTCNT.ToString() + "\"";
+                    if (item.PROTCNT > 0)
                     {
-                        if (i2 != 0) { superJson += ",{"; } else { superJson += "{"; }
-                        var currItem2 = item.PROTOCOL[i2];
-                        try { superJson += "\"PROTOCOL_WHEN\":\"" + currItem2.PROTOCOL.WHEN.ToString() + "\","; } catch { Console.WriteLine("nN AUTHOR_NAME"); }
-                        try { superJson += "\"PROTOCOL_WHAT\":\"" + currItem2.PROTOCOL.WHAT.ToString() + "\""; } catch { Console.WriteLine("nN AUTHOR.ISN"); }
-                        
-                        superJson += "}";
+                        superJson += ",\"PROTOCOL(\":[";
+                        for (int i2 = 0; i2 < item.PROTCNT; i2++)
+                        {
+                            if (i2 != 0) { superJson += ",{"; } else { superJson += "{"; }
+                            var currItem2 = item.PROTOCOL[i2];
+                            try { superJson += "\"PROTOCOL_WHEN\":\"" + currItem2.PROTOCOL.WHEN.ToString() + "\","; } catch { Console.WriteLine("nN AUTHOR_NAME"); }
+                            try { superJson += "\"PROTOCOL_WHAT\":\"" + currItem2.PROTOCOL.WHAT.ToString() + "\""; } catch { Console.WriteLine("nN AUTHOR.ISN"); }
+
+                            superJson += "}";
+                        }
+                        superJson += "]";
                     }
-                    superJson += "]";
-                }
+                } catch { Console.WriteLine("nN RESOLCNT"); }
+                
                 //if (item.RESOLCNT > 0)
                 //{
                     superJson += ",\"RESOLUTION\":[";
@@ -426,66 +559,67 @@ namespace SharpServer
                     }
                     superJson += "]";
                 //}
-                try { superJson+= ",\"JOURNALCNT\":\"" + item.JOURNALCNT.ToString() + "\""; } catch { Console.WriteLine("nN JOURNALCNT"); }
-                if (item.JOURNALCNT > 0)
-                {
-                    superJson += ",\"JOURNAL\":[";
-                    for (int i = 0; i < item.JOURNALCNT; i++)
+                try {
+                    superJson += ",\"JOURNALCNT\":\"" + item.JOURNALCNT.ToString() + "\"";
+                    if (item.JOURNALCNT > 0)
                     {
-                        if (i != 0) { superJson += ",{"; } else { superJson += "{"; }
-                        var currItem = item.JOURNAL[i];
-                        try { superJson += "\"ISN\":\"" + currItem.ISN.ToString() + "\""; } catch { Console.WriteLine("nNISN"); }
-                        try { superJson += ",\"RCKIND\":\"" + currItem.RCKIND.ToString() + "\""; } catch { Console.WriteLine("nNRCKIND"); }
-                        try { superJson += ",\"RC\":\"" + currItem.RC.ToString() + "\""; } catch { Console.WriteLine("nNRC"); }
-                        try { superJson += ",\"KIND\":\"" + currItem.KIND.ToString() + "\""; } catch { Console.WriteLine("nNKIND"); }
+                        superJson += ",\"JOURNAL\":[";
+                        for (int i = 0; i < item.JOURNALCNT; i++)
+                        {
+                            if (i != 0) { superJson += ",{"; } else { superJson += "{"; }
+                            var currItem = item.JOURNAL[i];
+                            try { superJson += "\"ISN\":\"" + currItem.ISN.ToString() + "\""; } catch { Console.WriteLine("nNISN"); }
+                            try { superJson += ",\"RCKIND\":\"" + currItem.RCKIND.ToString() + "\""; } catch { Console.WriteLine("nNRCKIND"); }
+                            try { superJson += ",\"RC\":\"" + currItem.RC.ToString() + "\""; } catch { Console.WriteLine("nNRC"); }
+                            try { superJson += ",\"KIND\":\"" + currItem.KIND.ToString() + "\""; } catch { Console.WriteLine("nNKIND"); }
 
-                        //try { superJson += ",\"AUTHORCARD\":\"" + currItem.AUTHORCARD.ToString() + "\""; } catch { Console.WriteLine("nNAUTHORCARD"); }
-                        superJson += ",\"AUTHORCARD\":{";
-                        try { superJson += "\"ISN\":\"" + currItem.AUTHORCARD.ISN.ToString() + "\""; } catch { Console.WriteLine("nNAUTHORCARD"); }
-                        try { superJson += ",\"NAME\":\"" + currItem.AUTHORCARD.NAME.ToString() + "\""; } catch { Console.WriteLine("nNAUTHORCARD"); }
+                            //try { superJson += ",\"AUTHORCARD\":\"" + currItem.AUTHORCARD.ToString() + "\""; } catch { Console.WriteLine("nNAUTHORCARD"); }
+                            superJson += ",\"AUTHORCARD\":{";
+                            try { superJson += "\"ISN\":\"" + currItem.AUTHORCARD.ISN.ToString() + "\""; } catch { Console.WriteLine("nNAUTHORCARD"); }
+                            try { superJson += ",\"NAME\":\"" + currItem.AUTHORCARD.NAME.ToString() + "\""; } catch { Console.WriteLine("nNAUTHORCARD"); }
 
-                        superJson += "}";
-                        try { superJson += ",\"AUTHORCAB\":\"" + currItem.AUTHORCAB.ToString() + "\""; } catch { Console.WriteLine("nNAUTHORCAB"); }
-                        superJson += ",\"AUTHORCAB\":{";
-                        try { superJson += "\"ISN\":\"" + currItem.AUTHORCAB.ISN.ToString() + "\""; } catch { Console.WriteLine("nNAUTHORCARD"); }
-                        try { superJson += ",\"NAME\":\"" + currItem.AUTHORCAB.NAME.ToString() + "\""; } catch { Console.WriteLine("nNAUTHORCARD"); }
+                            superJson += "}";
+                            try { superJson += ",\"AUTHORCAB\":\"" + currItem.AUTHORCAB.ToString() + "\""; } catch { Console.WriteLine("nNAUTHORCAB"); }
+                            superJson += ",\"AUTHORCAB\":{";
+                            try { superJson += "\"ISN\":\"" + currItem.AUTHORCAB.ISN.ToString() + "\""; } catch { Console.WriteLine("nNAUTHORCARD"); }
+                            try { superJson += ",\"NAME\":\"" + currItem.AUTHORCAB.NAME.ToString() + "\""; } catch { Console.WriteLine("nNAUTHORCARD"); }
 
-                        superJson += "}";
-                        //try { superJson += ",\"ADDRESSEE\":\"" +currItem.ADDRESSEE.ToString() + "\""; } catch { Console.WriteLine("nNADDRESSEE"); }
-                        Console.WriteLine("0001");
+                            superJson += "}";
+                            //try { superJson += ",\"ADDRESSEE\":\"" +currItem.ADDRESSEE.ToString() + "\""; } catch { Console.WriteLine("nNADDRESSEE"); }
+                            Console.WriteLine("0001");
 
-                        //if (currItem.RESOLCNT > 0)
-                        //{
-                        //    superJson += ",\"ADDRESSEE\":{";
-                        //    for (int i2 = 0; i2 < currItem.RESOLCNT; i2++)
-                        //    {
+                            //if (currItem.RESOLCNT > 0)
+                            //{
+                            //    superJson += ",\"ADDRESSEE\":{";
+                            //    for (int i2 = 0; i2 < currItem.RESOLCNT; i2++)
+                            //    {
 
 
-                        //var adrItem = currItem.ADDRESSES;
-                        //Console.WriteLine("00012");
-                        //superJson += ",\"ADDRESSEE\":{";
-                        //try { superJson += "\"ADDR_ISN[0]\":\"" + adrItem[0].ISN + "\""; } catch { Console.WriteLine("nN ISN"); }
-                        //try { superJson += "\"ADDR_ISN\":\"" + adrItem.ISN + "\""; } catch { Console.WriteLine("nN ISN"); }
-                        //try { superJson += "\"ADDR_ISNSome\":\"" + "Some" + "\""; } catch { Console.WriteLine("nN ISN"); }
-                        //try { superJson += ",\"ADDR_NAME\":\"" + adrItem.NAME + "\""; } catch { Console.WriteLine("nN NAME"); }
-                        //try { superJson += ",\"ADDR_SURNAME\":\"" + adrItem.SURNAME + "\""; } catch { Console.WriteLine("nN SURNAME"); }
-                        //superJson += "}";
+                            //var adrItem = currItem.ADDRESSES;
+                            //Console.WriteLine("00012");
+                            //superJson += ",\"ADDRESSEE\":{";
+                            //try { superJson += "\"ADDR_ISN[0]\":\"" + adrItem[0].ISN + "\""; } catch { Console.WriteLine("nN ISN"); }
+                            //try { superJson += "\"ADDR_ISN\":\"" + adrItem.ISN + "\""; } catch { Console.WriteLine("nN ISN"); }
+                            //try { superJson += "\"ADDR_ISNSome\":\"" + "Some" + "\""; } catch { Console.WriteLine("nN ISN"); }
+                            //try { superJson += ",\"ADDR_NAME\":\"" + adrItem.NAME + "\""; } catch { Console.WriteLine("nN NAME"); }
+                            //try { superJson += ",\"ADDR_SURNAME\":\"" + adrItem.SURNAME + "\""; } catch { Console.WriteLine("nN SURNAME"); }
+                            //superJson += "}";
 
-                        Console.WriteLine("0002");
-                        try { superJson += ",\"ORIGFLAG\":\"" + currItem.ORIGFLAG.ToString() + "\""; } catch { Console.WriteLine("nNORIGFLAG"); }
-                        try { superJson += ",\"SENDDATE\":\"" + currItem.SENDDATE.ToString() + "\""; } catch { Console.WriteLine("nNSENDDATE"); }
-                        try { superJson += ",\"OWNERFLAG\":\"" + currItem.OWNERFLAG.ToString() + "\""; } catch { Console.WriteLine("nNOWNERFLAG"); }
-                        try { superJson += ",\"ROLL\":\"" + currItem.ROLL.ToString() + "\""; } catch { Console.WriteLine("nNROLL"); }
-                        try { superJson += ",\"NOMENCL\":\"" + currItem.NOMENCL.ToString() + "\""; } catch { Console.WriteLine("nNNOMENCL"); }
-                        try { superJson += ",\"NUMFLAG\":\"" + currItem.NUMFLAG.ToString() + "\""; } catch { Console.WriteLine("nNNUMFLAG"); }
-                        try { superJson += ",\"ORIGNUM\":\"" + currItem.ORIGNUM.ToString() + "\""; } catch { Console.WriteLine("nNORIGNUM"); }
-                        try { superJson += ",\"COPYNUM\":\"" + currItem.COPYNUM.ToString() + "\""; } catch { Console.WriteLine("nNCOPYNUM"); }
-                        try { superJson += ",\"EDOCUMENT\":\"" + currItem.EDOCUMENT.ToString() + "\""; } catch { Console.WriteLine("nNEDOCUMENT"); }
-                        try { superJson += ",\"NOTES\":\"" + currItem.NOTES.ToString() + "\""; } catch { Console.WriteLine("nNNOTES"); }
-                        try { superJson += ",\"USER_CR\":\"" + currItem.USER_CR.ToString() + "\""; } catch { Console.WriteLine("nNUSER_CR"); }
-                        var userItem = currItem.USER_CR;
-                        Console.WriteLine("0003");
-                        superJson += ",\"USER_CR\":{";
+                            Console.WriteLine("0002");
+                            try { superJson += ",\"ORIGFLAG\":\"" + currItem.ORIGFLAG.ToString() + "\""; } catch { Console.WriteLine("nNORIGFLAG"); }
+                            try { superJson += ",\"SENDDATE\":\"" + currItem.SENDDATE.ToString() + "\""; } catch { Console.WriteLine("nNSENDDATE"); }
+                            try { superJson += ",\"OWNERFLAG\":\"" + currItem.OWNERFLAG.ToString() + "\""; } catch { Console.WriteLine("nNOWNERFLAG"); }
+                            try { superJson += ",\"ROLL\":\"" + currItem.ROLL.ToString() + "\""; } catch { Console.WriteLine("nNROLL"); }
+                            try { superJson += ",\"NOMENCL\":\"" + currItem.NOMENCL.ToString() + "\""; } catch { Console.WriteLine("nNNOMENCL"); }
+                            try { superJson += ",\"NUMFLAG\":\"" + currItem.NUMFLAG.ToString() + "\""; } catch { Console.WriteLine("nNNUMFLAG"); }
+                            try { superJson += ",\"ORIGNUM\":\"" + currItem.ORIGNUM.ToString() + "\""; } catch { Console.WriteLine("nNORIGNUM"); }
+                            try { superJson += ",\"COPYNUM\":\"" + currItem.COPYNUM.ToString() + "\""; } catch { Console.WriteLine("nNCOPYNUM"); }
+                            try { superJson += ",\"EDOCUMENT\":\"" + currItem.EDOCUMENT.ToString() + "\""; } catch { Console.WriteLine("nNEDOCUMENT"); }
+                            try { superJson += ",\"NOTES\":\"" + currItem.NOTES.ToString() + "\""; } catch { Console.WriteLine("nNNOTES"); }
+                            try { superJson += ",\"USER_CR\":\"" + currItem.USER_CR.ToString() + "\""; } catch { Console.WriteLine("nNUSER_CR"); }
+                            var userItem = currItem.USER_CR;
+                            Console.WriteLine("0003");
+                            superJson += ",\"USER_CR\":{";
                             try { superJson += "\"User_ISN\":\"" + userItem.ISN.ToString() + "\""; } catch { Console.WriteLine("nNISN"); }
                             try { superJson += ",\"User_WEIGHT\":\"" + userItem.WEIGHT.ToString() + "\""; } catch { Console.WriteLine("nNWEIGHT"); }
                             try { superJson += ",\"User_NAME\":\"" + userItem.NAME.ToString() + "\""; } catch { Console.WriteLine("nNNAME"); }
@@ -517,13 +651,13 @@ namespace SharpServer
                             try { superJson += ",\"User_CERTPROFILE\":\"" + userItem.CERTPROFILE.ToString() + "\""; } catch { Console.WriteLine("nNCERTPROFILE"); }
                             try { superJson += ",\"User_ERRCODE\":\"" + userItem.ERRCODE.ToString() + "\""; } catch { Console.WriteLine("nNERRCODE"); }
                             try { superJson += ",\"User_ERRTEXT\":\"" + userItem.ERRTEXT.ToString() + "\""; } catch { Console.WriteLine("nNERRTEXT"); }
-                        Console.WriteLine("0004");
-                        superJson += "}";
-                        try { superJson += ",\"DATE_CR\":\"" + currItem.DATE_CR.ToString() + "\""; } catch { Console.WriteLine("nNDATE_CR"); }
-                        
-                        userItem = currItem.USER_UPD;
-                        Console.WriteLine("0003");
-                        superJson += ",\"USER_UPD\":{";
+                            Console.WriteLine("0004");
+                            superJson += "}";
+                            try { superJson += ",\"DATE_CR\":\"" + currItem.DATE_CR.ToString() + "\""; } catch { Console.WriteLine("nNDATE_CR"); }
+
+                            userItem = currItem.USER_UPD;
+                            Console.WriteLine("0003");
+                            superJson += ",\"USER_UPD\":{";
                             try { superJson += "\"User_ISN\":\"" + userItem.ISN.ToString() + "\""; } catch { Console.WriteLine("nNISN"); }
                             try { superJson += ",\"User_WEIGHT\":\"" + userItem.WEIGHT.ToString() + "\""; } catch { Console.WriteLine("nNWEIGHT"); }
                             try { superJson += ",\"User_NAME\":\"" + userItem.NAME.ToString() + "\""; } catch { Console.WriteLine("nNNAME"); }
@@ -555,16 +689,18 @@ namespace SharpServer
                             try { superJson += ",\"User_CERTPROFILE\":\"" + userItem.CERTPROFILE.ToString() + "\""; } catch { Console.WriteLine("nNCERTPROFILE"); }
                             try { superJson += ",\"User_ERRCODE\":\"" + userItem.ERRCODE.ToString() + "\""; } catch { Console.WriteLine("nNERRCODE"); }
                             try { superJson += ",\"User_ERRTEXT\":\"" + userItem.ERRTEXT.ToString() + "\""; } catch { Console.WriteLine("nNERRTEXT"); }
-                        Console.WriteLine("0005");
-                        superJson += "}";
+                            Console.WriteLine("0005");
+                            superJson += "}";
 
-                        try { superJson += ",\"DATE_UPD\":\"" + currItem.DATE_UPD.ToString() + "\""; } catch { Console.WriteLine("nNDATE_UPD"); }
-                        try { superJson += ",\"ERRCODE\":\"" + currItem.ERRCODE.ToString() + "\""; } catch { Console.WriteLine("nNERRCODE"); }
-                        try { superJson += ",\"ERRTEXT\":\"" + currItem.ERRTEXT.ToString() + "\""; } catch { Console.WriteLine("nNERRTEXT"); }
-                        superJson += "}";
+                            try { superJson += ",\"DATE_UPD\":\"" + currItem.DATE_UPD.ToString() + "\""; } catch { Console.WriteLine("nNDATE_UPD"); }
+                            try { superJson += ",\"ERRCODE\":\"" + currItem.ERRCODE.ToString() + "\""; } catch { Console.WriteLine("nNERRCODE"); }
+                            try { superJson += ",\"ERRTEXT\":\"" + currItem.ERRTEXT.ToString() + "\""; } catch { Console.WriteLine("nNERRTEXT"); }
+                            superJson += "}";
+                        }
+                        superJson += "]";
                     }
-                    superJson += "]";
-                }
+                } catch { Console.WriteLine("nN JOURNALCNT"); }
+                
                 try { superJson+= ",\"FORWARDCNT\":\"" + item.FORWARDCNT.ToString() + "\""; } catch { Console.WriteLine("nN FORWARDCNT"); }
                 try { Console.WriteLine("FORWARD  " + item.FORWARD.ToString()); } catch { Console.WriteLine("nN FORWARD"); }
                 try { superJson+= ",\"ADDPROPSCNT\":\"" + item.ADDPROPSCNT.ToString() + "\""; } catch { Console.WriteLine("nN ADDPROPSCNT"); }
@@ -590,14 +726,14 @@ namespace SharpServer
                 try { superJson+= ",\"ERRCODE\":\"" + item.ERRCODE.ToString() + "\""; } catch { Console.WriteLine("nN ERRCODE"); }
                 try { superJson+= ",\"ERRTEXT\":\"" + item.ERRTEXT.ToString() + "\""; } catch { Console.WriteLine("nN ERRTEXT"); }                //}
 
-                Console.WriteLine("MyRcIn.CORRESP444");
+                //Console.WriteLine("MyRcCOntainer.CORRESP444");
                 superJson += "}";
                 //Dictionary<string, string> tempDictionary = new Dictionary<string, string>
                 //    {
                 //        {"ISN", isn.ToString() },
-                //        {"RegNum", MyRcIn.RegNum },
-                //        {"DocDate", MyRcIn.DocDate.ToString() },
-                //        {"Contents", MyRcIn.Contents.Replace("\"", "&quot;") }
+                //        {"RegNum", MyRcCOntainer.RegNum },
+                //        {"DocDate", MyRcCOntainer.DocDate.ToString() },
+                //        {"Contents", MyRcCOntainer.Contents.Replace("\"", "&quot;") }
                 //    };
                 //var kvs = tempDictionary.Select(kvp => string.Format("\"{0}\":\"{1}\"", kvp.Key, string.Concat("", kvp.Value)));
                 //string jsonChar = string.Concat("{", string.Join(",", kvs), "}");
