@@ -31,5 +31,9 @@
     height: 20px;
     background-size: contain;
     background-repeat: no-repeat;}
+.itemNumber{float:left;}
+.caseDetR{}
+.caseDetails{overflow: auto;}
+.caseShort-closed+.caseDetails{height: 0px}
 @media(max-width:550px){
 }
