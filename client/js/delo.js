@@ -53,22 +53,27 @@ function toFilter(need, source, dateFrom, dateTo) {
     });
 }
 function bindDelos(){
-    $('.result-row').click(function(){
-        var sel = getSelection().toString();
-        if(!sel){
-            var deloOneLink = INFO.clientAdr+"delo:" + $(this).data('rsisn')+"&type:"+$(this).data('rstype');
-            window.location = deloOneLink;
-        }
-    })
+    //INFO.clientAdr+"delo:" + $(this).data('rsisn')+"&type:"+$(this).data('rstype')
+    $('.result-row').attr('href',function(){
+        var href=INFO.clientAdr+"delo:" + $(this).data('rsisn')+"&type:"+$(this).data('rstype')
+        return href});
+    // $('.result-row').click(function(){
+    //     var sel = getSelection().toString();
+    //     if(!sel){
+    //         var deloOneLink = INFO.clientAdr+"delo:" + $(this).data('rsisn')+"&type:"+$(this).data('rstype');
+    //         $(this).attr('href',deloOneLink);
+    //         window.location = deloOneLink;
+    //     }
+    // })
 }
 
 //сформировать строчку одной компании
 function printRow(data) {
-    var row= "<div class='result-row' data-rsisn='" + data.ISN + "' data-rstype='" + data.DOCKIND + "'>"+
+    var row= "<a href='' class='result-row' data-rsisn='" + data.ISN + "' data-rstype='" + data.DOCKIND + "'>"+
                 "<div class='result-data'><b>" + data.RegNum + "</b>"+"<b style='float:right'>" + data.DocDate + "</b>"+
                     "<p>" + data.Contents + "</p>"+
                 "</div>"+
-            "</div>";
+            "</a>";
     return row;
 }
 

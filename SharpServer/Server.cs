@@ -210,15 +210,15 @@ namespace SharpServer
             try
             {
                 dynamic item;
-                if (rcType == "RcIn")
+                if ((rcType == "RCIN")||(rcType == "RcIn"))
                 {
                     item = head.GetRow("RcIn", isn);
                 }
-                else if (rcType == "RCOUT")
+                else if ((rcType == "RCOUT") || (rcType == "RcOut"))
                 {
                     item = head.GetRow("RcOut", isn);
                 }
-                else if (rcType == "RCLET")
+                else if ((rcType == "RCLET") || (rcType == "RcLet"))
                 {
                     item = head.GetRow("RcLet", isn);
                 }
@@ -362,17 +362,27 @@ namespace SharpServer
                         {
                             if (i != 0) { json += ",{"; } else { json += "{"; }
                             var currItem = item.ADDPROPSRUBRIC[i];
-                            try { json += "\"DOCGROUPCNT\":\"" + currItem.DOCGROUPCNT + "\""; } catch { Console.WriteLine("nN ISN"); }
-                            try { json += ",\"UINAME\":\"" + currItem.UINAME + "\""; } catch { Console.WriteLine("nN NAME"); }
-                            try { json += ",\"APINAME\":\"" + currItem.APINAME + "\""; } catch { Console.WriteLine("nN NAME"); }
+                            try { json += "\"DOCGROUPCNT\":\"" + currItem.DOCGROUPCNT + "\""; } catch { Console.WriteLine("nN ADDPROPSRUBRIC DOCGROUPCNT"); }
+                            try { json += ",\"UINAME\":\"" + currItem.UINAME + "\""; } catch { Console.WriteLine("nN ADDPROPSRUBRIC UINAME"); }
+                            try { json += ",\"APINAME\":\"" + currItem.APINAME + "\""; } catch { Console.WriteLine("nN ADDPROPSRUBRIC APINAME"); }
                             json += "}";
                         }
                         json += "]";
+                        json += ",\"VALUEADDPROPSRUBRIC\":[";
+                        for (int i = 0; i < item.ADDPROPSRUBRICCNT; i++)
+                        {
+                            if (i != 0) { json += ",{"; } else { json += "{"; }
+                            var currItem = item.VALUEADDPROPSRUBRIC[i]["11111"];
+                            try { json += "\"DOCGROUPCNT\":\"" + currItem.DOCGROUPCNT + "\""; } catch { Console.WriteLine("nN VALUEADDPROPSRUBRIC DOCGROUPCNT"); }
+                            try { json += ",\"UINAME\":\"" + currItem.UINAME + "\""; } catch { Console.WriteLine("nN VALUEADDPROPSRUBRIC UINAME"); }
+                            try { json += ",\"APINAME\":\"" + currItem.APINAME + "\""; } catch { Console.WriteLine("nN VALUEADDPROPSRUBRIC APINAME"); }
+                            json += "}";
+                        }
+                        json += "]";
+
                     }
                 }
                 catch { Console.WriteLine("nN ADDPROPSRUBRICCNT"); }
-                try { json += ",\"VALUEADDPROPSRUBRIC\":\"" + item.VALUEADDPROPSRUBRIC.ToString() + "\""; } catch { Console.WriteLine("nN VALUEADDPROPSRUBRIC"); }
-
                 try
                 {
                     json += ",\"ADDRCNT\":\"" + item.ADDRCNT.ToString() + "\"";
@@ -407,15 +417,15 @@ namespace SharpServer
                             if (currItem.KINDADDR == "ORGANIZ")
                             {
                                 json += ",\"ORGANIZ\":{";
-                                try { json += "\"ISN\":\"" + currItem.ADDRESSEE.ISN + "\""; } catch { Console.WriteLine("nN NAME"); }
-                                try { json += ",\"FULLNAME\":\"" + currItem.ADDRESSEE.FULLNAME + "\""; } catch { Console.WriteLine("nN NAME"); }
-                                try { json += ",\"POSTINDEX\":\"" + currItem.ADDRESSEE.POSTINDEX + "\""; } catch { Console.WriteLine("nN NAME"); }
-                                try { json += ",\"LAW_ADDRESS\":\"" + currItem.ADDRESSEE.LAW_ADDRESS + "\""; } catch { Console.WriteLine("nN NAME"); }
-                                try { json += ",\"INN\":\"" + currItem.ADDRESSEE.INN + "\""; } catch { Console.WriteLine("nN NAME"); }
+                                try { json += "\"ISN\":\"" + currItem.ADDRESSEE.ISN + "\""; } catch { Console.WriteLine("nN ADDRESSEE.ISN"); }
+                                try { json += ",\"FULLNAME\":\"" + currItem.ADDRESSEE.FULLNAME + "\""; } catch { Console.WriteLine("nN ADDRESSEE.FULLNAME"); }
+                                try { json += ",\"POSTINDEX\":\"" + currItem.ADDRESSEE.POSTINDEX + "\""; } catch { Console.WriteLine("nN ADDRESSEE.POSTINDEX"); }
+                                try { json += ",\"LAW_ADDRESS\":\"" + currItem.ADDRESSEE.LAW_ADDRESS + "\""; } catch { Console.WriteLine("nN ADDRESSEE.LAW_ADDRESS"); }
+                                try { json += ",\"INN\":\"" + currItem.ADDRESSEE.INN + "\""; } catch { Console.WriteLine("nN ADDRESSEE.INN"); }
                                 //try { json += ",\"OKPO\":\"" + currItem.ADDRESSEE.OKPO + "\""; } catch { Console.WriteLine("nN NAME"); }
-                                try { json += ",\"CITY\":\"" + currItem.ADDRESSEE.CITY + "\""; } catch { Console.WriteLine("nN NAME"); }
-                                //try { json += ",\"OKONH\":\"" + currItem.ADDRESSEE.OKONH + "\""; } catch { Console.WriteLine("nN NAME"); }
-                                try { json += ",\"NAME\":\"" + currItem.ADDRESSEE.NAME.Replace("\"", "&quot;") + "\""; } catch { Console.WriteLine("nN NAME"); }
+                                try { json += ",\"CITY\":\"" + currItem.ADDRESSEE.CITY + "\""; } catch { Console.WriteLine("nN ADDRESSEE.CITY"); }
+                                //try { json += ",\"OKONH\":\"" + currItem.ADDRESSEE.OKONH + "\""; } catch { Console.WriteLine("nN ADDRESSEE.OKONH"); }
+                                try { json += ",\"NAME\":\"" + currItem.ADDRESSEE.NAME.Replace("\"", "&quot;") + "\""; } catch { Console.WriteLine("nN ADDRESSEE.NAME"); }
                                 try { json += ",\"ADDRESS\":\"" + currItem.ADDRESSEE.ADDRESS + "\""; } catch { Console.WriteLine("nN ADDRESS"); }
                                 try { json += ",\"EMAIL\":\"" + currItem.ADDRESSEE.EMAIL + "\""; } catch { Console.WriteLine("nN EMAIL"); }
                                 json += "}";
@@ -423,22 +433,22 @@ namespace SharpServer
                             if (currItem.KINDADDR == "CITIZEN")
                             {
                                 json += ",\"CITIZEN\":{";
-                                try { json += "\"ISN\":\"" + currItem.ADDRESSEE.ISN + "\""; } catch { Console.WriteLine("nN REGION"); }
-                                try { json += ",\"NAME\":\"" + currItem.ADDRESSEE.NAME + "\""; } catch { Console.WriteLine("nN NAME"); }
-                                try { json += ",\"ADDRESS\":\"" + currItem.ADDRESSEE.ADDRESS + "\""; } catch { Console.WriteLine("nN ADDRESS"); }
-                                try { json += ",\"REGION\":\"" + currItem.ADDRESSEE.REGION.NAME + "\""; } catch { Console.WriteLine("nN REGION"); }
-                                try { json += ",\"CITY\":\"" + currItem.ADDRESSEE.CITY + "\""; } catch { Console.WriteLine("nN ADDRESS"); }
-                                try { json += ",\"EMAIL\":\"" + currItem.ADDRESSEE.EMAIL + "\""; } catch { Console.WriteLine("nN EMAIL"); }
+                                try { json += "\"ISN\":\"" + currItem.ADDRESSEE.ISN + "\""; } catch { Console.WriteLine("nNADDRESSEE.ISN"); }
+                                try { json += ",\"NAME\":\"" + currItem.ADDRESSEE.NAME + "\""; } catch { Console.WriteLine("nN ADDRESSEE.NAME"); }
+                                try { json += ",\"ADDRESS\":\"" + currItem.ADDRESSEE.ADDRESS + "\""; } catch { Console.WriteLine("nN ADDRESSEE.ADDRESS"); }
+                                try { json += ",\"REGION\":\"" + currItem.ADDRESSEE.REGION.NAME + "\""; } catch { Console.WriteLine("nN ADDRESSEE.REGION.NAME"); }
+                                try { json += ",\"POSTINDEX\":\"" + currItem.ADDRESSEE.POSTINDEX + "\""; } catch { Console.WriteLine("nN ADDRESSEE.POSTINDEX"); }
+                                try { json += ",\"CITY\":\"" + currItem.ADDRESSEE.CITY + "\""; } catch { Console.WriteLine("nN ADDRESSEE.CITY"); }
+                                try { json += ",\"EMAIL\":\"" + currItem.ADDRESSEE.EMAIL + "\""; } catch { Console.WriteLine("nN ADDRESSEE.EMAIL"); }
                                 json += "}";
 
                             }
                             if (currItem.KINDADDR == "DEPARTMENT")
                             {
                                 json += ",\"DEPARTMENT\":{";
-                                try { json += "\"ISN\":\"" + currItem.ADDRESSEE.ISN + "\""; } catch { Console.WriteLine("nN REGION"); }
-                                try { json += ",\"NAME\":\"" + currItem.ADDRESSEE.NAME + "\""; } catch { Console.WriteLine("nN NAME"); }
-                                try { json += ",\"ADDRESS\":\"" + currItem.ADDRESSEE.ADDRESS + "\""; } catch { Console.WriteLine("nN ADDRESS"); }
-                                try { json += ",\"EMAIL\":\"" + currItem.ADDRESSEE.EMAIL + "\""; } catch { Console.WriteLine("nN EMAIL"); }
+                                try { json += "\"ISN\":\"" + currItem.ADDRESSEE.ISN + "\""; } catch { Console.WriteLine("nN ADDRESSEE.ISN"); }
+                                try { json += ",\"NAME\":\"" + currItem.ADDRESSEE.NAME + "\""; } catch { Console.WriteLine("nN ADDRESSEE.NAME"); }
+                                try { json += ",\"EMAIL\":\"" + currItem.ADDRESSEE.EMAIL + "\""; } catch { Console.WriteLine("nN ADDRESSEE.EMAIL"); }
                                 json += "}";
                             }
                             json += "}";
@@ -508,6 +518,7 @@ namespace SharpServer
                 }
                 catch { Console.WriteLine("nN PROTCNT"); }
                 try { json += ",\"CARDVIEW\":\"" + item.CARDVIEW.ToString() + "\""; } catch { Console.WriteLine("nN CARDVIEW"); }
+                item.ALLRESOL = true;
                 try { json += ",\"ALLRESOL\":\"" + item.ALLRESOL.ToString() + "\""; } catch { Console.WriteLine("nN ALLRESOL"); }
                 try
                 {
@@ -625,13 +636,16 @@ namespace SharpServer
                             try { json += ",\"DELTA\":\"" + currItem.DELTA.ToString() + "\""; } catch { Console.WriteLine("DELTA"); }
                             try { json += ",\"SUMMARY\":\"" + currItem.SUMMARY.ToString() + "\""; } catch { Console.WriteLine("SUMMARY"); }
                             try { json += ",\"REASON\":\"" + currItem.REASON.ToString() + "\""; } catch { Console.WriteLine("REASON"); }
-                            //try{json += ",\"STATION\":{";
-                            //                                try { json += "\"ISN\":\"" + currItem.STATION.ISN.ToString() + "\""; } catch { Console.WriteLine("nN REGION"); }
-                            //                                try { json += ",\"NAME\":\"" + currItem.STATION.NAME.ToString() + "\""; } catch { Console.WriteLine("nN NAME"); }
-                            //                                try { json += ",\"ERRCODE\":\"" + currItem.STATION.ERRCODE.ToString() + "\""; } catch { Console.WriteLine("nN NAME"); }
-                            //                                try { json += ",\"ERRTEXT\":\"" + currItem.STATION.ERRTEXT.ToString() + "\""; } catch { Console.WriteLine("nN NAME"); }
-                            //                                json += "}";
-                            //                            } catch{Console.WriteLine("STATION");}
+                            try
+                            {
+                                json += ",\"STATION\":{";
+                                try { json += "\"ISN\":\"" + currItem.STATION.ISN.ToString() + "\""; } catch { Console.WriteLine("nN REGION"); }
+                                try { json += ",\"NAME\":\"" + currItem.STATION.NAME.ToString() + "\""; } catch { Console.WriteLine("nN NAME"); }
+                                try { json += ",\"ERRCODE\":\"" + currItem.STATION.ERRCODE.ToString() + "\""; } catch { Console.WriteLine("nN NAME"); }
+                                try { json += ",\"ERRTEXT\":\"" + currItem.STATION.ERRTEXT.ToString() + "\""; } catch { Console.WriteLine("nN NAME"); }
+                                json += "}";
+                            }
+                            catch { Console.WriteLine("STATION"); }
                             try { json += ",\"EXECFLAG\":\"" + currItem.EXECFLAG.ToString() + "\""; } catch { Console.WriteLine("EXECFLAG"); }
                             try { json += ",\"SENDFLAG\":\"" + currItem.SENDFLAG.ToString() + "\""; } catch { Console.WriteLine("SENDFLAG"); }
                             try
@@ -706,7 +720,9 @@ namespace SharpServer
                                     try { json += "\"ISN\":\"" + currItem2.EXECUTOR.ISN.ToString() + "\""; } catch { Console.WriteLine("nN REGION"); }
                                     try { json += ",\"NAME\":\"" + currItem2.EXECUTOR.NAME.ToString() + "\""; } catch { Console.WriteLine("nN NAME"); }
                                     try { json += ",\"ERRCODE\":\"" + currItem.RESPONS.ERRCODE.ToString() + "\""; } catch { Console.WriteLine("nNERRCODE"); }
+                                    try { json += ",\"ERRTEXT\":\"" + currItem.RESPONS.ERRTEXT.ToString() + "\""; } catch { Console.WriteLine("nNERRCODE"); }
                                     json += "}";
+                                    try { json += ",\"ERRTEXT\":\"" + currItem.RESPONS.ERRTEXT.ToString() + "\""; } catch { Console.WriteLine("nNERRCODE"); }
                                     try { json += ",\"ERRCODE\":\"" + currItem.RESPONS.ERRCODE.ToString() + "\""; } catch { Console.WriteLine("nNERRCODE"); }
                                     json += "}";
                                 }
@@ -803,33 +819,11 @@ namespace SharpServer
                             if (i2 != 0) { json += ",{"; } else { json += "{"; }
                             var currItem2 = item.FORWARD[i2];
                             try { json += "\"ISN\":\"" + currItem2.ISN.ToString() + "\""; } catch { Console.WriteLine("nN AUTHOR_NAME"); }
-                            //try
-                            //{
-                            //    json += ",\"AUTHORCARD\":{";
-                            //    try { json += "\"ISN\":\"" + currItem2.AUTHORCARD.ISN.ToString() + "\""; } catch { }
-                            //    try { json += ",\"NAME\":\"" + currItem2.AUTHORCARD.NAME.ToString() + "\""; } catch { }
-                            //    try { json += ",\"STARTDATE\":\"" + currItem2.AUTHORCAB.STARTDATE.ToString() + "\""; } catch { }
-                            //    json += "}";
-                            //}
-                            //catch { }
-                            //try
-                            //{
-                            //    json += ",\"AUTHORCAB\":{";
-                            //    try { json += "\"ISN\":\"" + currItem2.AUTHORCAB.ISN.ToString() + "\""; } catch { }
-                            //    try { json += ",\"NAME\":\"" + currItem2.AUTHORCAB.NAME.ToString() + "\""; } catch { }
-                            //    try { json += ",\"STARTDATE\":\"" + currItem2.AUTHORCAB.STARTDATE.ToString() + "\""; } catch { }
-                            //    json += "}";
-                            //}
-                            //catch { }
                             try
                             {
                                 json += ",\"ADDRESSEE\":{";
                                 try { json += "\"ISN\":\"" + currItem2.ADDRESSEE.ISN.ToString() + "\""; } catch { }
                                 try { json += ",\"NAME\":\"" + currItem2.ADDRESSEE.NAME.ToString() + "\""; } catch { }
-                                //try { json += ",\"SURNAME\":\"" + currItem2.ADDRESSEE.SURNAME.ToString() + "\""; } catch { }
-                                //try { json += ",\"POST\":\"" + currItem2.ADDRESSEE.POST.ToString() + "\""; } catch { }
-                                //try { json += ",\"STARTDATE\":\"" + currItem2.ADDRESSEE.STARTDATE.ToString() + "\""; } catch { }
-                                //try { json += ",\"ENDDATE\":\"" + currItem2.ADDRESSEE.ENDDATE.ToString() + "\""; } catch { }
                                 json += "}";
                             }
                             catch { }
@@ -838,12 +832,10 @@ namespace SharpServer
                                 json += ",\"USER\":{";
                                 try { json += "\"ISN\":\"" + currItem2.USER.ISN.ToString() + "\""; } catch { }
                                 try { json += ",\"NAME\":\"" + currItem2.USER.NAME.ToString() + "\""; } catch { }
-                                //try { json += ",\"ENDDATE\":\"" + currItem2.USER.ENDDATE.ToString() + "\""; } catch { }
-                                //try { json += ",\"DEPART\":\"" + currItem2.USER.DEPART.ToString() + "\""; } catch { }
                                 json += "}";
                             }
                             catch { }
-                            try { json += ",\"STARTDATE\":\"" + currItem2.STARTDATE.ToString() + "\""; } catch { }
+                            try { json += ",\"SENDDATE\":\"" + currItem2.SENDDATE.ToString() + "\""; } catch { }
                             json += "}";
                         }
                         json += "]";
@@ -990,10 +982,10 @@ namespace SharpServer
                                 try
                                 {
                                     json += ",\"CITIZEN\":{";
-                                    try { json += "\"NAME\":\"" + currItem.CITIZEN.NAME + "\""; } catch { Console.WriteLine("nN NAME"); }
-                                    try { json += ",\"ADDRESS\":\"" + currItem.CITIZEN.ADDRESS + "\""; } catch { Console.WriteLine("nN ADDRESS"); }
-                                    try { json += ",\"REGION\":\"" + currItem.CITIZEN.REGION + "\""; } catch { Console.WriteLine("nN REGION"); }
-                                    try { json += ",\"CITY\":\"" + currItem.CITIZEN.CITY + "\""; } catch { Console.WriteLine("nN ADDRESS"); }
+                                    try { json += "\"NAME\":\"" + currItem.CITIZEN.NAME + "\""; } catch { Console.WriteLine("nN CITIZEN.NAME"); }
+                                    try { json += ",\"ADDRESS\":\"" + currItem.CITIZEN.ADDRESS + "\""; } catch { Console.WriteLine("nN CITIZEN.ADDRESS"); }
+                                    try { json += ",\"REGION\":\"" + currItem.CITIZEN.REGION + "\""; } catch { Console.WriteLine("nN CITIZEN.REGION"); }
+                                    try { json += ",\"CITY\":\"" + currItem.CITIZEN.CITY + "\""; } catch { Console.WriteLine("nN CITIZEN.CITY"); }
                                     json += "}";
                                 }
                                 catch { Console.WriteLine("nN CITIZEN"); }
@@ -1106,7 +1098,7 @@ namespace SharpServer
                 //    //SuperArr[i] = tempDictionary;
                 //}
                 json = json + "]";
-                json = json.Replace("{,", "{").Replace(",}", "}");
+                json = json.Replace("{,", "{").Replace(",}", "}").Replace("0:00:00", "");
                 return json;
 
             }
