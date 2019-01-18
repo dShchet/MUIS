@@ -173,7 +173,7 @@ body:before{
 .mainWrap{
     width: 100vw;
     vertical-align: middle;
-    height: calc(100vh - 60px);
+    height: calc(100vh - 100px);
     display: table-cell;
     padding: 15px;}
 .main{

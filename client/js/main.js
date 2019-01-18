@@ -22,7 +22,7 @@ if(page.path.startsWith("/search"))      {page.deep=1; page.name="search"
   page.inn.name= page.pathCLean.split(':')[0];
   page.inn.link= INFO.clientAdr+"inn:"+page.inn.name;
   if(page.name=="inn"){
-    page.breadcrumbs=page.searchLink+"<i>"+page.inn.name+"</i>";
+    page.breadcrumbs="<div class='breadcrumbs'>"+page.searchLink+"<i>"+page.inn.name+"</i></div>";
   }
 } if(page.deep > 2){//Otdel page and deeper
   page.otdel.raw=page.pathCLean.split(':')[1];
@@ -30,17 +30,17 @@ if(page.path.startsWith("/search"))      {page.deep=1; page.name="search"
   page.otdel.title=cookOtdel(page.otdel.raw)["title"];
   page.otdel.link=INFO.clientAdr+"otdel:"+page.inn.name+":"+page.otdel.raw;
   if(page.name=="otdel"){
-    page.breadcrumbs=page.searchLink+
+    page.breadcrumbs="<div class='breadcrumbs'>"+page.searchLink+
     "<a href='"+page.inn.link+"/'>"+page.inn.name+"</a><span>/</span>"+
-    "<i>"+page.otdel.name+"</i>";} 
+    "<i>"+page.otdel.name+"</i></div>";} 
 } if(page.deep > 3){//case page
   page.case.raw= page.pathCLean.split(':')[2];
   page.case.name=cookCase(page.case.raw)["name"]
   if(page.name=="case"){
-    page.breadcrumbs= page.searchLink+
+    page.breadcrumbs="<div class='breadcrumbs'>"+ page.searchLink+
     "<a href='"+page.inn.link+"/'>"+page.inn.name+"</a><span>/</span>"+
     "<a href='"+page.otdel.link+"/'>"+page.otdel.name+"</a><span>/</span>"+
-    "<i>"+page.case.name+"</i>";
+    "<i>"+page.case.name+"</i></div>";
   }
 }
 
@@ -105,5 +105,5 @@ $(function() {//после загрузки страницы
   $(".btnMenu, .menuClose, .menuShadow").click(function(){
       $('body').toggleClass('menuOpen');
   });
-  $(".breadcrumbs").append(page.breadcrumbs)
+  $(".breadcrumbsWrap").append(page.breadcrumbs)
 });
