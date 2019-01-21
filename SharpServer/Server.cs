@@ -36,7 +36,15 @@ namespace SharpServer
                     int isn = System.Convert.ToInt32(isnTemp);
                     //Console.WriteLine("isn is " + "[" + isn + "]");
                     //Console.WriteLine("isn rcTypeTemp " + "[" + rcType + "]");
+
+                    
+                    Stopwatch swTotal = Stopwatch.StartNew();
+
                     string returnJson = EOSOneGet(isn, rcType);
+
+                    swTotal.Stop();
+                    Console.WriteLine("Tt: {0}  TOTAL processReq", swTotal.Elapsed.TotalMilliseconds.ToString().Split(',')[0]);
+
                     //Console.WriteLine("returnJson is " + "[" + returnJson + "]");
                     SendResp(Client, 200, "application / json", returnJson, reqType);
                 }
@@ -58,7 +66,7 @@ namespace SharpServer
         {
             try
             {
-                Console.WriteLine("[" + reqType + "]" + "sending json :" + bigJson);
+                //Console.WriteLine("[" + reqType + "]" + "sending json :" + bigJson);
                 UTF8Encoding utf8 = new UTF8Encoding();
                 string Headers = "HTTP/1.1 " + Code + " \nContent-Type: " + format + " \nAccess-Control-Allow-Origin: *" +
                     " \nAccess-Control-Allow-Headers: Content-Type" +
@@ -126,7 +134,8 @@ namespace SharpServer
                 //Задание критериев отбора (необходимо)
                 ResultSet.Source.Params["Rc.DocDate"] = dateFrom + ":" + dateTo;//фильрация по дате
                 ResultSet.Fill();//Выполнение SQL Запросов и запись данных
-
+                Console.WriteLine("ResultSet.LOCKED");
+                //Console.WriteLine(ResultSet.LOCKED);
                 int ItemCnt = ResultSet.ItemCnt;
                 string json = "[";
                 for (int i = 0; i < ItemCnt; i++)
@@ -230,6 +239,10 @@ namespace SharpServer
                     item = head.GetRow("RcIn", isn);
                 }
                 sw.Stop();
+                
+                Console.WriteLine("item.LOCKED");
+                
+                try { item.LOCKED=true; } catch { Console.WriteLine("item.notLOCKED"); }
                 Console.WriteLine("Tt: {0}  start ", sw.Elapsed.TotalMilliseconds.ToString().Split(',')[0]);
                 Stopwatch sw02 = Stopwatch.StartNew();
                 string json ="";
@@ -694,29 +707,58 @@ namespace SharpServer
                     try { json += ",\"TELEGRAM\":\"" + item.TELEGRAM.ToString() + "\""; } catch { Console.WriteLine("nN TELEGRAM"); }
                     try
                     {
-                        json += ",\"CORRESPCNT\":\"" + item.CORRESPCNT.ToString() + "\"";
-                        if (item.CORRESPCNT > 0)
-                        {
-                            json += ",\"CORRESP\":[";
-                            for (int i = 0; i < item.CORRESPCNT; i++)
+                        if (rcType == "RCIN") {
+                            if (item.CORRESPCNT > 0)
                             {
-                                if (i != 0) { json += ",{"; } else { json += "{"; }
-                                var currItem = item.CORRESP[i];
-                                try { json += "\"ISN\":\"" + currItem.ORGANIZ.ISN + "\""; } catch { Console.WriteLine("nN CORRESP.ORGANIZ.ISN"); }
-                                try { json += ",\"KIND\":\"" + currItem.KIND + "\""; } catch { Console.WriteLine("nN CORRESP.KIND"); }
-                                try { json += ",\"ORGANIZ\":\"" + currItem.ORGANIZ.NAME.Replace("\"", "&quot;") + "\""; } catch { Console.WriteLine("nN ORGANIZ.NAME"); }
-                                try { json += ",\"OUTNUM\":\"" + currItem.OUTNUM.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.OUTNUM"); }
-                                try { json += ",\"OUTDATE\":\"" + currItem.OUTDATE.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.OUTDATE"); }
-                                try { json += ",\"SIGN\":\"" + currItem.SIGN.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.SIGN"); }
-                                try { json += ",\"CONTENTS\":\"" + currItem.CONTENTS.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.CONTENTS"); }
-                                try { json += ",\"NOTE\":\"" + currItem.NOTE.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.NOTE"); }
-                                
-                                json += "}";
+                                var cnt = 0;
+                                json += ",\"CORRESP\":[";
+                                for (int i = 0; i < item.CORRESPCNT; i++)
+                                {
+                                    var currItem = item.CORRESP[i];
+                                    if (currItem.KIND == 1) {
+                                        cnt = cnt + 1;
+                                        if (i != 0) { json += ",{"; } else { json += "{"; }
+                                        try { json += "\"ISN\":\"" + currItem.ISN.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.ISN"); }
+                                        try { json += ",\"KIND\":\"" + currItem.KIND + "\""; } catch { Console.WriteLine("nN CORRESP.KIND"); }
+                                        try { json += ",\"ORGANIZ_ISN\":\"" + currItem.ORGANIZ.ISN.ToString() + "\""; } catch { Console.WriteLine("nN ORGANIZ.ISN"); }
+                                        try { json += ",\"ORGANIZ_NAME\":\"" + currItem.ORGANIZ.NAME.Replace("\"", "&quot;") + "\""; } catch { Console.WriteLine("nN ORGANIZ.NAME"); }
+                                        try { json += ",\"OUTNUM\":\"" + currItem.OUTNUM.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.OUTNUM"); }
+                                        try { json += ",\"OUTDATE\":\"" + currItem.OUTDATE.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.OUTDATE"); }
+                                        try { json += ",\"SIGN\":\"" + currItem.SIGN.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.SIGN"); }
+                                        try { json += ",\"CONTENTS\":\"" + currItem.CONTENTS.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.CONTENTS"); }
+                                        try { json += ",\"NOTE\":\"" + currItem.NOTE.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.NOTE"); }
+                                        json += "}";
+                                    }
+
+                                }
+                                json += "]";
+                                json += ",\"CORRESPCNT\":\"" + cnt + "\"";
                             }
-                            json += "]";
                         }
-                    }
-                    catch { Console.WriteLine("nN CORRESPCNT"); }
+                        else {
+                            json += ",\"CORRESPCNT\":\"" + item.CORRESPCNT.ToString() + "\"";
+                            if (item.CORRESPCNT > 0)
+                            {
+                                json += ",\"CORRESP\":[";
+                                for (int i = 0; i < item.CORRESPCNT; i++)
+                                {
+                                    if (i != 0) { json += ",{"; } else { json += "{"; }
+                                    var currItem = item.CORRESP[i];
+                                    try { json += "\"ISN\":\"" + currItem.ISN.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.ISN"); }
+                                    try { json += ",\"KIND\":\"" + currItem.KIND + "\""; } catch { Console.WriteLine("nN CORRESP.KIND"); }
+                                    try { json += ",\"ORGANIZ_ISN\":\"" + currItem.ORGANIZ.ISN.ToString() + "\""; } catch { Console.WriteLine("nN ORGANIZ.ISN"); }
+                                    try { json += ",\"ORGANIZ_NAME\":\"" + currItem.ORGANIZ.NAME.Replace("\"", "&quot;") + "\""; } catch { Console.WriteLine("nN ORGANIZ.NAME"); }
+                                    try { json += ",\"OUTNUM\":\"" + currItem.OUTNUM.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.OUTNUM"); }
+                                    try { json += ",\"OUTDATE\":\"" + currItem.OUTDATE.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.OUTDATE"); }
+                                    try { json += ",\"SIGN\":\"" + currItem.SIGN.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.SIGN"); }
+                                    try { json += ",\"CONTENTS\":\"" + currItem.CONTENTS.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.CONTENTS"); }
+                                    try { json += ",\"NOTE\":\"" + currItem.NOTE.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.NOTE"); }
+                                    json += "}";
+                                }
+                                json += "]";
+                            }
+                        }
+                    }catch { Console.WriteLine("nN CORRESPCNT"); }
                     try { json += ",\"LINKS\":\"" + item.LINKS.ToString() + "\""; } catch { Console.WriteLine("nN LINKS"); }
                 }
                 if (rcType == "RCLET")
@@ -827,7 +869,7 @@ namespace SharpServer
                     try { json += ",\"LINKS\":\"" + item.LINKS.ToString() + "\""; } catch { Console.WriteLine("nN LINKS"); }
                 }
                 json += "}]";
-                json = json.Replace("{,", "{").Replace(",}", "}").Replace("0:00:00", "");
+                json = json.Replace("{,", "{").Replace(",}", "}").Replace("[,","[").Replace("0:00:00", "");
                 sw17.Stop();
                 Console.WriteLine("Tt: {0}  17 ", sw17.Elapsed.TotalMilliseconds.ToString().Split(',')[0]);
                 return json;
@@ -864,11 +906,8 @@ namespace SharpServer
 
             }
             Console.WriteLine("-----------------------------");
-            //Console.WriteLine("New Request [" + Request + "]");
             string[] RequestArr = Request.Split(' ');
-            Console.WriteLine("RequestArr.Length [" + RequestArr.Length + "]");
             string reqType = Request.Split(' ')[0];
-            Console.WriteLine(" reqType [" + reqType + "]");
             try
             {
                 string paramsString = Request.Split(' ')[1];
@@ -884,7 +923,13 @@ namespace SharpServer
 
                     if (Dict.ContainsKey("need"))
                     {
+                        Stopwatch swTotal0 = Stopwatch.StartNew();
+                                                
                         processReq(Client, reqType, Dict);
+
+                        swTotal0.Stop();
+                        Console.WriteLine("Tt: {0}  TOTAL Client", swTotal0.Elapsed.TotalMilliseconds.ToString().Split(',')[0]);
+
                     }
                     else { SendError(Client, "Error: not exist paramsArr['need']", reqType); }
                 }
