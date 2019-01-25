@@ -1,20 +1,32 @@
-.datepicker-inline{
-        position: absolute;
-    z-index: 500;
-    max-width: 500px;
-    width: 100%;
-    height: 100%;
-    max-height: 500px;
+body.portrait .datepicker {
+    z-index: 10;
+    width: 360px
 }
-.datepicker{    width: 100%;
-    height: 100%;}
-.datepicker--nav{
-        min-height: 40px;
+
+body.portrait .datepicker--nav {
+    min-height: 40px;
     padding: 10px;
 }
-.datepicker--cell{    height: 80px;    font-size: 30px;}
-
-
-
-
+body.portrait .datepicker--day-name {
+    height: 30px;
+    font-size: 30px;
+}
+body.portrait .datepicker--nav {
+    font-size: 30px;
+}
+body.portrait .datepicker--cell {
+    height: 55px;
+    font-size: 30px;
+}
+body.portrait .datepicker--cells-months {
+    height: initial;
+}
+@media(max-width:5000px) {
+    .datepicker {
+    }
+}
+@media(max-height:5000px) {
+    .datepicker {
+    }
+}
 

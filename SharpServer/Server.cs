@@ -74,6 +74,7 @@ namespace SharpServer
                     "\n\n";
                 byte[] HeadersBuffer = utf8.GetBytes(Headers);
                 Client.GetStream().Write(HeadersBuffer, 0, HeadersBuffer.Length);
+                bigJson = bigJson.Replace("{,", "{").Replace(",}", "}").Replace("[,", "[").Replace("0:00:00", "");
                 byte[] jsonBuffer = utf8.GetBytes(bigJson);
                 Client.GetStream().Write(jsonBuffer, 0, jsonBuffer.Length);
                 Client.Close();
@@ -100,11 +101,15 @@ namespace SharpServer
 
             try
             {
+                Console.WriteLine("trying CreateInstanc");
                 head = Activator.CreateInstance(headType);//создать головной объект
                 //string[] arg = Environment.GetCommandLineArgs();
                 //if (arg.Length == 5)
                 //{
+                //Console.WriteLine("сержантов1");
+                //if (!head.OpenWithParams("сержантов1", "123")) // открытие соединения с параметрами логина и паролем
                 if (!head.OpenWithParams("tver", "123")) // открытие соединения с параметрами логина и паролем
+                        
                     // OpenWithParamsEx 1-Сервер 2-Владелец 3-Логин 4-Пароль 
                     head = null;
                 //}
@@ -135,7 +140,7 @@ namespace SharpServer
                 ResultSet.Source.Params["Rc.DocDate"] = dateFrom + ":" + dateTo;//фильрация по дате
                 ResultSet.Fill();//Выполнение SQL Запросов и запись данных
                 Console.WriteLine("ResultSet.LOCKED");
-                //Console.WriteLine(ResultSet.LOCKED);
+                Console.WriteLine(ResultSet.LOCKED);
                 int ItemCnt = ResultSet.ItemCnt;
                 string json = "[";
                 for (int i = 0; i < ItemCnt; i++)
@@ -189,6 +194,7 @@ namespace SharpServer
 
         public string EOSOneGet(int isn, string rcType)
         {
+            Stopwatch sw = Stopwatch.StartNew();
             Type headType = Type.GetTypeFromProgID("Eapi.Head");//создать класса головных объектов
             dynamic head = null;
 
@@ -198,6 +204,8 @@ namespace SharpServer
                 //string[] arg = Environment.GetCommandLineArgs();
                 //if (arg.Length == 5)
                 //{
+                //Console.WriteLine("ONEсержантов1 123");
+                //if (!head.OpenWithParams("сержантов1", "123")) // открытие соединения с параметрами логина и паролем
                 if (!head.OpenWithParams("tver", "123")) // открытие соединения с параметрами логина и паролем
                     // OpenWithParamsEx 1-Сервер 2-Владелец 3-Логин 4-Пароль 
                     head = null;
@@ -216,11 +224,13 @@ namespace SharpServer
                 "Не удалось установить соединение с БД ДЕЛО.\n" +
                 "Хранимые процедуры доступны только на просмотр.");
             }
+            sw.Stop();
+            Console.WriteLine("Tt: {0}  start ", sw.Elapsed.TotalMilliseconds.ToString().Split(',')[0]);
             try
             {
-                Stopwatch sw = Stopwatch.StartNew();
                 
-                dynamic item;
+                
+                dynamic item ;
                 if ((rcType == "RCIN")||(rcType == "RcIn"))
                 {
                     item = head.GetRow("RcIn", isn);
@@ -238,12 +248,11 @@ namespace SharpServer
                     Console.WriteLine("errror: wrong rcType");
                     item = head.GetRow("RcIn", isn);
                 }
-                sw.Stop();
                 
                 Console.WriteLine("item.LOCKED");
                 
                 try { item.LOCKED=true; } catch { Console.WriteLine("item.notLOCKED"); }
-                Console.WriteLine("Tt: {0}  start ", sw.Elapsed.TotalMilliseconds.ToString().Split(',')[0]);
+                
                 Stopwatch sw02 = Stopwatch.StartNew();
                 string json ="";
                 json += "[{";
@@ -869,7 +878,6 @@ namespace SharpServer
                     try { json += ",\"LINKS\":\"" + item.LINKS.ToString() + "\""; } catch { Console.WriteLine("nN LINKS"); }
                 }
                 json += "}]";
-                json = json.Replace("{,", "{").Replace(",}", "}").Replace("[,","[").Replace("0:00:00", "");
                 sw17.Stop();
                 Console.WriteLine("Tt: {0}  17 ", sw17.Elapsed.TotalMilliseconds.ToString().Split(',')[0]);
                 return json;

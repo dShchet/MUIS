@@ -31,7 +31,7 @@ function makeButtons() {//Для кнопок
                 var rowOtdel=category["OTDEL_PRAVO"];
                 var data=cookCase(rowOtdel);
                 listHtml +="<a class='link' href="+
-                    INFO.clientAdr+"case:"+page.inn.name+
+                    INFO.clientAdr+"caseOne:"+page.inn.name+
                     ":"+page.otdel.raw+":"+data.url+" >"+data.name+"</a>"
             })
             $(".fields").html(listHtml);

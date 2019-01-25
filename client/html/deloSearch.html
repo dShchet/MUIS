@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>МуИС</title>
+    <link rel="shortcut icon" href="../styles/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="../styles/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../styles/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../styles/favicons/favicon-16x16.png">
+    <link rel="manifest" href="../styles/favicons/site.webmanifest">
+    <link rel="mask-icon" href="../styles/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="../styles/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="../styles/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <script src="../js/js.cookie.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/datepicker.min.js"></script>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/deloSearch.css">
+    <link rel="stylesheet" href="../styles/datepicker.min.css">
+    <link rel="stylesheet" href="../styles/datepicker_mine.css">
+  </head>
+  <body class="nopopup deloSearch" >
+    <div class="popupWrapWrap">
+      <div class="shadow"></div>
+      <div class="popupWrap">
+        <div class="popup">
+          <p class="title">Карточка компании</p>
+          <div class="close"></div>
+          <div class="popFields">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="breadcrumbsWrap"></div>
+    <div class="menuWrap">
+      <div class="menuLeft">
+        <div class="menuHeader">
+            <div class="menuTitle" title="Муниципальная Информационная Система">МуИС</div>
+            <div class="menuClose"></div>
+        </div>
+        <div class="menuItems">
+            <a href="deloSearch/" class="menuItem menuItem1">Поиск по "ДЕЛО"</a>
+              <script>$('.menuItem1').attr("href", INFO.clientAdr+$('.menuItem1').attr('href'));</script>
+            <a href="search/" class="menuItem menuItem2">Поиск организаций</a>
+              <script>$('.menuItem2').attr("href", INFO.clientAdr+$('.menuItem2').attr('href'));</script>
+            <a href="javascript:void(0);" class="menuItem">Пункт 3</a>
+            <a href="javascript:void(0);" class="menuItem">Пункт 4</a>
+          </div>
+          <a class="menuLogoff" href="logout/">Выйти</a>
+          <script>$('.menuLogoff').attr("href", INFO.clientAdr+$('.menuLogoff').attr('href'));</script>
+        </div>
+      <div class="menuShadow"></div>
+    </div> 
+    <div class="mainWrapWrap">
+      <div class="header">
+        <div class="logo" title="Муниципальная Информационная Система"></div>
+        <div class="nameBlock nameBlock-sm" title="Муниципальная Информационная Система">МуИС</div>
+        <div class="nameBlock nameBlock-big" title="Муниципальная Информационная Система">Муниципальная Информационная Система</div>
+        <button class="btn btnMenu"></button>
+      </div>
+      <div class="mainWrap">
+        <div class="main">
+            <!-- <div class="searchLeft">
+              <p data-seacrh="week" class="" >РК за последнюю неделю</p>
+              <p data-seacrh="in" class="active" >РК входящих документов</p>
+              <p data-seacrh="let" class="" >РК писем граждан</p>
+              <p data-seacrh="out" class="" >РК исходящих документов</p>
+              <p data-seacrh="inside" class="" >РК внутренних документов</p>
+              <p data-seacrh="jornal" class="" >Поиск по журналу передачи</p>
+              <p data-seacrh="resol" class="" >Поиск поручений</p>
+              <p data-seacrh="resolWeek" class="" >Поручения за последнюю неделю</p>
+              <p data-seacrh="files" class="" >Поиск по файлам РК</p>
+              <p data-seacrh="prj" class="" >Поиск проектов документов</p>
+              <p data-seacrh="today" class="" >Зарегистрированные сегодня</p>
+            </div> -->
+          <div class="search resolWeek">
+              <div class="form resolWeek">
+              <div><i>Дата рег. РК:</i>
+                <!-- <select  id="s-in-dateReg">
+                    <option value="hnd" selected="selected">диапазон дат</option>
+                    <option value="now">сегодня</option>
+                    <option value="n_today">сегодня + N дней</option>
+                    <option value="n_before">+ N дней и ранее</option>
+                    <option value="n_after">+ N дней и позднее</option>
+                    <option value="cur_week">текущая неделя</option>
+                    <option value="cur_month">текущий месяц</option>
+                    <option value="cur_quarter">текущий квартал</option>
+                    <option value="cur_year">текущий год</option>
+                    <option value="prev_week">пред-щая неделя</option>
+                    <option value="prev_month">пред-щий месяц</option>
+                    <option value="prev_quarter">пред-щий квартал</option>
+                    <option value="prev_year">пред-щий год</option>
+                    <option value="week">последняя неделя</option>
+                    <option value="month">последний месяц</option>
+                    <option value="quarter">последний квартал</option>
+                    <option value="year">последний год</option>
+                </select> -->
+                <!-- <div class="nChange">
+                  <p>N =</p>
+                  <input type="text">
+                  <div id="nUp"></div>
+                  <div id="ndown"></div>
+                </div>   -->
+                <p>с</p>
+                <input  value="01.01.2000" id="s-in-dateFrom" type="text" name="dateFrom"  autocomplete="off" style="width: 90px;" >
+                <p>По</p>
+                <input  value="01.01.2019"  id="s-in-dateTo" type="text" name="dateTo" autocomplete="off" style="width: 90px;">
+                </div>
+                <div><i>Наличие файлов:</i><select name="" id="s-in-files" class="">
+                  <option value=""></option>
+                  <option value="">есть</option>
+                  <option value="">нет</option>
+              </select> </div>
+                <button class="toSearch" id="toSearch-def">Search</button>
+              </div>
+          </div>
+          <div class="result"><div class="center">Начните искать</div></div>
+        </div>
+      </div>
+    </div>
+    <script src="../js/deloSearch.js"></script>
+    <div class="hidden">
+      <p></p>
+      <p></p>
+    </div>
+  </body>
+</html>

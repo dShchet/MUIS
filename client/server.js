@@ -13,7 +13,7 @@ var dbConfig = {
     database: 'MUIS'
   }
 };
-var isUserASystAdmin = true;//change on false if you are not
+var isUserASystAdmin = true;//if you are not change to false 
 
 
 //Initiallising node modules
@@ -28,12 +28,12 @@ app.use('/styles',                      express.static( __dirname + '/styles'));
 app.use('/',                            express.static((__dirname + '/html'),{index:'login.html'}));
 app.use('/logout',                      express.static((__dirname + '/html'),{index:'logout.html'}));
 app.use('/search',                      express.static((__dirname + '/html'),{index:'search.html'}));
-app.use('/delo',                        express.static((__dirname + '/html'),{index:'delo.html'}));
+app.use('/deloSearch',                  express.static((__dirname + '/html'),{index:'deloSearch.html'}));
 app.use('/delo:isn',                    express.static((__dirname + '/html'),{index:'deloOne.html'}));
 app.use('/inn:innId',                   express.static((__dirname + '/html'),{index:'inn.html'}));
 app.use('/otdel:innId:otdelId',         express.static((__dirname + '/html'),{index:'otdel.html'}));
-app.use('/case:innId:otdelId:arbitrag', express.static((__dirname + '/html'),{index:'case.html'}));
-
+app.use('/caseOne:innId:otdelId:arbitrag', express.static((__dirname + '/html'),{index:'caseOne.html'}));
+console.log()
 //CORS Middleware
 app.use(function (req, res, next) {
   //Enabling CORS 

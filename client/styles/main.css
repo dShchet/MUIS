@@ -187,16 +187,16 @@ body:before{
     /* border-radius: 5px; */
     border: 1px solid #efefef; 
 }
-.search label{
+.searchPage .search label{
     width: 50%;
     float: left;}
 @media(max-width: 660px){
-    .search label{
+    .searchPage .search label{
     width: 100%;
     float: none;}
 }
-input[type="text"], 
-input[type="password"]{
+
+.form-control{
     font-size: 16px;
     display: block;
     padding: 5px 20px;
