@@ -19,13 +19,13 @@ $(".close, .shadow").click(function(){$('body').toggleClass('nopopup');});
 function toFilter(need, source, dateFrom, dateTo) {
     $(".result").html("<div class='center'>Загрузка...</div>");
     amount=0//Сбросить количество
-    console.log(INFO.deloAdr+"?need="+need+"&source="+source+"&dateFrom="+dateFrom+"&dateTo="+dateTo);
     $.ajax({
         url: INFO.deloAdr+"?need="+need+
         "&source="+source+"&dateFrom="+dateFrom+"&dateTo="+dateTo,
         type: "GET", contentType: "text/plain",
         success: function (dataset) {
             var list = "";
+            console.log(dataset);
             $.each(dataset, function (index, data) {
                 amount+=1;
                 infoData[data.ISN]=data;
@@ -70,7 +70,32 @@ function bindDelos(){
 function printRow(data) {
     var row= "<a href='' class='result-row' data-rsisn='" + data.ISN + "' data-rstype='" + data.DOCKIND + "'>"+
                 "<div class='result-data'><b>" + data.RegNum + "</b>"+"<b style='float:right'>" + data.DocDate + "</b>"+
-                    "<p>" + data.Contents + "</p>"+
+                    "<p>" + data.Contents + "</p>";
+                    if((data.DOCKIND=="RCIN")&&(data.CORRESP)){
+                        var el=data.CORRESP[0];
+                        var ORGANIZ=SIGN=OUTNUM=OUTDATE='';
+                        if(el.ORGANIZ_NAME){ORGANIZ=el.ORGANIZ_NAME}
+                        if(el.SIGN){SIGN="- "+el.SIGN}
+                        row+="<p>" + ORGANIZ + SIGN+"</p>";
+                        if(el.OUTNUM){OUTNUM="Исх. №:  "+el.OUTNUM+" ";}
+                        if(el.OUTDATE){OUTDATE="от "+el.OUTDATE}
+                        row+="<p>" + OUTNUM+OUTDATE+"</p>";
+                    }
+                    if((data.DOCKIND=="RCLET")&&(data.AUTHOR)){
+                        var el=data.AUTHOR[0];
+                        var NAME=CITY='';
+                        if(el.CITIZEN_NAME){NAME=el.CITIZEN_NAME}
+                        if(el.CITIZEN_CITY){CITY=" "+el.CITIZEN_CITY}
+                        if(el.SIGN){SIGN="- "+el.SIGN}
+                        row+="<p>" + NAME + CITY+"</p>";
+                    }
+                    if((data.DOCKIND=="RCOUT")&&(data.PERSONSIGN)){
+                        var el=data.PERSONSIGN;
+                        var SIGN='';
+                        if(el.WHO_SIGN_NAME){SIGN=el.WHO_SIGN_NAME}
+                        row+="<p>" + SIGN+"</p>";
+                    }
+                    row+=
                 "</div>"+
             "</a>";
     return row;

@@ -55,6 +55,11 @@
 .deloSearch .search {
     /* width: calc(100% - 260px); */
     /* float: left; */
+    overflow: auto;
+}
+.deloSearch .result{
+    width: 100%;
+    overflow: auto;
 }
 .deloSearch .search .form{display: none}
 .deloSearch .search .form select,

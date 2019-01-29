@@ -45,6 +45,7 @@
     font-weight: 400;
 }
 .deloPage .head i,
+.deloPage .caseDetR a,
 .deloPage .caseDetR i{    
     color: #0851a7;
     font-style: normal;
@@ -52,12 +53,13 @@
     font-weight: 500;
     text-decoration: underline;
 }
+.deloPage .caseDetR a:hover,
 .deloPage .head i:hover,
 .deloPage .caseDetR i:hover{    
     color: #0f6fe0;
 }
 .deloPage .head p:not(:last-child),
-.deloPage .caseDetR p:not(:last-child){margin-right: 10px;}
+.deloPage .caseDetR p:not(:last-child){margin-right: 15px;}
 .caseDetails{overflow: auto;}
 .deloPage .caseShort{
     border: 2px solid darkgrey;
@@ -87,7 +89,9 @@
             box-shadow: inset 1px 3px 7px 0px rgba(0, 0, 0, 0.47);
     pointer-events: none;
 }
-.deloPage .caseItem{border-bottom: 1px dashed silver;padding: 5px 15px;    overflow: auto;}
+.deloPage .caseItem{border-bottom: 1px dashed silver;padding: 5px 15px;overflow: auto;
+    /* background: linear-gradient(to bottom, #ffffff 0%, #fcfcfc 51%, #f9f9fa 68%, #f7f6f7 84%, #f4f3f4 100%); */
+}
 .deloPage .caseItem:nth-child(odd) {background-color: #fff;}
 .deloPage .caseItem:nth-child(even){background-color: #f4f3f4;}
 .deloPage .caseItem:first-child{padding-top: 15px;}
