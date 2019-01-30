@@ -109,9 +109,28 @@
 .deloPage .case:not(:last-child){ 
     margin-bottom: 15px;
 }
-
-
-
+.deloPage .popFields div{ overflow: auto;    margin-bottom: 5px;}
+.deloPage .popFields b{    
+    font-size: 17px;
+    overflow: auto;
+    color: #0851a7;
+    font-weight: 400;
+    float: left;
+    min-width: 130px;
+    text-align: right;
+    margin-right: 15px;}
+.deloPage .popFields p{    
+    font-size: 18px;    
+    overflow: auto;}
+.deloPage .popupWrap{padding: 20px 10%;}
+.deloPage .popup{max-width: 1000px}
+@media(max-width:550px){
+    .deloPage .popup{padding: 0px 20px 20px;}
+    .deloPage .popupWrap{padding: 0px;}
+    .deloPage .popFields b{ 
+        float: none;
+        min-width: auto;}
+}
 
 
 

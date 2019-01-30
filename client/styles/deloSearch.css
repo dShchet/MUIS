@@ -1,79 +1,113 @@
-
-.table{
-    width: 100%;
-    border: 1px solid grey;
+.table {
+  width: 100%;
+  border: 1px solid grey;
 }
-
-.result .result-row{
-    display: block;
-    overflow: auto;
-    border: 2px solid grey;
-    border-bottom:none;
-    cursor: pointer;}
-.result .result-row:hover{
-    border-color:#008cd2;
-    border-bottom: 2px solid #008cd2;}
-.result .result-row:hover+.result-row{border-top:none;}
-/* .result .result-row .result-data{border-bottom: 1px solid grey;} */
-.result .result-row:last-child{border-bottom:1px solid grey}
-.result .result-data{
-    padding: 10px 15px;
-    float: left;
-    width: calc(100%);}
-.result button{float: right;}
-.result b{font-weight: 500;}
-.result a{text-decoration: none;color: #353535;}
-.title{margin-bottom: 15px;
-    font-size: 25px;
-    text-align: center}
-.close{    
-    background-image: url( icons/cancel.svg);
-    font-size: 0px;
-    width: 20px;
-    height: 20px;
-    background-size: contain;
-    background-repeat: no-repeat;}
-@media(max-width:550px){
+.result .result-row {
+  display: block;
+  overflow: auto;
+  border: 2px solid grey;
+  border-bottom: none;
+  cursor: pointer;
 }
-.deloSearch .main{
-    max-width: 1020px;
-        overflow: auto;
+.result .result-row:last-child {
+  border-bottom: 2px solid grey
 }
-.deloSearch .searchLeft{
-    float: left;
-    width: 260px;
+.result .result-row:last-child:hover,
+.result .result-row:hover {
+  border-color: #008cd2;
+  border-bottom: 2px solid #008cd2;
 }
-.deloSearch .searchLeft p{
-    color: #0851a7;
-    font-style: normal;
-    cursor: pointer;
-    font-weight: 500;
+.result .result-row:hover+.result-row {
+  border-top: none;
+}
+.result .result-data {
+  padding: 10px 15px;
+  float: left;
+  width: calc(100%);
+}
+.result button {
+  float: right;
+}
+.result b {
+  font-weight: 500;
+}
+.result a {
+  text-decoration: none;
+  color: #353535;
+}
+.resultSteps {}
+.stepsWrap {
+  padding-top: 20px;
+}
+.step {
+  float: left;
+  padding: 5px 10px;
+  border: 2px solid #808080;
+  cursor: pointer;
+}
+.step.active,
+.step:hover {
+  border-color: #008cd2;
+  color: #008cd2;
+}
+.title {
+  margin-bottom: 15px;
+  font-size: 25px;
+  text-align: center
+}
+.close {
+  background-image: url(icons/cancel.svg);
+  font-size: 0px;
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+@media(max-width:550px) {}
+.deloSearch .main {
+  max-width: 1020px;
+  overflow: auto;
+}
+.deloSearch .searchLeft {
+  float: left;
+  width: 260px;
+}
+.deloSearch .searchLeft p {
+  color: #0851a7;
+  font-style: normal;
+  cursor: pointer;
+  font-weight: 500;
 }
 .deloSearch .searchLeft p.active,
-.deloSearch .searchLeft p:hover{
-    color: #0f6fe0;}
+.deloSearch .searchLeft p:hover {
+  color: #0f6fe0;
+}
 .deloSearch .search {
-    /* width: calc(100% - 260px); */
-    /* float: left; */
-    overflow: auto;
+  overflow: auto;
 }
-.deloSearch .result{
-    width: 100%;
-    overflow: auto;
+.deloSearch .result {
+  width: 100%;
+  overflow: auto;
 }
-.deloSearch .search .form{display: none}
+.deloSearch .search .form {
+  display: none
+}
 .deloSearch .search .form select,
-.deloSearch .search .form input{
-        position: relative;    border: 1px solid #b7b7b7;
-    font-size: 16px;}
-.deloSearch .search i{
-    font-style: normal;
-    min-width: max-content;
-    max-width: 160px;
-    width: 100%;
-    float: left;
+.deloSearch .search .form input {
+  position: relative;
+  border: 1px solid #b7b7b7;
+  font-size: 16px;
 }
-.deloSearch .search p{display: inline-block;}
+.deloSearch .search i {
+  font-style: normal;
+  min-width: max-content;
+  max-width: 160px;
+  width: 100%;
+  float: left;
+}
+.deloSearch .search p {
+  display: inline-block;
+}
 .deloSearch .search.week .form.week,
 .deloSearch .search.in .form.in,
 .deloSearch .search.let .form.let,
@@ -84,20 +118,13 @@
 .deloSearch .search.resolWeek .form.resolWeek,
 .deloSearch .search.files .form.files,
 .deloSearch .search.prj .form.prj,
-.deloSearch .search.today .form.today{display: block}
-
-
-
+.deloSearch .search.today .form.today {
+  display: block
+}
 .deloSearch .nChange {}
 .deloSearch .nChange p {}
 .deloSearch .nChange input {}
 .deloSearch .nChange #up {}
 .deloSearch .nChange #down {}
-
-
-
-
-
-
-
-
+  
+  
