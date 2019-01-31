@@ -1,7 +1,16 @@
 
 var page=2;
 var step=10;
-var dataset;
+var dataset=[];
+var search={
+    type: "week",
+    dateFrom: new Date(2000,0,1),
+    dateFromDot:"01.01.2000",
+    dateTo: new Date(2019,0,31),
+    // dateTo: new Date(),
+    dateToDot:"31.01.2019",
+};
+// console.log(search);
 dataset=[{"ISN":"4324","RegNum":"В-1","DocDate":"27.04.2012 ","Contents":"О применении инструкции №35 ФНС России","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"Министерство финансов РФ (Минфин РФ)","OUTNUM":"07-1-1234","OUTDATE":"25.04.2012 ","SIGN":"Силуанов А.Г."}]},{"ISN":"4328","RegNum":"Р-2","DocDate":"27.04.2012 ","Contents":"О заседании акционеров","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"Сбербанк России","OUTNUM":"36-15","OUTDATE":"16.04.2012 ","SIGN":"Греф Г.О."}]},{"ISN":"4333","RegNum":"Ф-3","DocDate":"27.04.2012 ","Contents":"О направлении регламента ","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"Филиал Вологодской области","OUTNUM":"45/2012","OUTDATE":"12.04.2012 ","SIGN":"Воронина С.В."}]},{"ISN":"4337","RegNum":"В-1","DocDate":"27.04.2012 ","Contents":"Жалоба на организацию проведения ЕГЭ","DOCKIND":"RCLET","AUTHOR":[{"CITIZEN_NAME":"Валявская Т.М.","CITIZEN_CITY":"Ставрополь"}]},{"ISN":"4341","RegNum":"04-1","DocDate":"27.04.2012 ","Contents":"Запрос информации о выплатах","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Захаров П.Ф. - Генеральный директор"}},{"ISN":"4353","RegNum":"03.1-2","DocDate":"27.04.2012 ","Contents":"О заседании акционеров. Предложения.","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Захаров П.Ф. - Генеральный директор"}},{"ISN":"4363","RegNum":"Л-1","DocDate":"27.04.2012 ","Contents":"Об аренде","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Захаров П.Ф. - Генеральный директор"}},{"ISN":"4403","RegNum":"1","DocDate":"27.02.2011 ","Contents":"Об утверждении штатного расписания","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Захаров П.Ф. - Генеральный директор"}},{"ISN":"4418","RegNum":"2","DocDate":"28.03.2011 ","Contents":"Об утверждении инструкции по делопроизводству","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Захаров П.Ф. - Генеральный директор"}},{"ISN":"4432","RegNum":"3","DocDate":"28.04.2011 ","Contents":"Об утверждении инструкции по работе с СКЗИ","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Захаров П.Ф. - Генеральный директор"}},{"ISN":"4452","RegNum":"1-лс","DocDate":"27.04.2012 ","Contents":"О приеме на работу Стрельникова А.Д. в Отдел №2 Управления по основной деятельности на должность ведущего специалиста","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Захаров П.Ф. - Генеральный директор"}},{"ISN":"4460","RegNum":"1","DocDate":"27.04.2012 ","Contents":"Об утверждении списка сотрудников, имеющих допуск по грифу &quot;Коммерческая тайна&quot;","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Захаров П.Ф. - Генеральный директор"}},{"ISN":"4482","RegNum":"05-04/1","DocDate":"04.05.2012 ","Contents":"О подготовке отчетности о состоянии договорной работы","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Адвокатов П.Б. - Нач. отдела"}},{"ISN":"4488","RegNum":"03-03/2","DocDate":"04.05.2012 ","Contents":"Справка о проведении проверки в филиале по г. Санкт-Петербургу","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Портнов И.А. - Начальник управления"}},{"ISN":"4496","RegNum":"В-4","DocDate":"04.05.2012 ","Contents":"О переводе на новый порядок финансирования","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"Министерство финансов РФ (Минфин РФ)","OUTNUM":"02-03-10-1603","OUTDATE":"28.04.2011 ","SIGN":"Силуанов А.Г."}]},{"ISN":"4512","RegNum":"ПР/1-2012","DocDate":"04.05.2012 ","Contents":"Об утверждении  плана работы на второе полугодие 2012 года","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Захаров П.Ф. - Генеральный директор"}},{"ISN":"4529","RegNum":"Д-2","DocDate":"04.05.2012 ","Contents":"Жалоба на работу жилищно-коммунальных служб","DOCKIND":"RCLET","AUTHOR":[{"CITIZEN_NAME":"Денисов Г.Р.","CITIZEN_CITY":"Москва"}]},{"ISN":"4644","RegNum":"Д-1","DocDate":"04.06.2012 ","Contents":"Проверка регистрации исходящего.","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Захаров П.Ф. - Генеральный директор"}},{"ISN":"4675","RegNum":"Р-1","DocDate":"04.06.2012 ","Contents":"Проверка регистрации входящего документа.","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"КБ &quot;Восток&quot;","OUTNUM":"П-112","OUTDATE":"12.05.2012 ","SIGN":"Карелин В.В."}]},{"ISN":"4694","RegNum":"Ан-1","DocDate":"04.06.2012 ","Contents":"Проверка регистрации обращения гражданина.","DOCKIND":"RCLET","AUTHOR":[{"CITIZEN_NAME":"Тихорин В.И.","CITIZEN_CITY":"Санкт-Петербург"}]},{"ISN":"4724","RegNum":"Р-2","DocDate":"04.06.2012 ","Contents":"Проверка регистрации входящего документа.","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"КБ &quot;Восток&quot;","OUTNUM":"П-112","OUTDATE":"12.05.2012 ","SIGN":"Карелин В.В."}]},{"ISN":"4743","RegNum":"Кол-2","DocDate":"04.06.2012 ","Contents":"Проверка регистрации обращения гражданина.","DOCKIND":"RCLET","AUTHOR":[{"CITIZEN_NAME":"Тихорин В.И.","CITIZEN_CITY":"Санкт-Петербург"}]},{"ISN":"4773","RegNum":"Р-3","DocDate":"04.06.2012 ","Contents":"Проверка регистрации входящего документа.","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"КБ &quot;Восток&quot;","OUTNUM":"П-112","OUTDATE":"12.05.2012 ","SIGN":"Карелин В.В."}]},{"ISN":"4822","RegNum":"Р-4","DocDate":"04.06.2012 ","Contents":"Проверка регистрации входящего документа.","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"КБ &quot;Восток&quot;","OUTNUM":"П-112","OUTDATE":"12.05.2012 ","SIGN":"Карелин В.В."}]},{"ISN":"4853","RegNum":"Р-5","DocDate":"04.06.2012 ","Contents":"Проверка регистрации входящего документа.","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"КБ &quot;Восток&quot;","OUTNUM":"П-112","OUTDATE":"12.05.2012 ","SIGN":"Карелин В.В."}]},{"ISN":"4868","RegNum":"Кол-4","DocDate":"04.06.2012 ","Contents":"Проверка регистрации обращения гражданина.","DOCKIND":"RCLET","AUTHOR":[{"CITIZEN_NAME":"Тихорин В.И.","CITIZEN_CITY":"Санкт-Петербург"}]},{"ISN":"4892","RegNum":"Р-6","DocDate":"04.06.2012 ","Contents":"Проверка регистрации входящего документа.","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"КБ &quot;Восток&quot;","OUTNUM":"П-112","OUTDATE":"12.05.2012 ","SIGN":"Карелин В.В."}]},{"ISN":"4907","RegNum":"Р-7","DocDate":"04.06.2012 ","Contents":"Проверка регистрации входящего документа.","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"КБ &quot;Восток&quot;","OUTNUM":"П-112","OUTDATE":"12.05.2012 ","SIGN":"Карелин В.В."}]},{"ISN":"4922","RegNum":"Р-8","DocDate":"04.06.2012 ","Contents":"Проверка регистрации входящего документа.","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"КБ &quot;Восток&quot;","OUTNUM":"П-112","OUTDATE":"12.05.2012 ","SIGN":"Карелин В.В."}]}];
 
 $(".toSearch").click(function(e){
@@ -11,17 +20,23 @@ $(".toSearch").click(function(e){
     $("#source").val() ? source = $("#source").val() :source  ="search";
     $("#dateFrom").val() ? dateFrom = $("#dateFrom").val() :dateFrom  ="search";
     $("#dateTo").val() ? dateTo = $("#dateTo").val() :dateTo  ="search";
-    // toFilter(need, source, dateFrom, dateTo);
+    // getData(need, source, dateFrom, dateTo);
 })
 
-//обработчик скрытия попапа
-$(".close, .shadow").click(function(){$('body').toggleClass('nopopup');});
-//фильтрация по инн или названию
-
-function toFilter(need, source, dateFrom, dateTo) {
+//Отправить запрос
+function getData() {
     $(".resultTitle").html("<div class='center'>Загрузка...</div>");
     amount=0//Сбросить количество
-    function makeAmountTitle(amount){
+    var need="search";
+    var source="table";
+    //console.log(search);
+    var sendUrl=INFO.deloAdr;
+    sendUrl+="?need="+need;
+    sendUrl+="&source="+search.type;
+    sendUrl+="&dateFrom="+search.dateFrom_send;
+    sendUrl+="&dateTo="+search.dateTo_send;
+
+    function makeResultTitle(amount){
         if(amount==0){$(".resultTitle").html("<div class='center'>Ничего не найдено</div>");}
         else if((amount>0)||(amount<100)){
             var naideno= "Найдено ";
@@ -37,66 +52,84 @@ function toFilter(need, source, dateFrom, dateTo) {
         }
     }
 
-    function makePagination(length, step, page){
-        stpesAmount=Math.ceil(length/step);
-        var html="";
-        html+="<div class='stepsWrap'>";
-        for (i = 1; i < stpesAmount+1; i++) {
-            if(i==page){
-                html+="<div class='step active' onclick='makeRows( "+i+")'>"+i+"</div>";
-            }else{
-                html+="<div class='step' onclick='makeRows( "+i+")'>"+i+"</div>";
-            }
-        }
-        html+="</div>";
-        $(".resultSteps").html(html);
-    }
-    // $.ajax({
-    //     url: INFO.deloAdr+"?need="+need+
-    //     "&source="+source+"&dateFrom="+dateFrom+"&dateTo="+dateTo,
-    //     type: "GET", contentType: "text/plain",
-    //     success: function (data) {
-    //     dataset=data;
+    $.ajax({
+        url: sendUrl,
+        type: "GET", contentType: "text/plain",
+        success: function (data) {
+            dataset=data;
             console.log(dataset);
-            makeAmountTitle(dataset.length);
-            makeRows(page);
-            makePagination(dataset.length, step, page)
-    //     },
-    //     error: function (jqXHR, exception) {
-    //         $(".resultTitle").html("<div class='center'>Ошибка</div>");
-    //        console.log("Ошибка: "+jqXHR+"; exception: "+exception);
-    //        console.log(jqXHR);},
-    // });
+            console.log(sendUrl);
+            makeResultTitle(dataset.length);
+            page=1
+            buildData();
+        },
+        error: function (jqXHR, exception) {
+            $(".resultTitle").html("<div class='center'>Ошибка</div>");
+           console.log("Ошибка: "+jqXHR+"; exception: "+exception);
+           console.log(jqXHR);},
+    });
 }
-function makeRows(page){
+
+//Сформировать выод (либо после загрузки, либо обновление)
+function buildData(pageValue){
+    page=(pageValue)?pageValue:page;
+    // console.log("step "+step);
+    // console.log("page "+page);
+    //вывести список елементов
     var list="";
     var from =(page-1)*step;
     var to   =page*step;
     var datasetPage = dataset.slice(from, to);
     $.each(datasetPage, function (index, data) {
-        list += printRow(data);
+        list += buildRow(data);
     });
     $(".resultList").html(list);
-    bindDelos();
-}
 
-function bindDelos(){
-    //INFO.clientAdr+"delo:" + $(this).data('rsisn')+"&type:"+$(this).data('rstype')
-    $('.result-row').attr('href',function(){
-        var href=INFO.clientAdr+"delo:" + $(this).data('rsisn')+"&type:"+$(this).data('rstype')
-        return href});
-        
-    $('.result-row').click(function(e){
-        e.preventDefault();
-        var sel = getSelection().toString();
-        if(!sel){
-            window.open($(this).attr('href'), '_blank')
+    //привязать ссылки к элементам
+        //установить href ссылкам
+        $('.result-row').attr('href',function(){
+            var href=INFO.clientAdr+"delo:" + $(this).data('rsisn')+"&type:"+$(this).data('rstype')
+            return href});
+
+        //обработка выделения и перехода ссылке  
+        $('.result-row').click(function(e){
+            e.preventDefault();
+            var sel = getSelection().toString();
+            if(!sel){
+                window.open($(this).attr('href'), '_blank')
+            }
+        })
+
+    //вывести пагинацию
+    stepsAmount=Math.ceil(dataset.length/step);
+    var html="";
+    if(stepsAmount>1){
+        html+="<div class='stepsWrap'>";
+        for (i = 1; i < stepsAmount+1; i++) {
+            if(i==page){
+                  html+="<div onclick='buildData( "+i+")'class='step active' >"+i+"</div>";
+            }else{html+="<div onclick='buildData( "+i+")'class='step' >"+i+"</div>";}
         }
-    })
+        html+="</div>";
+    }
+    
+    html+="<div class='stepsSizeWrap'>";
+    html+="<select onchange='step=this.options[this.selectedIndex].value;buildData(1);'>";
+    var arr=[5,10,30,50,100];
+    for (i = 0; i < arr.length; i++){
+        if(step==arr[i]){
+            html+="<option value='"+arr[i]+"' selected>"+arr[i]+"</option>";    
+        }else{
+            html+="<option value='"+arr[i]+"'>"+arr[i]+"</option>";
+        }
+    }
+    html+="</select>";
+    html+="</div>";
+    $(".resultSteps").html(html);
 }
 
 //сформировать строчку одной компании
-function printRow(data) {
+function buildRow(data) {
     var row= "<a href='' class='result-row' data-rsisn='" + data.ISN + "' data-rstype='" + data.DOCKIND + "'>"+
                 "<div class='result-data'><b>" + data.RegNum + "</b>"+"<b style='float:right'>" + data.DocDate + "</b>"+
                     "<p>" + data.Contents + "</p>";
@@ -140,36 +173,124 @@ $('.searchLeft p').click(function(){
     }
 })
 
+//После загрузки страницы
 $(function() {
-    $(".toSearch").click(function(e){
-        var dateFrom=dateTo=dateFrom_send=dateTo_send="";
-        e.preventDefault();
-        var dateFrom = $("#s-in-dateFrom").val();
-        var dateTo   = $("#s-in-dateTo").val();
-        var need="search";
-        var source="table";
-        if(checkDateFormat(dateFrom)&&(dateFrom!="")){
-            dateFrom_send=dateFrom.replace(/[.]/g,"/");
-        }else{
-            console.log("incorrect dateFrom: "+dateFrom);
-        }
-        if(checkDateFormat(dateTo)&&(dateTo!="")){
-            dateTo_send=dateTo.replace(/[.]/g,"/")
-        }else{
-            console.log("incorrect dateTo: "+dateTo);
-        }
-        if((dateTo_send!="")&&(dateFrom_send!="")){
-            toFilter(need, source, dateFrom_send, dateTo_send);
-        }else{console.log("incorrect dates");}
 
-    });
+    $("#dateFrom").data("date", search.dateFrom);
+    $("#dateTo").data("date", search.dateTo);
+    $("#dateFrom").val(search.dateFromDot);
+    $("#dateTo").val(search.dateToDot);
 
-    $('#s-in-dateReg').change(function(){
-        var val =$(this).val();
-        var datefrom = $("#s-in-dateFrom");
-        var dateto   = $("#s-in-dateTo");
+    function createCalendars(){
+        var inputDateFrom = $('#dateFrom')
+        .datepicker({autoClose: true})
+        .data('datepicker');
+        inputDateFrom.selectDate(new Date($('#dateFrom').data("date")));
         
+        var inputDateTo = $('#dateTo')
+        .datepicker({autoClose: true})
+        .data('datepicker')
+        inputDateTo.selectDate(new Date($('#dateTo').data("date")));
+    }
+    createCalendars();
+
+    $(".selectType select").on("change",function(){
+        $(".selectMore").removeClass("week in let out inside jornal resol resolWeek files prj today");
+        $(".selectMore").addClass($(this).val());
     });
+
+    $(".toSearch").click(function(e){
+        
+        search.dateFrom = $("#dateFrom").val();
+        search.dateTo   = $("#dateTo").val();
+        var selectedArea=$(".selectType select").val();
+        switch (selectedArea) {
+            case 'week'      : {
+                search.type= 'all';
+            } break;
+            case 'in'        : {
+                search.type= 'in';
+            } break;
+            case 'let'       : {
+                search.type= 'let';
+            } break;
+            case 'out'       : {
+                search.type= 'out';
+            } break;
+            case 'inside'    : {
+                search.type= 'all';
+            } break;
+            case 'jornal'    : {
+                search.type= 'all';
+            } break;
+            case 'resol'     : {
+                search.type= 'all';
+            } break;
+            case 'resolWeek' : {
+                search.type= 'all';
+            } break;
+            case 'files'     : {
+                search.type= 'all';
+            } break;
+            case 'prj'       : {
+                search.type= 'all';
+            } break;
+            case 'today'     : {
+                search.type= 'all';
+            } break;
+            
+        }
+        
+        if(checkDateFormat(search.dateFrom)&&(search.dateFrom!="")){
+            search.dateFrom_send=search.dateFrom.replace(/[.]/g,"/");
+        }else{
+            alert("Неправельная дата До");
+        }
+        if(checkDateFormat(search.dateTo)&&(search.dateTo!="")){
+            search.dateTo_send=search.dateTo.replace(/[.]/g,"/")
+        }else{
+            alert("Неправельная дата После");
+        }
+        if((search.dateTo_send!="")&&(search.dateFrom_send!="")){
+            getData();
+        }else{alert("incorrect dates");}
+    });
+
+
+    //обработчик скрытия попапа
+    $(".close, .shadow").click(function(){$('body').toggleClass('nopopup');});
+    // $('#s-in-dateReg').click(function(){
+    //     function makeDotDate(date){
+    //         var year =date.getFullYear();
+    //         var month=["01","02","03","04","05","06","07","08","09","10","11","12"][date.getMonth()];
+    //         var day=date.getDate();
+    //         return day+"."+month+"."+year;
+    //     }
+    //     var val =$(this).val();
+    //     var toDate = new Date();
+    //     var fromDate = new Date();
+    //     switch (val) {
+    //         // case 'hnd'    :{} break;
+    //         // case 'now'    :{} break;
+    //         case 'week'   :{fromDate.setDate(fromDate.getDate()-7);    } break;
+    //         case 'month'  :{fromDate.setMonth(fromDate.getMonth()-1);  } break;
+    //         case 'quarter':{fromDate.setMonth(fromDate.getMonth()-3);  } break;
+    //         case 'year'   :{fromDate.setYear(fromDate.getFullYear()-1);} break;
+    //     }
+    //     if(val!='hnd'){
+    //         search.dateFrom=makeDotDate(fromDate);
+    //         search.dateTo=makeDotDate(toDate);
+    //         search.dateFromDot=makeDotDate(fromDate);
+    //         search.dateToDot=makeDotDate(toDate);
+    //         console.log(search.dateFrom);
+    //         $("#dateFrom").data("date", fromDate);
+    //         $("#dateTo").data("date", toDate);
+    //         $("#dateFrom").val(search.fromDate);
+    //         $("#dateTo").val(search.dateTo);
+    //         createCalendars();
+    //     }        
+    // });
+
     // var now=fixDate(Date.now() , 'num');
     // datefrom.val(now);
     
@@ -180,13 +301,6 @@ $(function() {
     // inputDateTo.selectDate(new Date());
     // datefrom.prop('disabled', true);
     //console.log(now);
-
-    var inputDateFrom = $('#s-in-dateFrom').datepicker({
-        autoClose: true
-    }).data('datepicker');
-    var inputDateTo = $('#s-in-dateTo').datepicker({
-        autoClose: true
-    }).data('datepicker');
 
     //проверка на форматы даты
     function checkDateFormat(date){

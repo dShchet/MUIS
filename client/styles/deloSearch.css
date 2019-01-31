@@ -35,21 +35,9 @@
   text-decoration: none;
   color: #353535;
 }
-.resultSteps {}
-.stepsWrap {
-  padding-top: 20px;
-}
-.step {
-  float: left;
-  padding: 5px 10px;
-  border: 2px solid #808080;
-  cursor: pointer;
-}
-.step.active,
-.step:hover {
-  border-color: #008cd2;
-  color: #008cd2;
-}
+.resultSteps {
+  padding-top: 20px;}
+
 .title {
   margin-bottom: 15px;
   font-size: 25px;
@@ -68,7 +56,14 @@
   max-width: 1020px;
   overflow: auto;
 }
-.deloSearch .searchLeft {
+.deloSearch .selectType select{
+  border: 1px solid grey;
+  padding: 10px 15px;
+  font-size: 16px;
+  text-align: center;
+}
+
+/* .deloSearch .searchLeft {
   float: left;
   width: 260px;
 }
@@ -81,7 +76,54 @@
 .deloSearch .searchLeft p.active,
 .deloSearch .searchLeft p:hover {
   color: #0f6fe0;
+} */
+.stepsWrap {
 }
+.deloSearch .stepsWrap select{}
+.deloSearch .stepsWrap option{}
+.deloSearch .stepsWrap option:active{}
+.deloSearch .selectDate{}
+.deloSearch .selectDate label{}
+.deloSearch .selectDate input{
+  border: 1px solid grey;
+  width: 115px;
+  padding: 10px 15px;
+  font-size: 16px;
+  text-align: center;
+}
+.deloSearch .selectType select:focus,
+.deloSearch .selectDate input:focus{
+  border-color: #008cd2;
+}
+.deloSearch .selectMore{}
+
+.deloSearch .selectMore .form{display:none;}
+
+.deloSearch .selectMore.week .week,
+.deloSearch .selectMore.in .in,
+.deloSearch .selectMore.let .let,
+.deloSearch .selectMore.out .out,
+.deloSearch .selectMore.inside .inside,
+.deloSearch .selectMore.jornal .jornal,
+.deloSearch .selectMore.resol .resol,
+.deloSearch .selectMore.resolWeek .resolWeek,
+.deloSearch .selectMore.files .files,
+.deloSearch .selectMore.prj .prj,
+.deloSearch .selectMore.today .today {
+  display: block
+}
+.step {
+  float: left;
+  padding: 5px 10px;
+  border: 2px solid #808080;
+  cursor: pointer;
+}
+.step.active,
+.step:hover {
+  border-color: #008cd2;
+  color: #008cd2;
+}
+
 .deloSearch .search {
   overflow: auto;
 }
@@ -98,6 +140,7 @@
   border: 1px solid #b7b7b7;
   font-size: 16px;
 }
+.deloSearch .search .form input{text-align: center;}
 .deloSearch .search i {
   font-style: normal;
   min-width: max-content;
@@ -105,26 +148,34 @@
   width: 100%;
   float: left;
 }
+.deloSearch button{
+  color: #fff;
+  background-color: #008cd2;
+  padding: 10px 15px;
+  font-size: 15px;
+}
+.deloSearch button:hover{
+  background-color: #019eec;
+}
 .deloSearch .search p {
   display: inline-block;
-}
-.deloSearch .search.week .form.week,
-.deloSearch .search.in .form.in,
-.deloSearch .search.let .form.let,
-.deloSearch .search.out .form.out,
-.deloSearch .search.inside .form.inside,
-.deloSearch .search.jornal .form.jornal,
-.deloSearch .search.resol .form.resol,
-.deloSearch .search.resolWeek .form.resolWeek,
-.deloSearch .search.files .form.files,
-.deloSearch .search.prj .form.prj,
-.deloSearch .search.today .form.today {
-  display: block
 }
 .deloSearch .nChange {}
 .deloSearch .nChange p {}
 .deloSearch .nChange input {}
 .deloSearch .nChange #up {}
 .deloSearch .nChange #down {}
-  
-  
+
+.stepsSizeWrap{     float: right;}
+.stepsSizeWrap select{
+  padding: 5px 10px;
+  border: 2px solid #808080;
+  font-size: 15px;}
+.stepsSizeWrap select:hover{
+  border-color: #008cd2;
+}
+
+
+
+
+

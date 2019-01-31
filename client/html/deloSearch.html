@@ -65,60 +65,103 @@
       </div>
       <div class="mainWrap">
         <div class="main">
-            <div class="searchLeft">
-              <p data-seacrh="week" class="" >РК за последнюю неделю</p>
-              <p data-seacrh="in" class="active" >РК входящих документов</p>
-              <p data-seacrh="let" class="" >РК писем граждан</p>
-              <p data-seacrh="out" class="" >РК исходящих документов</p>
-              <p data-seacrh="inside" class="" >РК внутренних документов</p>
-              <p data-seacrh="jornal" class="" >Поиск по журналу передачи</p>
-              <p data-seacrh="resol" class="" >Поиск поручений</p>
-              <p data-seacrh="resolWeek" class="" >Поручения за последнюю неделю</p>
-              <p data-seacrh="files" class="" >Поиск по файлам РК</p>
-              <p data-seacrh="prj" class="" >Поиск проектов документов</p>
-              <p data-seacrh="today" class="" >Зарегистрированные сегодня</p>
+            <div class="selectType">
+              <select>
+                <option value="week">РК за последнюю неделю</option>
+                <option value="in">РК входящих документов</option>
+                <option value="let">РК писем граждан</option>
+                <option value="out">РК исходящих документов</option>
+                <option value="inside">РК внутренних документов</option>
+                <option value="jornal">Поиск по журналу передачи</option>
+                <option value="resol">Поиск поручений</option>
+                <option value="resolWeek">Поручения за последнюю неделю</option>
+                <option value="files">Поиск по файлам РК</option>
+                <option value="prj">Поиск проектов документов</option>
+                <option value="today">Зарегистрированные сегодня</option>
+              </select>
             </div>
-          <div class="search resolWeek">
-              <div class="form resolWeek">
-              <div><i>Дата рег. РК:</i>
-                <!-- <select  id="s-in-dateReg">
-                    <option value="hnd" selected="selected">диапазон дат</option>
-                    <option value="now">сегодня</option>
-                    <option value="n_today">сегодня + N дней</option>
-                    <option value="n_before">+ N дней и ранее</option>
-                    <option value="n_after">+ N дней и позднее</option>
-                    <option value="cur_week">текущая неделя</option>
-                    <option value="cur_month">текущий месяц</option>
-                    <option value="cur_quarter">текущий квартал</option>
-                    <option value="cur_year">текущий год</option>
-                    <option value="prev_week">пред-щая неделя</option>
-                    <option value="prev_month">пред-щий месяц</option>
-                    <option value="prev_quarter">пред-щий квартал</option>
-                    <option value="prev_year">пред-щий год</option>
-                    <option value="week">последняя неделя</option>
-                    <option value="month">последний месяц</option>
-                    <option value="quarter">последний квартал</option>
-                    <option value="year">последний год</option>
-                </select> -->
-                <!-- <div class="nChange">
-                  <p>N =</p>
-                  <input type="text">
-                  <div id="nUp"></div>
-                  <div id="ndown"></div>
-                </div>   -->
-                <p>с</p>
-                <input  value="01.01.2000" id="s-in-dateFrom" type="text" name="dateFrom"  autocomplete="off" style="width: 90px;" >
-                <p>По</p>
-                <input  value="01.01.2019"  id="s-in-dateTo" type="text" name="dateTo" autocomplete="off" style="width: 90px;">
+            <div class="selectDate">
+              <Label>Поиск с
+                <input id="dateFrom" type="text" name="dateFrom"  autocomplete="off">
+              </Label>
+              <label>Поиск до
+                <input id="dateTo" type="text" name="dateTo" autocomplete="off">
+              </label>
+            </div>
+            <div class="selectMore week">
+                <div class="form week">
+                    <Label>week
+                        <input type="text">
+                      </Label>
+                  <!-- <i>Дата рег. РК:</i>
+                  <select  id="s-in-dateReg">
+                      <option value="hnd" selected="selected">диапазон дат</option>
+                      <option value="now">сегодня</option>
+                      <option value="week">последняя неделя</option>
+                      <option value="month">последний месяц</option>
+                      <option value="quarter">последний квартал</option>
+                      <option value="year">последний год</option>
+                  </select> -->
+
+                  <!-- <div><i>Наличие файлов:</i><select name="" id="s-in-files" class="">
+                    <option value=""></option>
+                    <option value="">есть</option>
+                    <option value="">нет</option>
+                </select> </div> -->
                 </div>
-                <div><i>Наличие файлов:</i><select name="" id="s-in-files" class="">
-                  <option value=""></option>
-                  <option value="">есть</option>
-                  <option value="">нет</option>
-              </select> </div>
-                <button class="toSearch" id="toSearch-def">Search</button>
-              </div>
-          </div>
+                <div class="form in">
+                  <Label>in
+                    <input type="text">
+                  </Label>
+                </div>
+                <div class="form let">
+                  <Label>let
+                    <input type="text">
+                  </Label>
+                </div>
+                <div class="form out">
+                  <Label>out
+                    <input type="text">
+                  </Label>
+                </div>
+                <div class="form inside">
+                  <Label>inside
+                    <input type="text">
+                  </Label>
+                </div>
+                <div class="form jornal">
+                  <Label>jornal
+                    <input type="text">
+                  </Label>
+                </div>
+                <div class="form resol">
+                  <Label>resol
+                    <input type="text">
+                  </Label>
+                </div>
+                <div class="form resolWeek">
+                  <Label>resolWeek
+                    <input type="text">
+                  </Label>
+                </div>
+                <div class="form files">
+                  <Label>files
+                    <input type="text">
+                  </Label>
+                </div>
+                <div class="form prj">
+                  <Label>prj
+                    <input type="text">
+                  </Label>
+                </div>
+                <div class="form today">
+                  <Label>today
+                    <input type="text">
+                  </Label>
+                </div>
+
+                <button class="toSearch" id="toSearch-def">Поиск</button>
+            </div>
           <div class="result">
               <div class="resultTitle center">Начните искать</div>
               <div class="resultList"></div>

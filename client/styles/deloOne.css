@@ -71,6 +71,7 @@
 .deloPage .caseShort.closed+.caseDetails{height: 0px}
 @media(max-width:550px){
 }
+
 .deloPage .caseDetails{
     position: relative;
     border: 2px solid darkgrey;
