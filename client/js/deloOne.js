@@ -259,8 +259,8 @@ function deloOneGet(isn, rcType){
             function PORUCH(){
                 var html="";
                 html='<div class="case">'+
-                '<div class="caseShort closed"><b>ПОРУЧЕНИЯ ('+data.RESOLCNT+')</b></div>';
-                if((data.RESOLCNT)||(data.RESOLCNT)){
+                '<div class="caseShort"><b>ПОРУЧЕНИЯ ('+data.RESOLCNT+')</b></div>';
+                if((data.RESOLUTION)||(data.RESOLCNT)){
                     html+='<div class="caseDetails">';
                     for (let i = 0; i < data.RESOLCNT; i++) {
                         html+='<div class="caseItem">';

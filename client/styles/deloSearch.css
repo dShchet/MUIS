@@ -82,21 +82,28 @@
 .deloSearch .stepsWrap select{}
 .deloSearch .stepsWrap option{}
 .deloSearch .stepsWrap option:active{}
-.deloSearch .selectDate{}
-.deloSearch .selectDate label{}
+.deloSearch .selectDate{
+  overflow: auto;
+  margin-bottom: 10px;
+}
+.deloSearch .selectDate label{
+  width: 50%;
+  float: left;
+}
 .deloSearch .selectDate input{
+  margin-top: 10px;
+  width: 100%;
+  padding: 5px 15px;
   border: 1px solid grey;
-  width: 115px;
   padding: 10px 15px;
   font-size: 16px;
-  text-align: center;
 }
 .deloSearch .selectType select:focus,
 .deloSearch .selectDate input:focus{
   border-color: #008cd2;
 }
 .deloSearch .selectMore{}
-
+.deloSearch .resultTitle{    margin-bottom: 15px;}
 .deloSearch .selectMore .form{display:none;}
 
 .deloSearch .selectMore.week .week,

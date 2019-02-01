@@ -65,21 +65,7 @@
       </div>
       <div class="mainWrap">
         <div class="main">
-            <div class="selectType">
-              <select>
-                <option value="week">РК за последнюю неделю</option>
-                <option value="in">РК входящих документов</option>
-                <option value="let">РК писем граждан</option>
-                <option value="out">РК исходящих документов</option>
-                <option value="inside">РК внутренних документов</option>
-                <option value="jornal">Поиск по журналу передачи</option>
-                <option value="resol">Поиск поручений</option>
-                <option value="resolWeek">Поручения за последнюю неделю</option>
-                <option value="files">Поиск по файлам РК</option>
-                <option value="prj">Поиск проектов документов</option>
-                <option value="today">Зарегистрированные сегодня</option>
-              </select>
-            </div>
+            <div class="title">Поиск по Дело</div>
             <div class="selectDate">
               <Label>Поиск с
                 <input id="dateFrom" type="text" name="dateFrom"  autocomplete="off">
@@ -88,6 +74,21 @@
                 <input id="dateTo" type="text" name="dateTo" autocomplete="off">
               </label>
             </div>
+            <div class="selectType">
+                <select>
+                  <option value="week">РК за последнюю неделю</option>
+                  <option value="in">РК входящих документов</option>
+                  <option value="let">РК писем граждан</option>
+                  <option value="out">РК исходящих документов</option>
+                  <option value="inside">РК внутренних документов</option>
+                  <option value="jornal" style="color:red">Поиск по журналу передачи</option>
+                  <option value="resol">Поиск поручений</option>
+                  <option value="resolWeek">Поручения за последнюю неделю</option>
+                  <!-- <option value="files">Поиск по файлам РК</option> -->
+                  <option value="prj" style="color:red">Поиск проектов документов</option>
+                  <option value="today">Зарегистрированные сегодня</option>
+                </select>
+              </div>
             <div class="selectMore week">
                 <div class="form week">
                     <Label>week

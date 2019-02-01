@@ -52,6 +52,7 @@ function getData() {
         }
     }
 
+    // console.log(sendUrl);
     $.ajax({
         url: sendUrl,
         type: "GET", contentType: "text/plain",
@@ -112,19 +113,20 @@ function buildData(pageValue){
         }
         html+="</div>";
     }
-    
-    html+="<div class='stepsSizeWrap'>";
-    html+="<select onchange='step=this.options[this.selectedIndex].value;buildData(1);'>";
-    var arr=[5,10,30,50,100];
-    for (i = 0; i < arr.length; i++){
-        if(step==arr[i]){
-            html+="<option value='"+arr[i]+"' selected>"+arr[i]+"</option>";    
-        }else{
-            html+="<option value='"+arr[i]+"'>"+arr[i]+"</option>";
+    if(dataset.length>10){
+        html+="<div class='stepsSizeWrap'>";
+        html+="<select onchange='step=this.options[this.selectedIndex].value;buildData(1);'>";
+        var arr=[5,10,30,50,100,200,500,1000];
+        for (i = 0; i < arr.length; i++){
+            if((arr[i]<=dataset.length)&&(step==arr[i])){
+                html+="<option value='"+arr[i]+"' selected>"+arr[i]+"</option>";    
+            }else if(arr[i-1]<=dataset.length){
+                html+="<option value='"+arr[i]+"'>"+arr[i]+"</option>";
+            }
         }
+        html+="</select>";
+        html+="</div>";
     }
-    html+="</select>";
-    html+="</div>";
     $(".resultSteps").html(html);
 }
 
@@ -181,6 +183,13 @@ $(function() {
     $("#dateFrom").val(search.dateFromDot);
     $("#dateTo").val(search.dateToDot);
 
+    function makeDotDate(date){
+        var year =date.getFullYear();
+        var month=["01","02","03","04","05","06","07","08","09","10","11","12"][date.getMonth()];
+        var day=date.getDate();
+        return day+"."+month+"."+year;
+    }
+
     function createCalendars(){
         var inputDateFrom = $('#dateFrom')
         .datepicker({autoClose: true})
@@ -195,10 +204,31 @@ $(function() {
     createCalendars();
 
     $(".selectType select").on("change",function(){
+        var value=$(this).val();
         $(".selectMore").removeClass("week in let out inside jornal resol resolWeek files prj today");
-        $(".selectMore").addClass($(this).val());
+        $(".selectMore").addClass(value);
+        if((value=="week")||(value=="resolWeek")){
+            search.dateTo=new Date();
+            search.dateFrom.setDate(search.dateTo.getDate()-7); 
+            search.dateToDot=makeDotDate(search.dateTo)
+            search.dateFromDot=makeDotDate(search.dateFrom)
+            $("#dateFrom").data("date", search.dateFrom);
+            $("#dateTo").data("date", search.dateTo);
+            $("#dateFrom").val(search.dateFromDot);
+            $("#dateTo").val(search.dateToDot);
+            createCalendars();
+        }
+        if(value=="today"){
+            search.dateFrom=search.dateTo=new Date();
+            search.dateFromDot=search.dateToDot=makeDotDate(search.dateFrom);
+            $("#dateFrom").data("date", search.dateFrom);
+            $("#dateTo").data("date", search.dateTo);
+            $("#dateFrom").val(search.dateFromDot);
+            $("#dateTo").val(search.dateToDot);
+            createCalendars();
+        }
     });
-
+    
     $(".toSearch").click(function(e){
         
         search.dateFrom = $("#dateFrom").val();
@@ -206,39 +236,39 @@ $(function() {
         var selectedArea=$(".selectType select").val();
         switch (selectedArea) {
             case 'week'      : {
-                search.type= 'all';
+                search.type= 'All';
             } break;
             case 'in'        : {
-                search.type= 'in';
+                search.type= 'In';
             } break;
             case 'let'       : {
-                search.type= 'let';
+                search.type= 'Let';
             } break;
             case 'out'       : {
-                search.type= 'out';
+                search.type= 'Out';
             } break;
             case 'inside'    : {
-                search.type= 'all';
+                search.type= 'All';
             } break;
             case 'jornal'    : {
-                search.type= 'all';
+                search.type= 'Jor';
             } break;
             case 'resol'     : {
-                search.type= 'all';
+                search.type= 'Res';
             } break;
             case 'resolWeek' : {
-                search.type= 'all';
+                search.type= 'Res';
+
             } break;
-            case 'files'     : {
-                search.type= 'all';
-            } break;
+            // case 'files'     : {
+            //     search.type= 'All';
+            // } break;
             case 'prj'       : {
-                search.type= 'all';
+                search.type= 'Prj';
             } break;
             case 'today'     : {
-                search.type= 'all';
+                search.type= 'All';
             } break;
-            
         }
         
         if(checkDateFormat(search.dateFrom)&&(search.dateFrom!="")){
@@ -252,7 +282,8 @@ $(function() {
             alert("Неправельная дата После");
         }
         if((search.dateTo_send!="")&&(search.dateFrom_send!="")){
-            getData();
+            // console.log(search)
+           getData();
         }else{alert("incorrect dates");}
     });
 

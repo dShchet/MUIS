@@ -183,12 +183,11 @@ namespace SharpServer
                 //Если необходимо получить перечень документов или резолюций
                 ResultSet.Source = head.GetCriterion("Table");//SearchTables
                 ResultSet.Source.Params["Rc.DocDate"] = dateFrom + ":" + dateTo;//фильрация по дате
-                if (Source == "all")
+                if (Source == "All")
                 {
-
-
                     ResultSet.Fill();//Выполнение SQL Запросов и запись данных
                     int ItemCnt = ResultSet.ItemCnt;
+                    Console.WriteLine("ItemCnt is "+ ItemCnt.ToString());
                     string json = "[";
                     for (int i = 0; i < ItemCnt; i++)
                     {
@@ -204,8 +203,8 @@ namespace SharpServer
                             json += ",\"DOCKIND\":\"" + DOCKIND + "\"";
                             if (DOCKIND == "RCIN")
                             {
-                                json += ",\"CORRESP\":[";
                                 var currItem = item.CORRESP[0];
+                                json += ",\"CORRESP\":[";
                                 {
                                     json += "{";
                                     try { json += ",\"ORGANIZ_NAME\":\"" + currItem.ORGANIZ.NAME.Replace("\"", "&quot;") + "\""; } catch { Console.WriteLine("nN ORGANIZ.NAME"); }
@@ -249,11 +248,49 @@ namespace SharpServer
                     json = json + "]";
                     return json;
                 }
-                else if (Source == "let")
+                else if (Source == "In")
+                {
+                    ResultSet.Source.Params["DocKind"] = "In";
+                    ResultSet.Fill();//Выполнение SQL Запросов и запись данных
+                    int ItemCnt = ResultSet.ItemCnt;
+                    Console.WriteLine("ItemCnt is " + ItemCnt.ToString());
+                    string json = "[";
+                    for (int i = 0; i < ItemCnt; i++)
+                    {
+                        var item = ResultSet.Item(i);
+                        if (i != 0) { json += ",{"; } else { json += "{"; }
+                        try { json += ",\"ISN\":\"" + item.ISN.ToString() + "\""; } catch { Console.WriteLine("nN item.ISN"); }
+                        try { json += ",\"RegNum\":\"" + item.RegNum + "\""; } catch { Console.WriteLine("nN item.RegNum"); }
+                        try { json += ",\"DocDate\":\"" + item.DocDate.ToString() + "\""; } catch { Console.WriteLine("nN item.DocDate"); }
+                        try { json += ",\"Contents\":\"" + item.Contents.Replace("\"", "&quot;") + "\""; } catch { Console.WriteLine("nN item.Contents"); }
+                        try { json += ",\"DOCKIND\":\"" + item.DOCKIND + "\""; } catch { Console.WriteLine("nN item.DOCKIND"); }
+                        try
+                        {
+                            var currItem = item.CORRESP[0];
+                            json += ",\"CORRESP\":[";
+                            {
+                                json += "{";
+                                try { json += ",\"ORGANIZ_NAME\":\"" + currItem.ORGANIZ.NAME.Replace("\"", "&quot;") + "\""; } catch { Console.WriteLine("nN ORGANIZ.NAME"); }
+                                try { json += ",\"OUTNUM\":\"" + currItem.OUTNUM.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.OUTNUM"); }
+                                try { json += ",\"OUTDATE\":\"" + currItem.OUTDATE.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.OUTDATE"); }
+                                try { json += ",\"SIGN\":\"" + currItem.SIGN.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.SIGN"); }
+                                json += "}";
+                            }
+                            json += "]";
+                        }
+                        catch{Console.WriteLine("nN item.CORRESP");}
+                        json += "}";
+
+                    }
+                    json = json + "]";
+                    return json;
+                }
+                else if (Source == "Let")
                 {
                     ResultSet.Source.Params["DocKind"] = "Let";
                     ResultSet.Fill();//Выполнение SQL Запросов и запись данных
                     int ItemCnt = ResultSet.ItemCnt;
+                    Console.WriteLine("ItemCnt is " + ItemCnt.ToString());
                     string json = "[";
                     for (int i = 0; i < ItemCnt; i++)
                     {
@@ -263,62 +300,31 @@ namespace SharpServer
                         try { json += ",\"RegNum\":\"" + item.RegNum + "\""; } catch { Console.WriteLine("nN item.RegNum"); }
                         try { json += ",\"DocDate\":\"" + item.DocDate.ToString() + "\""; } catch { Console.WriteLine("nN item.DocDate"); }
                         try { json += ",\"Contents\":\"" + item.Contents.Replace("\"", "&quot;") + "\""; } catch { Console.WriteLine("nN item.Contents"); }
-                        try
-                        {
-                            string DOCKIND = item.DOCKIND;
-                            json += ",\"DOCKIND\":\"" + DOCKIND + "\"";
-                            if (DOCKIND == "RCIN")
+                        try { json += ",\"DOCKIND\":\"" + item.DOCKIND + "\"";}catch{ Console.WriteLine("nN DOCKIND"); }
+                        try {
+                            json += ",\"AUTHOR\":[";
+                            var currItem = item.AUTHOR[0];
                             {
-                                json += ",\"CORRESP\":[";
-                                var currItem = item.CORRESP[0];
-                                {
-                                    json += "{";
-                                    try { json += ",\"ORGANIZ_NAME\":\"" + currItem.ORGANIZ.NAME.Replace("\"", "&quot;") + "\""; } catch { Console.WriteLine("nN ORGANIZ.NAME"); }
-                                    try { json += ",\"OUTNUM\":\"" + currItem.OUTNUM.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.OUTNUM"); }
-                                    try { json += ",\"OUTDATE\":\"" + currItem.OUTDATE.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.OUTDATE"); }
-                                    try { json += ",\"SIGN\":\"" + currItem.SIGN.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.SIGN"); }
-                                    json += "}";
-                                }
-                                json += "]";
+                                json += "{";
+                                try { json += ",\"CITIZEN_NAME\":\"" + currItem.CITIZEN.NAME + "\""; } catch { Console.WriteLine("nN AUTHOR.CITIZEN.NAME"); }
+                                try { json += ",\"CITIZEN_CITY\":\"" + currItem.CITIZEN.CITY + "\""; } catch { Console.WriteLine("nN AUTHOR.CITIZEN.CITY"); }
+                                json += "}";
                             }
-                            if (DOCKIND == "RCLET")
-                            {
-                                json += ",\"AUTHOR\":[";
-                                var currItem = item.AUTHOR[0];
-                                {
-                                    json += "{";
-                                    try { json += ",\"CITIZEN_NAME\":\"" + currItem.CITIZEN.NAME + "\""; } catch { Console.WriteLine("nN AUTHOR.CITIZEN.NAME"); }
-                                    try { json += ",\"CITIZEN_CITY\":\"" + currItem.CITIZEN.CITY + "\""; } catch { Console.WriteLine("nN AUTHOR.CITIZEN.CITY"); }
-                                    json += "}";
-                                }
-                                json += "]";
-                            }
+                            json += "]";
                         }
-                        catch
-                        {
-                            json += ",\"DOCKIND\":\"RCOUT\"";
-                            json += ",\"PERSONSIGN\":{";
-                            try
-                            {
-                                var currItem = item.PERSONSIGNS[0];
-                                try { json += "\"WHO_SIGN_NAME\":\"" + currItem.WHO_SIGN.NAME + "\""; } catch { }
-                            }
-                            catch { Console.WriteLine("nN PERSONSIGN"); }
-                            json += "}";
-
-                        }
-
+                        catch{ Console.WriteLine("nN AUTHOR"); }
                         json += "}";
 
                     }
                     json = json + "]";
                     return json;
                 }
-                else if (Source == "out")
+                else if (Source == "Out")
                 {
                     ResultSet.Source.Params["DocKind"] = "Out";
                     ResultSet.Fill();//Выполнение SQL Запросов и запись данных
                     int ItemCnt = ResultSet.ItemCnt;
+                    Console.WriteLine("ItemCnt is " + ItemCnt.ToString());
                     string json = "[";
                     for (int i = 0; i < ItemCnt; i++)
                     {
@@ -328,54 +334,225 @@ namespace SharpServer
                         try { json += ",\"RegNum\":\"" + item.RegNum + "\""; } catch { Console.WriteLine("nN item.RegNum"); }
                         try { json += ",\"DocDate\":\"" + item.DocDate.ToString() + "\""; } catch { Console.WriteLine("nN item.DocDate"); }
                         try { json += ",\"Contents\":\"" + item.Contents.Replace("\"", "&quot;") + "\""; } catch { Console.WriteLine("nN item.Contents"); }
+                        try { json += ",\"DOCKIND\":\"" + item.DOCKIND + "\"";}catch{ Console.WriteLine("nN DOCKIND"); }
+                        try {                           
+                            json += ",\"PERSONSIGN\":{";
+                            try { json += "\"WHO_SIGN_NAME\":\"" + item.PERSONSIGNS[0].WHO_SIGN.NAME + "\""; } catch { }
+                            json += "}";
+                        } catch {   Console.WriteLine("nN PERSONSIGN");}
+                        json += "}";
+                    }
+                    json = json + "]";
+                    return json;
+                }
+                else if (Source == "Jor")
+                {
+                    ResultSet.Source.Params["DocKind"] = "All";
+                    ResultSet.Fill();//Выполнение SQL Запросов и запись данных
+                    int ItemCnt = ResultSet.ItemCnt;
+                    Console.WriteLine("ItemCnt is " + ItemCnt.ToString());
+                    string json = "[";
+                    //for (int i = 0; i < ItemCnt; i++)
+                    //{
+                    //    var item = ResultSet.Item(i);
+                    //    if (i != 0) { json += ",{"; } else { json += "{"; }
+                    //    try { json += ",\"ISN\":\"" + item.ISN.ToString() + "\""; } catch { Console.WriteLine("nN item.ISN"); }
+                    //    try { json += ",\"RegNum\":\"" + item.RegNum + "\""; } catch { Console.WriteLine("nN item.RegNum"); }
+                    //    try { json += ",\"DocDate\":\"" + item.DocDate.ToString() + "\""; } catch { Console.WriteLine("nN item.DocDate"); }
+                    //    try { json += ",\"Contents\":\"" + item.Contents.Replace("\"", "&quot;") + "\""; } catch { Console.WriteLine("nN item.Contents"); }
+                    //    try
+                    //    {
+                    //        string DOCKIND = item.DOCKIND;
+                    //        json += ",\"DOCKIND\":\"" + DOCKIND + "\"";
+                    //        if (DOCKIND == "RCIN")
+                    //        {
+                    //            json += ",\"CORRESP\":[";
+                    //            var currItem = item.CORRESP[0];
+                    //            {
+                    //                json += "{";
+                    //                try { json += ",\"ORGANIZ_NAME\":\"" + currItem.ORGANIZ.NAME.Replace("\"", "&quot;") + "\""; } catch { Console.WriteLine("nN ORGANIZ.NAME"); }
+                    //                try { json += ",\"OUTNUM\":\"" + currItem.OUTNUM.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.OUTNUM"); }
+                    //                try { json += ",\"OUTDATE\":\"" + currItem.OUTDATE.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.OUTDATE"); }
+                    //                try { json += ",\"SIGN\":\"" + currItem.SIGN.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.SIGN"); }
+                    //                json += "}";
+                    //            }
+                    //            json += "]";
+                    //        }
+                    //        if (DOCKIND == "RCLET")
+                    //        {
+                    //            json += ",\"AUTHOR\":[";
+                    //            var currItem = item.AUTHOR[0];
+                    //            {
+                    //                json += "{";
+                    //                try { json += ",\"CITIZEN_NAME\":\"" + currItem.CITIZEN.NAME + "\""; } catch { Console.WriteLine("nN AUTHOR.CITIZEN.NAME"); }
+                    //                try { json += ",\"CITIZEN_CITY\":\"" + currItem.CITIZEN.CITY + "\""; } catch { Console.WriteLine("nN AUTHOR.CITIZEN.CITY"); }
+                    //                json += "}";
+                    //            }
+                    //            json += "]";
+                    //        }
+                    //    }
+                    //    catch
+                    //    {
+                    //        json += ",\"DOCKIND\":\"RCOUT\"";
+                    //        json += ",\"PERSONSIGN\":{";
+                    //        try
+                    //        {
+                    //            var currItem = item.PERSONSIGNS[0];
+                    //            try { json += "\"WHO_SIGN_NAME\":\"" + currItem.WHO_SIGN.NAME + "\""; } catch { }
+                    //        }
+                    //        catch { Console.WriteLine("nN PERSONSIGN"); }
+                    //        json += "}";
+
+                    //    }
+
+                    //    json += "}";
+
+                    //}
+                    json = json + "]";
+                    return json;
+                }
+                else if (Source == "Res")
+                {
+                    ResultSet.Source.Params["Result"] = "Resol";
+                    //ResultSet.Source.Params["DocKind"] = "Both";
+                    ResultSet.Fill();//Выполнение SQL Запросов и запись данных
+                    int ItemCnt = ResultSet.ItemCnt;
+                    Console.WriteLine("ItemCnt is " + ItemCnt.ToString());
+                    string json = "[";
+                    for (int i = 0; i < ItemCnt; i++)
+                    {
+                        var item = ResultSet.Item(i);
+                        string RCKIND = "";
+                        if (i != 0) { json += ",{"; } else { json += "{"; }
+                        try { json += ",\"ISN\":\"" + item.ISN.ToString() + "\""; } catch { Console.WriteLine("nN item.ISN"); }
+                        try {
+                            RCKIND = item.RCKIND;
+                            json += ",\"RCKIND\":\"" + RCKIND + "\"";
+                        } catch { Console.WriteLine("nN item.RCKIND"); }
+                        try { json += ",\"TEXT\":\"" + item.TEXT.Replace("\"", "&quot;") + "\""; } catch { Console.WriteLine("nN item.TEXT"); }
+                        try { json += ",\"PLANDATE\":\"" + item.PLANDATE.ToString() + "\""; } catch { Console.WriteLine("nN item.PLANDATE"); }
+                        try { json += ",\"SENDDATE \":\"" + item.SENDDATE.ToString() + "\""; } catch { Console.WriteLine("nN item.PLANDATE"); }
+                        try {
+                            string AUTHOR = "";
+                            try { AUTHOR = item.INSPECTOR.NAME; }  catch{ }
+                            try { AUTHOR = item.AUTHOR.NAME; } catch{ }
+                            json += ",\"AUTHOR\":\"" + AUTHOR + "\"";
+                        } catch { Console.WriteLine("nN AUTHOR"); }
                         try
                         {
-                            string DOCKIND = item.DOCKIND;
-                            json += ",\"DOCKIND\":\"" + DOCKIND + "\"";
-                            if (DOCKIND == "RCIN")
+                            json += ",\"RC\":[";
+                            var RC = item.RC;
                             {
-                                json += ",\"CORRESP\":[";
-                                var currItem = item.CORRESP[0];
-                                {
-                                    json += "{";
-                                    try { json += ",\"ORGANIZ_NAME\":\"" + currItem.ORGANIZ.NAME.Replace("\"", "&quot;") + "\""; } catch { Console.WriteLine("nN ORGANIZ.NAME"); }
-                                    try { json += ",\"OUTNUM\":\"" + currItem.OUTNUM.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.OUTNUM"); }
-                                    try { json += ",\"OUTDATE\":\"" + currItem.OUTDATE.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.OUTDATE"); }
-                                    try { json += ",\"SIGN\":\"" + currItem.SIGN.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.SIGN"); }
-                                    json += "}";
+                                json += "{";
+                                try { json += ",\"ISN\":\"" + RC.ISN.ToString() + "\""; } catch { Console.WriteLine("nN RC.ISN"); }
+                                try { json += ",\"CONTENTS\":\"" + RC.CONTENTS.Replace("\"", "&quot;") + "\""; } catch { Console.WriteLine("nN RC.CONTENTS"); }
+                                if ((RCKIND == "RCIN") || (RCKIND == "RCLET")) {
+                                    try
+                                    {
+                                        json += ",\"CORRESP\":[";
+                                        var currItem = RC.CORRESP[0];
+                                        {
+                                            json += "{";
+                                            try { json += ",\"ORGANIZ_NAME\":\"" + currItem.ORGANIZ.NAME.Replace("\"", "&quot;") + "\""; } catch { Console.WriteLine("nN ORGANIZ.NAME"); }
+                                            try { json += ",\"OUTNUM\":\"" + currItem.OUTNUM.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.OUTNUM"); }
+                                            try { json += ",\"OUTDATE\":\"" + currItem.OUTDATE.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.OUTDATE"); }
+                                            try { json += ",\"SIGN\":\"" + currItem.SIGN + "\""; } catch { Console.WriteLine("nN CORRESP.SIGN"); }
+                                            json += "}";
+                                        }
+                                        json += "]";
+                                    }
+                                    catch { Console.WriteLine("nN RC.CORRESP"); }
                                 }
-                                json += "]";
-                            }
-                            if (DOCKIND == "RCLET")
-                            {
-                                json += ",\"AUTHOR\":[";
-                                var currItem = item.AUTHOR[0];
+                                if (RCKIND == "RCOUT")
                                 {
-                                    json += "{";
-                                    try { json += ",\"CITIZEN_NAME\":\"" + currItem.CITIZEN.NAME + "\""; } catch { Console.WriteLine("nN AUTHOR.CITIZEN.NAME"); }
-                                    try { json += ",\"CITIZEN_CITY\":\"" + currItem.CITIZEN.CITY + "\""; } catch { Console.WriteLine("nN AUTHOR.CITIZEN.CITY"); }
-                                    json += "}";
+                                    try
+                                    {
+                                        json += ",\"PERSONSIGN\":{";
+                                        try { json += "\"WHO_SIGN_NAME\":\"" + RC.PERSONSIGNS[0].WHO_SIGN.NAME + "\""; } catch { }
+                                        json += "}";
+                                    }
+                                    catch { Console.WriteLine("nN PERSONSIGN"); }
                                 }
-                                json += "]";
+                                try {
+                                    var currItem2 = RC.RESOLUTION[0].REPLY[0].EXECUTOR.NAME;
+                                    json += ",\"EXECUTOR_NAME\":\"" + currItem2 + "\""; } catch { Console.WriteLine("nN EXECUTOR_NAME");
+                                }
+                                json += "}";
                             }
+                            json += "]";
                         }
-                        catch
-                        {
-                            json += ",\"DOCKIND\":\"RCOUT\"";
-                            json += ",\"PERSONSIGN\":{";
-                            try
-                            {
-                                var currItem = item.PERSONSIGNS[0];
-                                try { json += "\"WHO_SIGN_NAME\":\"" + currItem.WHO_SIGN.NAME + "\""; } catch { }
-                            }
-                            catch { Console.WriteLine("nN PERSONSIGN"); }
-                            json += "}";
-
-                        }
-
+                        catch { Console.WriteLine("nN RC"); }
+                        
                         json += "}";
 
                     }
+                    json = json + "]";
+                    return json;
+                }
+                else if (Source == "Prj")
+                {
+                    ResultSet.Source.Params["Result"] = "Project";
+                    //ResultSet.Source.Params["DocKind"] = "Both";
+                    ResultSet.Fill();//Выполнение SQL Запросов и запись данных
+                    int ItemCnt = ResultSet.ItemCnt;
+                    Console.WriteLine("ItemCnt-Prj is " + ItemCnt.ToString());
+                    string json = "[";
+                    //for (int i = 0; i < ItemCnt; i++)
+                    //{
+                    //    var item = ResultSet.Item(i);
+                    //    if (i != 0) { json += ",{"; } else { json += "{"; }
+                    //    try { json += ",\"ISN\":\"" + item.ISN.ToString() + "\""; } catch { Console.WriteLine("nN item.ISN"); }
+                    //    try { json += ",\"RegNum\":\"" + item.RegNum + "\""; } catch { Console.WriteLine("nN item.RegNum"); }
+                    //    try { json += ",\"DocDate\":\"" + item.DocDate.ToString() + "\""; } catch { Console.WriteLine("nN item.DocDate"); }
+                    //    try { json += ",\"Contents\":\"" + item.Contents.Replace("\"", "&quot;") + "\""; } catch { Console.WriteLine("nN item.Contents"); }
+                    //    try
+                    //    {
+                    //        string DOCKIND = item.DOCKIND;
+                    //        json += ",\"DOCKIND\":\"" + DOCKIND + "\"";
+                    //        if (DOCKIND == "RCIN")
+                    //        {
+                    //            json += ",\"CORRESP\":[";
+                    //            var currItem = item.CORRESP[0];
+                    //            {
+                    //                json += "{";
+                    //                try { json += ",\"ORGANIZ_NAME\":\"" + currItem.ORGANIZ.NAME.Replace("\"", "&quot;") + "\""; } catch { Console.WriteLine("nN ORGANIZ.NAME"); }
+                    //                try { json += ",\"OUTNUM\":\"" + currItem.OUTNUM.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.OUTNUM"); }
+                    //                try { json += ",\"OUTDATE\":\"" + currItem.OUTDATE.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.OUTDATE"); }
+                    //                try { json += ",\"SIGN\":\"" + currItem.SIGN.ToString() + "\""; } catch { Console.WriteLine("nN CORRESP.SIGN"); }
+                    //                json += "}";
+                    //            }
+                    //            json += "]";
+                    //        }
+                    //        if (DOCKIND == "RCLET")
+                    //        {
+                    //            json += ",\"AUTHOR\":[";
+                    //            var currItem = item.AUTHOR[0];
+                    //            {
+                    //                json += "{";
+                    //                try { json += ",\"CITIZEN_NAME\":\"" + currItem.CITIZEN.NAME + "\""; } catch { Console.WriteLine("nN AUTHOR.CITIZEN.NAME"); }
+                    //                try { json += ",\"CITIZEN_CITY\":\"" + currItem.CITIZEN.CITY + "\""; } catch { Console.WriteLine("nN AUTHOR.CITIZEN.CITY"); }
+                    //                json += "}";
+                    //            }
+                    //            json += "]";
+                    //        }
+                    //    }
+                    //    catch
+                    //    {
+                    //        json += ",\"DOCKIND\":\"RCOUT\"";
+                    //        json += ",\"PERSONSIGN\":{";
+                    //        try
+                    //        {
+                    //            var currItem = item.PERSONSIGNS[0];
+                    //            try { json += "\"WHO_SIGN_NAME\":\"" + currItem.WHO_SIGN.NAME + "\""; } catch { }
+                    //        }
+                    //        catch { Console.WriteLine("nN PERSONSIGN"); }
+                    //        json += "}";
+
+                    //    }
+
+                    //    json += "}";
+
+                    //}
                     json = json + "]";
                     return json;
                 }
@@ -739,7 +916,7 @@ namespace SharpServer
                 Stopwatch sw12 = Stopwatch.StartNew();
                 try
                 {
-                    json += ",\"RESOLCNT\":\"" + item.RESOLCNT.ToString() + "\"";
+                    try{json += ",\"RESOLCNT\":\"" + item.RESOLCNT.ToString() + "\""; } catch { json += ",\"RESOLCNT\":0"; }
                     if (item.RESOLCNT > 0)
                     {
                         json += ",\"RESOLUTION\":[";
@@ -813,7 +990,7 @@ namespace SharpServer
                 Stopwatch sw13 = Stopwatch.StartNew();
                 try
                 {
-                    json += ",\"JOURNALCNT\":\"" + item.JOURNALCNT.ToString() + "\"";
+                    try { json += ",\"JOURNALCNT\":\"" + item.JOURNALCNT.ToString() + "\""; } catch { json += ",\"JOURNALCNT\":0"; }
                     if (item.JOURNALCNT > 0)
                     {
                         json += ",\"JOURNAL\":[";
