@@ -53,22 +53,22 @@ function getData() {
     }
 
     // console.log(sendUrl);
-    $.ajax({
-        url: sendUrl,
-        type: "GET", contentType: "text/plain",
-        success: function (data) {
-            dataset=data;
-            console.log(dataset);
-            console.log(sendUrl);
+    // $.ajax({
+    //     url: sendUrl,
+    //     type: "GET", contentType: "text/plain",
+    //     success: function (data) {
+    //         dataset=data;
+    //         console.log(dataset);
+    //         console.log(sendUrl);
             makeResultTitle(dataset.length);
             page=1
             buildData();
-        },
-        error: function (jqXHR, exception) {
-            $(".resultTitle").html("<div class='center'>Ошибка</div>");
-           console.log("Ошибка: "+jqXHR+"; exception: "+exception);
-           console.log(jqXHR);},
-    });
+    //     },
+    //     error: function (jqXHR, exception) {
+    //         $(".resultTitle").html("<div class='center'>Ошибка</div>");
+    //        console.log("Ошибка: "+jqXHR+"; exception: "+exception);
+    //        console.log(jqXHR);},
+    // });
 }
 
 //Сформировать выод (либо после загрузки, либо обновление)
@@ -287,6 +287,41 @@ $(function() {
         }else{alert("incorrect dates");}
     });
 
+    function showDoc(){
+        $('body').toggleClass('nopopup');
+        $('.popup .title').html('Группы документов');
+        var html="";
+        
+        getDoc(0);
+
+
+        
+    }
+    showDoc();
+    function getDoc(isn){
+        var html="";
+        console.log(isn);        
+        $.ajax({
+            url: INFO.deloAdr+"?need="+"lib"+"&isn="+isn+"&type=doc",
+            type: "GET", contentType: "text/plain",
+            success: function (data) {
+                var ItemCnt=data[0]["ItemCnt"];
+                data=data[0].data;
+                console.log(ItemCnt);
+                console.log(data);
+                for (let i = 0; i < ItemCnt; i++){
+                    item=data[i]
+                    html+="<div>"+item.NAME+"</div>"
+                }
+                $('.popFields').html(html);
+            },
+            error: function (jqXHR, exception) {
+                // $(".resultTitle").html("<div class='center'>Ошибка</div>");
+               console.log("Ошибка: "+jqXHR+"; exception: "+exception);
+               console.log(jqXHR);},
+        });
+        //return html;
+    }
 
     //обработчик скрытия попапа
     $(".close, .shadow").click(function(){$('body').toggleClass('nopopup');});

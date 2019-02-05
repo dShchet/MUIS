@@ -19,8 +19,9 @@ namespace SharpServer
             {
                 Console.WriteLine("[" + reqType + "]" + "processing Req");
 
-                string rngList = EOSSearch(Dict);
-                SendResp(Client, 200, "application / json", rngList, reqType);
+                string json = EOSSearch(Dict);
+                Console.WriteLine("1 json is " + json);
+                SendResp(Client, 200, "application / json", json, reqType);
             }
             else if ((Dict.ContainsKey("need")) && (Dict["need"] == "one"))
             {
@@ -120,61 +121,21 @@ namespace SharpServer
 
         public string EOSSearch(Dictionary<string, string> Dict)
         {
-            //try {
-                Type headType = Type.GetTypeFromProgID("Eapi.Head");//создать класса головных объектов}
-            //catch (ArgumentException e)
-            //{
-            //    Console.WriteLine("{0}: {1}", e.GetType().Name, e.Message);
-            //}
-            
+            Type headType = Type.GetTypeFromProgID("Eapi.Head");//создать класса головных объектов}
+
             dynamic head = null;
-            try {
-                if (headType == null)
-                {
-                    Console.WriteLine("headType is null");
-                }
-                else {
-                    Console.WriteLine("headType is not null its");
-                    Console.WriteLine(headType.ToString());
-                }
-            } catch { Console.WriteLine("error with truing"); }
-            //Console.WriteLine(headType.ToString());
+            
             try
             {
                 Console.WriteLine("trying CreateInstanc");
-                try
-                {
-                    head = Activator.CreateInstance(headType); //создать головной объект
-                }
-                catch (System.IndexOutOfRangeException) { Console.WriteLine("System.IndexOutOfRangeException"); }
-                catch (System.ArrayTypeMismatchException) { Console.WriteLine("System.ArrayTypeMismatchException"); }
-                catch (System.NullReferenceException) { Console.WriteLine("System.NullReferenceException"); }
-                catch (System.DivideByZeroException) { Console.WriteLine("System.DivideByZeroException"); }
-                catch (System.InvalidCastException) { Console.WriteLine("System.InvalidCastException"); }
-                catch (System.OutOfMemoryException) { Console.WriteLine("System.OutOfMemoryException"); }
-                catch (System.StackOverflowException) { Console.WriteLine("System.StackOverflowException"); }
-                //catch (System.ArgumentNullException) { Console.WriteLine("System.ArgumentNullException"); }
-                catch (System.ArgumentNullException ex)
-                {
-                    Console.WriteLine("SYstem.ArgumentNullException");
-                    Console.WriteLine("\nMessage ---\n{0}", ex.Message);
-                    Console.WriteLine("\nHelpLink ---\n{0}", ex.HelpLink);
-                    Console.WriteLine("\nSource ---\n{0}", ex.Source);
-                    Console.WriteLine("\nStackTrace ---\n{0}", ex.StackTrace);
-                    Console.WriteLine("\nTargetSite ---\n{0}", ex.TargetSite);
-                }
-                //string[] arg = Environment.GetCommandLineArgs();
-                //if (arg.Length == 5)
-                //{
-                Console.WriteLine("сержантов1");
-                if (!head.OpenWithParams("сержантов1", "123")) // открытие соединения с параметрами логина и паролем
-                    //if (!head.OpenWithParams("tver", "123")) // открытие соединения с параметрами логина и паролем
-
+                head = Activator.CreateInstance(headType); //создать головной объект
+                //if (!head.OpenWithParams("сержантов1", "123")) // открытие соединения с параметрами логина и паролем
+                    if (!head.OpenWithParams("tver", "123")) // открытие соединения с параметрами логина и паролем
                     // OpenWithParamsEx 1-Сервер 2-Владелец 3-Логин 4-Пароль 
+                {
                     head = null;
-                //}
-                //else if (!head.Open())
-                //    head = null;
+                    Console.WriteLine("head = null");
+                }
             }
             catch (Exception)
             {
@@ -196,16 +157,46 @@ namespace SharpServer
                 if (Dict.ContainsKey("dateFrom")) { dateFrom = Dict["dateFrom"]; } else { dateFrom = "01/01/1998"; }
                 if (Dict.ContainsKey("dateTo")) { dateTo = Dict["dateTo"]; } else { dateTo = "01/01/2018"; }
 
-                dynamic ResultSet = head.GetResultSet; //создание хранилища 
 
+                dynamic ResultSet = head.GetResultSet; //создание хранилища 
                 //Если необходимо получить информацию из справочников системы
                 //ResultSet.Source = head.GetCriterion("Vocabulary");//SearchVocab
                 //Если необходимо получить перечень документов или резолюций
                 ResultSet.Source = head.GetCriterion("Table");//SearchTables
-                ResultSet.Source.Params["Rc.DocDate"] = dateFrom + ":" + dateTo;//фильрация по дате
+                try
+                {
+                    Console.WriteLine("ResultSet.ERRCODE is " + ResultSet.ERRCODE);
+                    Console.WriteLine("ResultSet.ERRTEXT is " + ResultSet.ERRTEXT);
+                }
+                catch
+                {
+                    Console.WriteLine("no error");
+                }
+                Console.WriteLine("4  ResultSet.Source");
+                try {
+                    //string tempDate = "01/01/2019:02/02/2019";
+                    //ResultSet.Source.Params["Rc.DocDate"] = tempDate;
+                    ResultSet.Source.Params["Rc.DocDate"] = dateFrom + ":" + dateTo;
+                    //Console.WriteLine(dateFrom + ":" + dateTo);
+                    Console.WriteLine("5  Params[Rc.DocDate]");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.GetType().FullName);
+                    Console.WriteLine("\nMessage ---\n{0}", ex.Message);
+                    Console.WriteLine("\nHelpLink ---\n{0}", ex.HelpLink);
+                    Console.WriteLine("\nSource ---\n{0}", ex.Source);
+                    Console.WriteLine("\nStackTrace ---\n{0}", ex.StackTrace);
+                    Console.WriteLine("\nTargetSite ---\n{0}", ex.TargetSite);
+                    
+                }
+
+                Console.WriteLine("5  ResultSet.Source.Params");
                 if (Source == "All")
                 {
+                    Console.WriteLine("6 its all");
                     ResultSet.Fill();//Выполнение SQL Запросов и запись данных
+                    Console.WriteLine("7 fill is done");
                     int ItemCnt = ResultSet.ItemCnt;
                     Console.WriteLine("ItemCnt is " + ItemCnt.ToString());
                     string json = "[";
@@ -619,10 +610,10 @@ namespace SharpServer
                 //if (arg.Length == 5)
                 //{
                 Console.WriteLine("ONEсержантов1 123");
-                if (!head.OpenWithParams("сержантов1", "123")) // открытие соединения с параметрами логина и паролем
-                    //if (!head.OpenWithParams("tver", "123")) // открытие соединения с параметрами логина и паролем
-                    // OpenWithParamsEx 1-Сервер 2-Владелец 3-Логин 4-Пароль 
-                    head = null;
+                //if (!head.OpenWithParams("сержантов1", "123")) // открытие соединения с параметрами логина и паролем
+                    if (!head.OpenWithParams("tver", "123")) // открытие соединения с параметрами логина и паролем
+                                                             // OpenWithParamsEx 1-Сервер 2-Владелец 3-Логин 4-Пароль 
+                        head = null;
                 //}
                 //else if (!head.Open())
                 //    head = null;
@@ -648,6 +639,7 @@ namespace SharpServer
                 if ((rcType == "RCIN") || (rcType == "RcIn"))
                 {
                     item = head.GetRow("RcIn", isn);
+                    Console.WriteLine("item getted row");
                 }
                 else if ((rcType == "RCOUT") || (rcType == "RcOut"))
                 {
@@ -665,7 +657,7 @@ namespace SharpServer
 
                 Console.WriteLine("item.LOCKED");
 
-                try { item.LOCKED = true; } catch { Console.WriteLine("item.notLOCKED"); }
+                //try { item.LOCKED = true; } catch { Console.WriteLine("item.notLOCKED"); }
 
                 Stopwatch sw02 = Stopwatch.StartNew();
                 string json = "";
@@ -673,7 +665,15 @@ namespace SharpServer
                 sw02.Stop();
                 Console.WriteLine("Tt: {0}  start2 ", sw02.Elapsed.TotalMilliseconds.ToString().Split(',')[0]);
                 Stopwatch sw03 = Stopwatch.StartNew();
-                try { json += "\"ISN\":\"" + item.ISN.ToString() + "\""; } catch { Console.WriteLine("nN ISN"); }
+                try { json += "\"ISN\":\"" + item.ISN.ToString() + "\""; } catch (Exception ex)
+                {
+                    Console.WriteLine("nN ISN");
+                    Console.WriteLine("\nMessage ---\n{0}", ex.Message);
+                    Console.WriteLine("\nHelpLink ---\n{0}", ex.HelpLink);
+                    Console.WriteLine("\nSource ---\n{0}", ex.Source);
+                    Console.WriteLine("\nStackTrace ---\n{0}", ex.StackTrace);
+                    Console.WriteLine("\nTargetSite ---\n{0}", ex.TargetSite);
+                }
                 try
                 {
                     json += ",\"DOCGROUP\":{";
@@ -1335,8 +1335,8 @@ namespace SharpServer
                 //if (arg.Length == 5)
                 //{
                 Console.WriteLine("ONEсержантов1 123");
-                if (!head.OpenWithParams("сержантов1", "123")) // открытие соединения с параметрами логина и паролем
-                    //if (!head.OpenWithParams("tver", "123")) // открытие соединения с параметрами логина и паролем
+                //if (!head.OpenWithParams("сержантов1", "123")) // открытие соединения с параметрами логина и паролем
+                    if (!head.OpenWithParams("tver", "123")) // открытие соединения с параметрами логина и паролем
                                                          // OpenWithParamsEx 1-Сервер 2-Владелец 3-Логин 4-Пароль 
                     head = null;
                 //}
@@ -1498,6 +1498,43 @@ namespace SharpServer
                         catch { json = "[{error:'не найден такой элемент'}]"; }
                     }
                 }
+                else if ((type == "doc"))
+                {
+                    dynamic ResultSet = head.GetResultSet; //создание хранилища 
+                    ResultSet.Source = head.GetCriterion("Vocabulary");
+                    dynamic SearchVocab = ResultSet.Source;
+                    SearchVocab.VOCABULARY = "DocGroup";
+                    SearchVocab.BASE = isn;
+                    SearchVocab.Select = "OneLevel";
+                    if (isn == 0){
+                        SearchVocab.ItemType = "Node";
+                    }else {
+                        //SearchVocab.ItemType = "Leaf";
+                    }
+                    ResultSet.Fill();
+                    if (ResultSet.ERRCODE == 0)
+                    {
+                        try
+                        {
+                            int ItemCnt = ResultSet.ItemCnt;
+                            json += "\"ItemCnt\":\"" + ItemCnt + "\",";
+                            json += "\"data\":[";
+                            for (int i = 0; i < ItemCnt; i++)
+                            {
+                                var item = ResultSet.Item(i);
+                                if (i != 0) { json += ",{"; } else { json += "{"; }
+                                try { json += ",\"NAME\":\"" + item.NAME.Replace("\"", "&quot;") + "\""; } catch { }
+                                try { json += ",\"ISN\":\"" + item.ISN + "\""; } catch { }
+                                try { json += ",\"DCODE\":\"" + item.DCODE + "\""; } catch { }
+                                try { json += ",\"ISNODE\":\"" + item.ISNODE.ToString() + "\""; } catch { }
+                                json += "}";
+                            }
+                            json += "]";
+                        }
+                        catch { Console.WriteLine("errror:someWrong"); }
+                    }
+                    else { Console.WriteLine(ResultSet.ERRTEXT); }
+                }
                 else
                 {
                     Console.WriteLine("errror: wrong type");
@@ -1546,6 +1583,7 @@ namespace SharpServer
             try
             {
                 string paramsString = Request.Split(' ')[1];
+
                 if ((paramsString != "/") && (RequestArr.Length > 1))
                 {
                     Console.WriteLine("[" + reqType + "]" + " paramsString [" + paramsString + "]");
