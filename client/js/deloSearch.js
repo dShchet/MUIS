@@ -10,6 +10,8 @@ var search={
     // dateTo: new Date(),
     dateToDot:"31.01.2019",
 };
+var docH={"0":{}};
+var docSel={};
 // console.log(search);
 dataset=[{"ISN":"4324","RegNum":"В-1","DocDate":"27.04.2012 ","Contents":"О применении инструкции №35 ФНС России","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"Министерство финансов РФ (Минфин РФ)","OUTNUM":"07-1-1234","OUTDATE":"25.04.2012 ","SIGN":"Силуанов А.Г."}]},{"ISN":"4328","RegNum":"Р-2","DocDate":"27.04.2012 ","Contents":"О заседании акционеров","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"Сбербанк России","OUTNUM":"36-15","OUTDATE":"16.04.2012 ","SIGN":"Греф Г.О."}]},{"ISN":"4333","RegNum":"Ф-3","DocDate":"27.04.2012 ","Contents":"О направлении регламента ","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"Филиал Вологодской области","OUTNUM":"45/2012","OUTDATE":"12.04.2012 ","SIGN":"Воронина С.В."}]},{"ISN":"4337","RegNum":"В-1","DocDate":"27.04.2012 ","Contents":"Жалоба на организацию проведения ЕГЭ","DOCKIND":"RCLET","AUTHOR":[{"CITIZEN_NAME":"Валявская Т.М.","CITIZEN_CITY":"Ставрополь"}]},{"ISN":"4341","RegNum":"04-1","DocDate":"27.04.2012 ","Contents":"Запрос информации о выплатах","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Захаров П.Ф. - Генеральный директор"}},{"ISN":"4353","RegNum":"03.1-2","DocDate":"27.04.2012 ","Contents":"О заседании акционеров. Предложения.","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Захаров П.Ф. - Генеральный директор"}},{"ISN":"4363","RegNum":"Л-1","DocDate":"27.04.2012 ","Contents":"Об аренде","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Захаров П.Ф. - Генеральный директор"}},{"ISN":"4403","RegNum":"1","DocDate":"27.02.2011 ","Contents":"Об утверждении штатного расписания","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Захаров П.Ф. - Генеральный директор"}},{"ISN":"4418","RegNum":"2","DocDate":"28.03.2011 ","Contents":"Об утверждении инструкции по делопроизводству","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Захаров П.Ф. - Генеральный директор"}},{"ISN":"4432","RegNum":"3","DocDate":"28.04.2011 ","Contents":"Об утверждении инструкции по работе с СКЗИ","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Захаров П.Ф. - Генеральный директор"}},{"ISN":"4452","RegNum":"1-лс","DocDate":"27.04.2012 ","Contents":"О приеме на работу Стрельникова А.Д. в Отдел №2 Управления по основной деятельности на должность ведущего специалиста","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Захаров П.Ф. - Генеральный директор"}},{"ISN":"4460","RegNum":"1","DocDate":"27.04.2012 ","Contents":"Об утверждении списка сотрудников, имеющих допуск по грифу &quot;Коммерческая тайна&quot;","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Захаров П.Ф. - Генеральный директор"}},{"ISN":"4482","RegNum":"05-04/1","DocDate":"04.05.2012 ","Contents":"О подготовке отчетности о состоянии договорной работы","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Адвокатов П.Б. - Нач. отдела"}},{"ISN":"4488","RegNum":"03-03/2","DocDate":"04.05.2012 ","Contents":"Справка о проведении проверки в филиале по г. Санкт-Петербургу","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Портнов И.А. - Начальник управления"}},{"ISN":"4496","RegNum":"В-4","DocDate":"04.05.2012 ","Contents":"О переводе на новый порядок финансирования","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"Министерство финансов РФ (Минфин РФ)","OUTNUM":"02-03-10-1603","OUTDATE":"28.04.2011 ","SIGN":"Силуанов А.Г."}]},{"ISN":"4512","RegNum":"ПР/1-2012","DocDate":"04.05.2012 ","Contents":"Об утверждении  плана работы на второе полугодие 2012 года","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Захаров П.Ф. - Генеральный директор"}},{"ISN":"4529","RegNum":"Д-2","DocDate":"04.05.2012 ","Contents":"Жалоба на работу жилищно-коммунальных служб","DOCKIND":"RCLET","AUTHOR":[{"CITIZEN_NAME":"Денисов Г.Р.","CITIZEN_CITY":"Москва"}]},{"ISN":"4644","RegNum":"Д-1","DocDate":"04.06.2012 ","Contents":"Проверка регистрации исходящего.","DOCKIND":"RCOUT","PERSONSIGN":{"WHO_SIGN_NAME":"Захаров П.Ф. - Генеральный директор"}},{"ISN":"4675","RegNum":"Р-1","DocDate":"04.06.2012 ","Contents":"Проверка регистрации входящего документа.","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"КБ &quot;Восток&quot;","OUTNUM":"П-112","OUTDATE":"12.05.2012 ","SIGN":"Карелин В.В."}]},{"ISN":"4694","RegNum":"Ан-1","DocDate":"04.06.2012 ","Contents":"Проверка регистрации обращения гражданина.","DOCKIND":"RCLET","AUTHOR":[{"CITIZEN_NAME":"Тихорин В.И.","CITIZEN_CITY":"Санкт-Петербург"}]},{"ISN":"4724","RegNum":"Р-2","DocDate":"04.06.2012 ","Contents":"Проверка регистрации входящего документа.","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"КБ &quot;Восток&quot;","OUTNUM":"П-112","OUTDATE":"12.05.2012 ","SIGN":"Карелин В.В."}]},{"ISN":"4743","RegNum":"Кол-2","DocDate":"04.06.2012 ","Contents":"Проверка регистрации обращения гражданина.","DOCKIND":"RCLET","AUTHOR":[{"CITIZEN_NAME":"Тихорин В.И.","CITIZEN_CITY":"Санкт-Петербург"}]},{"ISN":"4773","RegNum":"Р-3","DocDate":"04.06.2012 ","Contents":"Проверка регистрации входящего документа.","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"КБ &quot;Восток&quot;","OUTNUM":"П-112","OUTDATE":"12.05.2012 ","SIGN":"Карелин В.В."}]},{"ISN":"4822","RegNum":"Р-4","DocDate":"04.06.2012 ","Contents":"Проверка регистрации входящего документа.","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"КБ &quot;Восток&quot;","OUTNUM":"П-112","OUTDATE":"12.05.2012 ","SIGN":"Карелин В.В."}]},{"ISN":"4853","RegNum":"Р-5","DocDate":"04.06.2012 ","Contents":"Проверка регистрации входящего документа.","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"КБ &quot;Восток&quot;","OUTNUM":"П-112","OUTDATE":"12.05.2012 ","SIGN":"Карелин В.В."}]},{"ISN":"4868","RegNum":"Кол-4","DocDate":"04.06.2012 ","Contents":"Проверка регистрации обращения гражданина.","DOCKIND":"RCLET","AUTHOR":[{"CITIZEN_NAME":"Тихорин В.И.","CITIZEN_CITY":"Санкт-Петербург"}]},{"ISN":"4892","RegNum":"Р-6","DocDate":"04.06.2012 ","Contents":"Проверка регистрации входящего документа.","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"КБ &quot;Восток&quot;","OUTNUM":"П-112","OUTDATE":"12.05.2012 ","SIGN":"Карелин В.В."}]},{"ISN":"4907","RegNum":"Р-7","DocDate":"04.06.2012 ","Contents":"Проверка регистрации входящего документа.","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"КБ &quot;Восток&quot;","OUTNUM":"П-112","OUTDATE":"12.05.2012 ","SIGN":"Карелин В.В."}]},{"ISN":"4922","RegNum":"Р-8","DocDate":"04.06.2012 ","Contents":"Проверка регистрации входящего документа.","DOCKIND":"RCIN","CORRESP":[{"ORGANIZ_NAME":"КБ &quot;Восток&quot;","OUTNUM":"П-112","OUTDATE":"12.05.2012 ","SIGN":"Карелин В.В."}]}];
 
@@ -289,31 +291,111 @@ $(function() {
 
     function showDoc(){
         $('body').toggleClass('nopopup');
-        $('.popup .title').html('Группы документов');
+        // $('.popup .title').html('Группы документов');
         var html="";
-        
+        // $(".popupWrap").toggleClass('docH');
         getDoc(0);
+        // getDoc(3670);
+        // getDoc(3682);
 
 
         
     }
     showDoc();
+    function bindNode(){
+        // $('.node').click(function(){
+        //     var id=$(this).attr('id');
+        //     var isn=id.replace('doc_',"");
+        //     // console.log(id);
+        //     console.log("bindNode with " +isn);
+        //     getDoc(isn);
+        // });
+    }
+    function buildNode(id, data){
+        jqId="#"+id;
+        var html="<div style='padding-left:20px'>";
+        for (var key in data) {
+            var item=data[key]
+            var itemId="doc_"+item["ISN"];
+            var tempClass=(item["ISNODE"]=="True")?"node":"notNode";
+            html+="<div><p id='"+itemId+"'class='"+tempClass+"'>"+item["NAME"]+"</p></div>"
+        }
+        html+="</div>";
+        $(html).insertAfter(jqId);
+        $(".node:not(.loaded)").unbind( "click" );
+        $(jqId).addClass('loaded opened');
+        $('.node:not(.loaded)').bind("click",function(){
+            var id=$(this).attr('id');
+            var isn=id.replace('doc_',"");
+            getDoc(isn);
+        });
+    }
+    function buildNodeRight(id, data, parentId){
+        jqId="#"+id;
+        var html="<div style='padding-left:20px'>";
+        if(parentId!=0){
+            var grandParendId=docH[parentId]["parent"];
+            html+="<div><p class='parent-right' data-id='"+grandParendId+"'>"+docH[parentId]["NAME"]+"</p></div>";
+        }
+        for (var key in data) {
+            var item=data[key]
+            var itemId="doc_"+item["ISN"];
+            var tempClass=(item["ISNODE"]=="True")?"node":"notNode";
+            html+="<div><div class='sel' data-isn='"+itemId+"'></div><p id='"+itemId+"'class='"+tempClass+"'>"+item["NAME"]+"</p></div>"
+        }
+        html+="</div>";
+        $('.docH_right').html(html);
+        $(".node:not(.loaded)").unbind( "click" );
+        $(jqId).addClass('loaded opened');
+        $('.node:not(.loaded)').bind("click",function(){
+            var id=$(this).attr('id');
+            var isn=id.replace('doc_',"");
+            getDoc(isn);
+        });
+        $('.parent-right').bind("click",function(){
+            var isn=$(this).data('id');
+            getDoc(isn);
+        });
+        $('.sel').bind("click",function(){
+            el=$(this);
+            var isn=$(this).data('isn').replace('doc_',"");
+            if(el.hasClass('selected')){
+                delete docSel[isn];
+                el.removeClass('selected');
+            }else{
+                el.addClass('selected');
+                console.log("isn "+isn);
+                console.log("docH[isn]['NAME'] "+docH[isn]["NAME"]);
+                docSel[isn]={};
+                docSel[isn]["NAME"]=docH[isn]["NAME"];
+                docSel[isn]["DCODE"]=docH[isn]["DCODE"];
+            }
+            console.log(docSel);
+        });
+    }
+
     function getDoc(isn){
-        var html="";
-        console.log(isn);        
+        var html="";     
         $.ajax({
             url: INFO.deloAdr+"?need="+"lib"+"&isn="+isn+"&type=doc",
             type: "GET", contentType: "text/plain",
-            success: function (data) {
-                var ItemCnt=data[0]["ItemCnt"];
-                data=data[0].data;
-                console.log(ItemCnt);
-                console.log(data);
-                for (let i = 0; i < ItemCnt; i++){
-                    item=data[i]
-                    html+="<div>"+item.NAME+"</div>"
+            success: function (dataset) {
+                var data=dataset["data"];
+                var ParentIsn=dataset["ParentIsn"];
+                var childs=[];
+                for (var key in data) {
+                    var item=data[key];
+                    var itemIsn=item["ISN"];
+                    item["parent"]=ParentIsn;
+                    childs.push(itemIsn);
+                    docH[itemIsn]=item;
                 }
-                $('.popFields').html(html);
+                docH[ParentIsn.toString()]["childs"]=childs;
+                id="doc_"+dataset['ParentIsn'];   
+                buildNode(id, data)//встроить  Слева
+                console.log("isn "+isn);
+                buildNodeRight(id, data, isn)//встроить Справва
+                console.log(docH);
             },
             error: function (jqXHR, exception) {
                 // $(".resultTitle").html("<div class='center'>Ошибка</div>");
@@ -322,9 +404,14 @@ $(function() {
         });
         //return html;
     }
-
+    $(".btnMenu, .menuClose, .menuShadow").click(function(){
+        $('body').toggleClass('menuOpen');
+    });
     //обработчик скрытия попапа
-    $(".close, .shadow").click(function(){$('body').toggleClass('nopopup');});
+    $(".fullScreen").click(function(){
+        $('.popupWrap').toggleClass('docH-fullsceen');
+        // $(".popupWrap").toggleClass('docH');
+    });
     // $('#s-in-dateReg').click(function(){
     //     function makeDotDate(date){
     //         var year =date.getFullYear();

@@ -1358,8 +1358,8 @@ namespace SharpServer
             Console.WriteLine("Tt: {0}  start ", sw.Elapsed.TotalMilliseconds.ToString().Split(',')[0]);
             try
             {
-
-                string json = "[{";
+                string json = "";
+                //json += "[{";
                 if ((type == "org"))
                 {
                     dynamic ResultSet = head.GetResultSet; //создание хранилища 
@@ -1373,6 +1373,7 @@ namespace SharpServer
                         try
                         {
                             dynamic item = ResultSet[0];
+                            json += "[{";
                             json += "\"Organiz\":{";
                             try { json += ",\"NAME\":\"" + item.NAME.Replace("\"", "&quot;") + "\""; } catch { }
                             try { json += ",\"FULLNAME\":\"" + item.FULLNAME.Replace("\"", "&quot;") + "\""; } catch { }
@@ -1387,6 +1388,7 @@ namespace SharpServer
                             try { json += ",\"INN\":\"" + item.INN + "\""; } catch { }
                             try { json += ",\"OKPO\":\"" + item.OKPO + "\""; } catch { }
                             json += "}";
+                            json += "}]";
                         }
                         catch { json = "[{error:'не найден такой элемент'}]"; }
                     }
@@ -1403,6 +1405,7 @@ namespace SharpServer
                     {
                         try
                         {
+                            json += "[{";
                             dynamic item = ResultSet[0];
                             json += "\"Department\":{";
                             try { json += ",\"NAME\":\"" + item.NAME.Replace("\"", "&quot;") + "\""; } catch { }
@@ -1413,6 +1416,7 @@ namespace SharpServer
                             try { json += ",\"CABINET\":\"" + item.CABINET.NAME.Replace("\"", "&quot;") + "\""; } catch { }
                             try { json += ",\"NOTE\":\"" + item.NOTE.Replace("\"", "&quot;") + "\""; } catch { }
                             json += "}";
+                            json += "}]";
                         }
                         catch { json = "[{error:'не найден такой элемент'}]"; }
                     }
@@ -1430,6 +1434,7 @@ namespace SharpServer
                     {
                         try
                         {
+                            json += "[{";
                             //json += ",\"ITEMCNT\":\"" + ResultSet.ITEMCNT + "\"";
                             if (ResultSet.ITEMCNT > 0)
                             {
@@ -1472,6 +1477,7 @@ namespace SharpServer
                                     }
                                 }
                             }
+                            json += "}]";
                         }
                         catch { json = "[{error:'не найден такой элемент'}]"; }
                     }
@@ -1488,12 +1494,14 @@ namespace SharpServer
                     {
                         try
                         {
+                            json += "[{";
                             dynamic item = ResultSet[0];
                             json += "\"Rubric\":{";
                             try { json += ",\"NAME\":\"" + item.NAME.Replace("\"", "&quot;") + "\""; } catch { }
                             try { json += ",\"INDEX\":\"" + item.INDEX + "\""; } catch { }
                             try { json += ",\"NOTE\":\"" + item.NOTE.Replace("\"", "&quot;") + "\""; } catch { }
                             json += "}";
+                            json += "}]";
                         }
                         catch { json = "[{error:'не найден такой элемент'}]"; }
                     }
@@ -1506,9 +1514,9 @@ namespace SharpServer
                     SearchVocab.VOCABULARY = "DocGroup";
                     SearchVocab.BASE = isn;
                     SearchVocab.Select = "OneLevel";
-                    if (isn == 0){
+                    if (isn == 0) {
                         SearchVocab.ItemType = "Node";
-                    }else {
+                    } else {
                         //SearchVocab.ItemType = "Leaf";
                     }
                     ResultSet.Fill();
@@ -1516,20 +1524,23 @@ namespace SharpServer
                     {
                         try
                         {
+                            json += "{";
                             int ItemCnt = ResultSet.ItemCnt;
+                            json += "\"ParentIsn\":\"" + isn + "\",";
                             json += "\"ItemCnt\":\"" + ItemCnt + "\",";
-                            json += "\"data\":[";
+                            json += "\"data\":{";
                             for (int i = 0; i < ItemCnt; i++)
                             {
                                 var item = ResultSet.Item(i);
-                                if (i != 0) { json += ",{"; } else { json += "{"; }
+                                if (i != 0) { json += ",\""+ item.ISN + "\":{"; } else { json += "\"" + item.ISN + "\":{"; }
                                 try { json += ",\"NAME\":\"" + item.NAME.Replace("\"", "&quot;") + "\""; } catch { }
                                 try { json += ",\"ISN\":\"" + item.ISN + "\""; } catch { }
                                 try { json += ",\"DCODE\":\"" + item.DCODE + "\""; } catch { }
                                 try { json += ",\"ISNODE\":\"" + item.ISNODE.ToString() + "\""; } catch { }
                                 json += "}";
                             }
-                            json += "]";
+                            json += "}";
+                            json += "}";
                         }
                         catch { Console.WriteLine("errror:someWrong"); }
                     }
@@ -1541,7 +1552,7 @@ namespace SharpServer
                     //item = head.GetRow("RcIn", isn);
                 }
 
-                json += "}]";
+                //json += "}]";
                 //sw17.Stop();
                 //Console.WriteLine("Tt: {0}  17 ", sw17.Elapsed.TotalMilliseconds.ToString().Split(',')[0]);
                 return json;

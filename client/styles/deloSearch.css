@@ -182,7 +182,38 @@
   border-color: #008cd2;
 }
 
+.deloSearch .node{color: #008cd2;cursor: pointer;}
+/* .deloSearch .node:hover{    background: green;    border: 2px solid yellow;} */
+.deloSearch .notNode{color: initial;}
+.docH_left{float: left;  width: 33%;
+  overflow: auto;
+  max-height: calc(100vh - 160px);}
+.docH_right{float: right;width: 66%;
+  overflow: auto;
+  max-height: calc(100vh - 160px);}
+.docH .popupWrap{    max-width: 100%;}
+.fullScreen{
 
-
+}
+.docH-fullsceen .popup{
+  max-width: 100%;
+  height: 100%;
+}
+.docH-fullsceen .popFields{
+  max-height: calc(100vh - 50px);
+}
+.docH-fullsceen .docH_left{max-height: calc(100vh - 50px);}
+.docH-fullsceen .docH_right{max-height: calc(100vh - 50px);}
+.docH_right .sel{    
+  cursor: pointer;
+  border: 2px solid grey;
+  float: left;
+  width: 20px;
+  height: 20px;
+  margin-right: 15px;
+  margin-bottom: 0px;}
+  .docH_right .sel.selected{    
+    background-color: grey;
+  }
 
 
