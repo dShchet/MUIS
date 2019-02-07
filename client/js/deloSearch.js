@@ -73,7 +73,7 @@ function getData() {
     // });
 }
 
-//Сформировать выод (либо после загрузки, либо обновление)
+//Сформировать вывод (либо после загрузки, либо обновление)
 function buildData(pageValue){
     page=(pageValue)?pageValue:page;
     // console.log("step "+step);
@@ -311,49 +311,56 @@ $(function() {
         //     getDoc(isn);
         // });
     }
-    function buildNode(id, data){
-        jqId="#"+id;
-        var html="<div style='padding-left:20px'>";
-        for (var key in data) {
-            var item=data[key]
+    function buildNodeLeft(isn){
+        var html="<div class='children'>";
+        el=docH[isn];
+        var children=el['childs'];
+        for (i = 0; i < children.length; i++){
+            var item=docH[children[i]];
             var itemId="doc_"+item["ISN"];
-            var tempClass=(item["ISNODE"]=="True")?"node":"notNode";
-            html+="<div><p id='"+itemId+"'class='"+tempClass+"'>"+item["NAME"]+"</p></div>"
+            if(item["ISNODE"]=="True"){
+                tempClass="nodeL";
+                html+="<div>";
+                html+="<div class='openBox'></div>";
+            }else{
+                tempClass="notNodeL";
+                html+="<div class='docH_row_L'>";
+            }          
+            html+="<p id='"+itemId+"' class='"+tempClass+"'>"+item["NAME"]+"</p>";
+            html+="</div>";
         }
         html+="</div>";
-        $(html).insertAfter(jqId);
-        $(".node:not(.loaded)").unbind( "click" );
-        $(jqId).addClass('loaded opened');
-        $('.node:not(.loaded)').bind("click",function(){
+        $(html).insertAfter("#doc_"+isn);
+        $(".nodeL").unbind( "click" );
+        $("#doc_"+isn).addClass('opened');
+        $('.nodeL').bind("click",function(){
             var id=$(this).attr('id');
             var isn=id.replace('doc_',"");
             getDoc(isn);
         });
     }
-    function buildNodeRight(id, data, parentId){
-        jqId="#"+id;
+    function buildNodeRight(isn){
         var html="<div style='padding-left:20px'>";
-        if(parentId!=0){
-            var grandParendId=docH[parentId]["parent"];
-            html+="<div><p class='parent-right' data-id='"+grandParendId+"'>"+docH[parentId]["NAME"]+"</p></div>";
+        el=docH[isn];
+        if(isn!=0){
+            html+="<div class='docH_parent_R'><p class='parent-right ' data-id='"+el["ParentIsn"]+"'>"+el["NAME"]+"</p></div>";
         }
-        for (var key in data) {
-            var item=data[key]
+        var children=el['childs'];
+        for (i = 0; i < children.length; i++){
+            var item=docH[children[i]];
             var itemId="doc_"+item["ISN"];
-            var tempClass=(item["ISNODE"]=="True")?"node":"notNode";
-            html+="<div><div class='sel' data-isn='"+itemId+"'></div><p id='"+itemId+"'class='"+tempClass+"'>"+item["NAME"]+"</p></div>"
+            var tempClass=(item["ISNODE"]=="True")?"nodeR":"notnodeR";
+            html+="<div class='docH_row_R'><div class='sel' data-isn='"+itemId+"'></div>"
+            +"<p data-isn='"+itemId+"' class='"+tempClass+"'>"+item["NAME"]+"</p></div>";
         }
         html+="</div>";
         $('.docH_right').html(html);
-        $(".node:not(.loaded)").unbind( "click" );
-        $(jqId).addClass('loaded opened');
-        $('.node:not(.loaded)').bind("click",function(){
-            var id=$(this).attr('id');
-            var isn=id.replace('doc_',"");
-            getDoc(isn);
-        });
         $('.parent-right').bind("click",function(){
             var isn=$(this).data('id');
+            getDoc(isn, true);
+        });
+        $('.nodeR').bind("click",function(){
+            var isn=$(this).data('isn').replace('doc_',"");
             getDoc(isn);
         });
         $('.sel').bind("click",function(){
@@ -364,8 +371,6 @@ $(function() {
                 el.removeClass('selected');
             }else{
                 el.addClass('selected');
-                console.log("isn "+isn);
-                console.log("docH[isn]['NAME'] "+docH[isn]["NAME"]);
                 docSel[isn]={};
                 docSel[isn]["NAME"]=docH[isn]["NAME"];
                 docSel[isn]["DCODE"]=docH[isn]["DCODE"];
@@ -374,34 +379,36 @@ $(function() {
         });
     }
 
-    function getDoc(isn){
+    function getDoc(isn, up){
+        
         var html="";     
-        $.ajax({
-            url: INFO.deloAdr+"?need="+"lib"+"&isn="+isn+"&type=doc",
-            type: "GET", contentType: "text/plain",
-            success: function (dataset) {
-                var data=dataset["data"];
-                var ParentIsn=dataset["ParentIsn"];
-                var childs=[];
-                for (var key in data) {
-                    var item=data[key];
-                    var itemIsn=item["ISN"];
-                    item["parent"]=ParentIsn;
-                    childs.push(itemIsn);
-                    docH[itemIsn]=item;
-                }
-                docH[ParentIsn.toString()]["childs"]=childs;
-                id="doc_"+dataset['ParentIsn'];   
-                buildNode(id, data)//встроить  Слева
-                console.log("isn "+isn);
-                buildNodeRight(id, data, isn)//встроить Справва
-                console.log(docH);
-            },
-            error: function (jqXHR, exception) {
-                // $(".resultTitle").html("<div class='center'>Ошибка</div>");
-               console.log("Ошибка: "+jqXHR+"; exception: "+exception);
-               console.log(jqXHR);},
-        });
+        if((docH.hasOwnProperty(isn))&&((up==true)||(docH[isn].hasOwnProperty('childs')))){
+            console.log('load from memory');
+           // buildNodeLeft(isn) //встроить Слева
+            buildNodeRight(isn)//встроить Справа
+        }else{
+            var url = INFO.deloAdr+"?need="+"lib"+"&isn="+isn+"&type=doc";
+            console.log(url);
+            $('.docH_right').html('Загрузка');
+            $.ajax({
+                url: INFO.deloAdr+"?need="+"lib"+"&isn="+isn+"&type=doc",
+                type: "GET", contentType: "text/plain",
+                success: function (newData) {
+                    var childs=[];
+                    for (var key in newData) {
+                        var item=newData[key];
+                        childs.push(item["ISN"]);
+                        docH[item["ISN"]]=item;
+                    }
+                    docH[isn]["childs"]=childs; 
+                    buildNodeLeft(isn) //встроить Слева
+                    buildNodeRight(isn)//встроить Справа
+                },
+                error: function (jqXHR, exception) {
+                   console.log("Ошибка: "+jqXHR+"; exception: "+exception);
+                   console.log(jqXHR);},
+            });
+        }
         //return html;
     }
     $(".btnMenu, .menuClose, .menuShadow").click(function(){
@@ -467,4 +474,22 @@ $(function() {
         var tempDate = regex.exec(wrongDate);
         return new Date(tempDate[3], tempDate[2], tempDate[1]);
     }
+    //обработчик скрытия попапа
+    $(".close, .shadow").click(function(){
+        $('body').toggleClass('nopopup');
+        console.log(docSel);
+        var html=value="";
+        var i=0;
+        for (var key in docSel) {
+            var item=docSel[key];
+            html+="<div class='oneGroup' class='group_"+key+"'><div data-isn='"+key+"' class='removeOne'>X</div><p>"+item["NAME"]+"</p></div>"
+            if(i==0){
+                value+=    item["DCODE"]; }else{
+                value+="|"+item["DCODE"];
+            }
+            i=1;
+        }
+        console.log(value);
+        $('.selectArea').html(html);
+    });
 });

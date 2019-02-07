@@ -181,39 +181,186 @@
 .stepsSizeWrap select:hover{
   border-color: #008cd2;
 }
-
-.deloSearch .node{color: #008cd2;cursor: pointer;}
+.docH_row_R{    overflow: auto;}
+.notnodeR,
+.docH_parent_R,
+.deloSearch .nodeR{
+  color: #008cd2;
+  cursor: pointer;
+  display: block;
+  overflow: auto;
+  padding-left: 25px;
+  position: relative;
+}
+/* .deloSearch .nodeR{color: #008cd2;cursor: pointer;} */
 /* .deloSearch .node:hover{    background: green;    border: 2px solid yellow;} */
-.deloSearch .notNode{color: initial;}
-.docH_left{float: left;  width: 33%;
+
+.deloSearch .notnodeR{
+  color: initial;
+}
+.docH_left .children{
+  padding-left:20px
+}
+.docH_parent_R:before,
+.nodeR:before,
+.notnodeR:before{
+  content: "";
+  width: 19px;
+  background-color: white;
+  height: 19px;
+  display: block;
+  float: left;
+  fill: #008cd2;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+.notNodeL,
+.nodeL{
+  cursor: pointer;
+  display: block;
+  overflow: auto;
+  padding-left: 25px;
+  position: relative;
+}
+.nodeL{
+  color: #008cd2;}
+.notNodeL:before,
+.nodeL:before{
+  content: "";
+  width: 19px;
+  background-color: white;
+  height: 19px;
+  display: block;
+  float: left;
+  fill: #008cd2;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+
+}
+.nodeL:before{  background-image: url(icons/folder.gif);}
+.notNodeL:before{  background-image: url(icons/file.gif);}
+.docH_parent_R{
+  border-bottom: 1px solid #008cd2;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  padding-left: 32px;
+}
+.docH_parent_R:before{background-image: url(icons/levelUp.svg);}
+.nodeR:before{background-image: url(icons/folder.gif);}
+.notnodeR:before{background-image: url(icons/file.gif);}
+.docH_left{
+  float: left;  
+  width: 33%;
   overflow: auto;
   max-height: calc(100vh - 160px);}
-.docH_right{float: right;width: 66%;
+.docH_right{ 
+  float: right; 
+  width: 66%;
   overflow: auto;
   max-height: calc(100vh - 160px);}
-.docH .popupWrap{    max-width: 100%;}
+.docH .popupWrap{max-width: 100%;}
 .fullScreen{
 
 }
+.parent-right{
+  cursor:pointer
+}
+.parent-right:before{
+  content:"";
+  background-image: url(icons/levelUp.svg);
+}
+.parent-right:hover{
+  color: #019eec;
+}
+.docH-fullsceen{    display: block;}
 .docH-fullsceen .popup{
   max-width: 100%;
   height: 100%;
 }
-.docH-fullsceen .popFields{
-  max-height: calc(100vh - 50px);
+.docH-fullsceen .fullScreen{
+  background-image: url(icons/cancel.svg);
 }
-.docH-fullsceen .docH_left{max-height: calc(100vh - 50px);}
-.docH-fullsceen .docH_right{max-height: calc(100vh - 50px);}
+.docH-fullsceen .popFields{
+  max-height: calc(100vh - 65px);
+  height: 100%;
+}
+.docH-fullsceen .docH_left {
+  max-height: calc(100% - 10px);
+  height: 100%;
+}
+.docH-fullsceen .docH_right{max-height: calc(100vh - 75px);}
 .docH_right .sel{    
   cursor: pointer;
-  border: 2px solid grey;
+  border: 2px solid #008cd2;
   float: left;
   width: 20px;
   height: 20px;
-  margin-right: 15px;
+  margin-right: 8px;
   margin-bottom: 0px;}
-  .docH_right .sel.selected{    
-    background-color: grey;
-  }
+.docH_right .sel:not(.selected):hover{
+  border-color: #019eec;
+  background-color: #d4d4d4;
+}
+.docH_right .sel.selected{    
+  background-color: #008cd2;
+  position: relative;
+}
+.docH_right .sel.selected:before{    
+  content: '';
+  display: block;
+  width: 5px;
+  height: 9px;
+  border: solid #fff;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+  position: relative;
+  top: 0px;
+  left: 4px;
+}
+.openBox{
+  border: 1px solid #008cd2;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 13px;
+  float: left;
+  margin-right: 5px;
+  position: relative;
+  top: 1px;
+}
+.openBox.opened{}
+.openBox:before,
+.openBox.opened:before{}
+.openBox:before{
+  content:"+"
+}
+.opened>.openBox:before{
+  content:"-"
+}
+.selectArea{
+  margin-top: 10px;
+  width: 100%;
+  border: 1px solid grey;
+  padding: 10px 15px;
+  font-size: 16px;
+  overflow: auto;
+  margin-bottom: 15px;
+}
+.oneGroup{
+  display: inline-block;
+  float: left;
+}
+.oneGroup p{
+  float: left;
+  margin-right: 15px;}
+.removeOne{float: right;}
+
+
+
+
+
 
 

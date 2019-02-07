@@ -1525,11 +1525,10 @@ namespace SharpServer
                         try
                         {
                             json += "{";
-                            int ItemCnt = ResultSet.ItemCnt;
-                            json += "\"ParentIsn\":\"" + isn + "\",";
-                            json += "\"ItemCnt\":\"" + ItemCnt + "\",";
-                            json += "\"data\":{";
-                            for (int i = 0; i < ItemCnt; i++)
+                            //int ItemCnt = ResultSet.ItemCnt;
+                            //json += "\"ItemCnt\":\"" + ItemCnt + "\",";
+                            //json += "\"data\":{";
+                            for (int i = 0; i < ResultSet.ItemCnt; i++)
                             {
                                 var item = ResultSet.Item(i);
                                 if (i != 0) { json += ",\""+ item.ISN + "\":{"; } else { json += "\"" + item.ISN + "\":{"; }
@@ -1537,9 +1536,10 @@ namespace SharpServer
                                 try { json += ",\"ISN\":\"" + item.ISN + "\""; } catch { }
                                 try { json += ",\"DCODE\":\"" + item.DCODE + "\""; } catch { }
                                 try { json += ",\"ISNODE\":\"" + item.ISNODE.ToString() + "\""; } catch { }
+                                try { json += ",\"ParentIsn\":\"" + isn + "\""; } catch { }
                                 json += "}";
                             }
-                            json += "}";
+                            //json += "}";
                             json += "}";
                         }
                         catch { Console.WriteLine("errror:someWrong"); }
