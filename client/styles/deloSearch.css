@@ -44,7 +44,7 @@
   text-align: center
 }
 .close {
-  background-image: url(icons/cancel.svg);
+  background-image: url(icons/screenUp.svg);
   font-size: 0px;
   width: 20px;
   height: 20px;
@@ -97,6 +97,7 @@
   border: 1px solid grey;
   padding: 10px 15px;
   font-size: 16px;
+  cursor: pointer;
 }
 .deloSearch .selectType select:focus,
 .deloSearch .selectDate input:focus{
@@ -159,7 +160,7 @@
   color: #fff;
   background-color: #008cd2;
   padding: 10px 15px;
-  font-size: 15px;
+  font-size: 17px;
 }
 .deloSearch button:hover{
   background-color: #019eec;
@@ -189,44 +190,53 @@
   cursor: pointer;
   display: block;
   overflow: auto;
-  padding-left: 25px;
   position: relative;
+  padding: 4px 0px 4px 25px;
+  font-size: 18px;
+}
+.notnodeR:hover,
+.docH_parent_R:hover,
+.deloSearch .nodeR:hover{
+  color: #019eec;
 }
 /* .deloSearch .nodeR{color: #008cd2;cursor: pointer;} */
 /* .deloSearch .node:hover{    background: green;    border: 2px solid yellow;} */
-
+.popFields .docH_row_R,
+.popFields .docH_row_L{margin-bottom: 0px; }
 .deloSearch .notnodeR{
   color: initial;
 }
+.deloSearch .popFields{    max-height: 100%;}
 .docH_left .children{
-  padding-left:20px
+  padding-left:22px
 }
 .docH_parent_R:before,
 .nodeR:before,
 .notnodeR:before{
   content: "";
-  width: 19px;
+  width: 18px;
+  background-repeat: no-repeat;
+  background-size: contain;
   background-color: white;
-  height: 19px;
+  height: 18px;
   display: block;
   float: left;
   fill: #008cd2;
   position: absolute;
-  top: 0px;
+  top: 5px;
   left: 0px;
 }
-.notNodeL,
-.nodeL{
-  cursor: pointer;
+.nodeL_alone,
+.nodeL_parent{
   display: block;
   overflow: auto;
   padding-left: 25px;
   position: relative;
 }
-.nodeL{
+.nodeL_parent{
   color: #008cd2;}
-.notNodeL:before,
-.nodeL:before{
+.nodeL_alone:before,
+.nodeL_parent:before{
   content: "";
   width: 19px;
   background-color: white;
@@ -237,55 +247,75 @@
   position: absolute;
   top: 0px;
   left: 0px;
-
 }
-.nodeL:before{  background-image: url(icons/folder.gif);}
-.notNodeL:before{  background-image: url(icons/file.gif);}
+.nodeL_parent{cursor: pointer;}
+.nodeL_parent:before{  background-image: url(icons/folder.svg);}
+.nodeL_alone:before{  background-image: url(icons/file.svg);}
 .docH_parent_R{
   border-bottom: 1px solid #008cd2;
   padding-bottom: 10px;
   margin-bottom: 15px;
-  padding-left: 32px;
+  /* padding-left: 32px; */
 }
-.docH_parent_R:before{background-image: url(icons/levelUp.svg);}
-.nodeR:before{background-image: url(icons/folder.gif);}
-.notnodeR:before{background-image: url(icons/file.gif);}
+.docH_parent_R:before{
+  background-image: url(icons/up.svg);
+  position: absolute;
+  top: 10px;
+  left: 6px;
+  z-index: 5;
+  background-color: transparent;
+}
+.nodeR:before{background-image: url(icons/folder.svg);}
+.notnodeR:before{background-image: url(icons/file.svg);}
 .docH_left{
-  float: left;  
-  width: 33%;
+  display: none;
   overflow: auto;
   max-height: calc(100vh - 160px);}
 .docH_right{ 
-  float: right; 
-  width: 66%;
   overflow: auto;
-  max-height: calc(100vh - 160px);}
+  max-height: 100%;}
+.docH-fullsceen .docH_left{
+  display: block;
+  float: left;  
+  width: 33%;
+}
+.docH-fullsceen .docH_right{  
+  width: 66%;  
+  float: right; }
 .docH .popupWrap{max-width: 100%;}
+.docH .popup{    min-height: 360px;}
 .fullScreen{
 
 }
 .parent-right{
-  cursor:pointer
-}
-.parent-right:before{
-  content:"";
-  background-image: url(icons/levelUp.svg);
+  cursor: pointer;
+  position: relative;
+  padding: 4px 15px;
+  padding-left: 32px;
+  border-radius: 9px;
+  margin-left: -25px;
+  display: inline-block;
+  border: 1px solid #fff;
 }
 .parent-right:hover{
   color: #019eec;
+  border-color: #019eec;
 }
-.docH-fullsceen{    display: block;}
+.docH-fullsceen{    
+  display: block;
+  width: 100%;}
 .docH-fullsceen .popup{
   max-width: 100%;
   height: 100%;
 }
 .docH-fullsceen .fullScreen{
-  background-image: url(icons/cancel.svg);
+  background-image: url(icons/screenDown.svg);
 }
 .docH-fullsceen .popFields{
   max-height: calc(100vh - 65px);
   height: 100%;
 }
+
 .docH-fullsceen .docH_left {
   max-height: calc(100% - 10px);
   height: 100%;
@@ -293,21 +323,30 @@
 .docH-fullsceen .docH_right{max-height: calc(100vh - 75px);}
 .docH_right .sel{    
   cursor: pointer;
-  border: 2px solid #008cd2;
   float: left;
-  width: 20px;
-  height: 20px;
-  margin-right: 8px;
-  margin-bottom: 0px;}
-.docH_right .sel:not(.selected):hover{
+  width: 30px;
+  height: 30px;
+  margin-right: 3px;
+  margin-bottom: 0px;
+  position: relative;}
+.docH_right .sel:before{    
+  content: '';
+  border: 2px solid #008cd2;
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  top: 3px;
+  left: 4px;}
+.docH_right .sel:before:not(.selected):hover{
   border-color: #019eec;
   background-color: #d4d4d4;
 }
-.docH_right .sel.selected{    
-  background-color: #008cd2;
-  position: relative;
-}
+.docH_right .sel:hover:before,
 .docH_right .sel.selected:before{    
+  background-color: #008cd2;
+  /* position: relative; */
+}
+.docH_right .sel.selected:after{    
   content: '';
   display: block;
   width: 5px;
@@ -316,13 +355,13 @@
   border-width: 0 3px 3px 0;
   transform: rotate(45deg);
   position: relative;
-  top: 0px;
-  left: 4px;
+  top: 7px;
+  left: 11px;
 }
 .openBox{
-  border: 1px solid #008cd2;
-  width: 15px;
-  height: 15px;
+  width: 17px;
+  height: 17px;
+  background-size: contain;
   cursor: pointer;
   text-align: center;
   line-height: 13px;
@@ -331,36 +370,88 @@
   position: relative;
   top: 1px;
 }
-.openBox.opened{}
-.openBox:before,
-.openBox.opened:before{}
-.openBox:before{
-  content:"+"
+.nodeL.closed>.children{display: none;}
+.openBox{
+  background-image: url(icons/minus.svg);
 }
-.opened>.openBox:before{
-  content:"-"
+.closed>.openBox{
+  background-image: url(icons/plus.svg);
 }
 .selectArea{
   margin-top: 10px;
   width: 100%;
   border: 1px solid grey;
-  padding: 10px 15px;
+  padding: 10px 15px 3px 0px;
   font-size: 16px;
   overflow: auto;
   margin-bottom: 15px;
 }
 .oneGroup{
-  display: inline-block;
   float: left;
 }
-.oneGroup p{
+.oneGroup p,
+.addSel{
+  margin-right: -25px;
+  margin-left: 15px;
+  display: inline-block;
   float: left;
-  margin-right: 15px;}
-.removeOne{float: right;}
+  border-radius: 7px;
+  padding: 10px 15px;
+  font-size: 16px;
+  line-height: 18px;
+  margin-bottom: 7px;
+}
+.addSel{
+  background-color: #008cd2;
+  color: #fff;
+  border: 1px solid #008cd2;
+  cursor: pointer;
+  margin-right: -10px;
+}
+.addSel:hover{
+  background-color: #019eec;
+  border: 1px solid #019eec;
+}
+.oneGroup p{
+  border: 1px solid #b1b1b1;
+  padding-right: 38px;
+  max-width: calc(100% - 12px);
+}
+.removeOne{
+  background-image: url(icons/delete.svg);
+  display: inline-block;
+  border-radius: 10px;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  position: relative;
+  left: -5px;
+  top: 8px;
+  cursor: pointer;
+}
+.removeOne:hover{
+  background-image: url(icons/delete-h.svg);
+}
+.removeOne:hover+p{
+  border: 1px solid #ff000094;
+}
+.nodeL,
+.docH_row_L{padding: 2px 0px;}
+#nodeL_0>.children{padding-left: 0px}
 
-
-
-
-
-
+.noGroup .selectArea{
+  padding: 0px;
+  margin-bottom: 0px;
+  display: inline-block;
+  width: auto;
+  float: left;
+  margin-top: 0px;
+  border: none;}
+.noGroup .addSel{
+  margin-right: auto;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  border-radius: 0px;
+}
+.deloSearch .noGroup button{    float: right;}
 

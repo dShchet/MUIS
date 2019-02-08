@@ -29,4 +29,9 @@ body.portrait .datepicker--cells-months {
     .datepicker {
     }
 }
-
+.datepicker--cell.-selected-, .datepicker--cell.-selected-.-current-{
+    background: #008cd2;
+}
+.datepicker--day-name{
+    color: #008cd2;
+}

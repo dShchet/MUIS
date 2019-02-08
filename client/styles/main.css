@@ -32,7 +32,7 @@ button,.btn{cursor: pointer;}
 .nopopup .popupWrapWrap{opacity: 0;pointer-events: none;}
 .popFields{max-height: calc(100vh - 150px);
     overflow: auto;padding-right: 20px;}
-.popFields div{margin-bottom: 10px;}
+/* .popFields div{margin-bottom: 10px;} */
 .popFields b{font-weight: normal;font-size: 18px;}
 .popup .fullScreen,  
 .popup .close{position: absolute;cursor: pointer;}    
@@ -160,7 +160,7 @@ body:before{
     /* border-top-right-radius: 7px; */
 }
 .popup .fullScreen{
-    background-image: url( icons/fullScreen.svg);
+    background-image: url( icons/screenUp.svg);
     left: 0px;
     background-size: 35px;
 }

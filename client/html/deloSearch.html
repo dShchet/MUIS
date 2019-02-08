@@ -27,13 +27,16 @@
   <body class="nopopup deloSearch" >
     <div class="popupWrapWrap">
       <div class="shadow"></div>
-      <div class="popupWrap docH docH-fullsceen">
+      <div class="popupWrap docH ">
         <div class="popup">
           <p class="title">Группы документов</p>
           <div class="fullScreen"></div>
           <div class="close"></div>
           <div class="popFields">
-              <div class="docH_left"><p class='node' data-isn='0' id="doc_0">Группы документов</p></div>
+              <div class="docH_left " id="nodeL_0">
+                <p class='node' data-isn='0' id="doc_0"></p>
+                <div class="children"></div>
+              </div>
               <div class="docH_right"></div>
             </div>
         </div>
@@ -67,7 +70,7 @@
         <button class="btn btnMenu"></button>
       </div>
       <div class="mainWrap">
-        <div class="main">
+        <div class="main noGroup">
             <div class="title">Поиск по Дело</div>
             <div class="selectDate">
               <Label>Поиск с
@@ -78,102 +81,14 @@
               </label>
             </div>
             <div class="selectArea">
-              <p>Выбрать группу документов</p>
+              <p class="addSel">Уточнить группы документов</p>
             </div>
-            <div class="selectType">
-                <select>
-                  <option value="week">РК за последнюю неделю</option>
-                  <option value="in">РК входящих документов</option>
-                  <option value="let">РК писем граждан</option>
-                  <option value="out">РК исходящих документов</option>
-                  <option value="inside">РК внутренних документов</option>
-                  <option value="jornal" style="color:red">Поиск по журналу передачи</option>
-                  <option value="resol">Поиск поручений</option>
-                  <option value="resolWeek">Поручения за последнюю неделю</option>
-                  <!-- <option value="files">Поиск по файлам РК</option> -->
-                  <option value="prj" style="color:red">Поиск проектов документов</option>
-                  <option value="today">Зарегистрированные сегодня</option>
-                </select>
-              </div>
-            <div class="selectMore week">
-                <div class="form week">
-                    <Label>week
-                        <input type="text">
-                      </Label>
-                  <!-- <i>Дата рег. РК:</i>
-                  <select  id="s-in-dateReg">
-                      <option value="hnd" selected="selected">диапазон дат</option>
-                      <option value="now">сегодня</option>
-                      <option value="week">последняя неделя</option>
-                      <option value="month">последний месяц</option>
-                      <option value="quarter">последний квартал</option>
-                      <option value="year">последний год</option>
-                  </select> -->
-
-                  <!-- <div><i>Наличие файлов:</i><select name="" id="s-in-files" class="">
-                    <option value=""></option>
-                    <option value="">есть</option>
-                    <option value="">нет</option>
-                </select> </div> -->
-                </div>
-                <div class="form in">
-                  <Label>in
-                    <input type="text">
-                  </Label>
-                </div>
-                <div class="form let">
-                  <Label>let
-                    <input type="text">
-                  </Label>
-                </div>
-                <div class="form out">
-                  <Label>out
-                    <input type="text">
-                  </Label>
-                </div>
-                <div class="form inside">
-                  <Label>inside
-                    <input type="text">
-                  </Label>
-                </div>
-                <div class="form jornal">
-                  <Label>jornal
-                    <input type="text">
-                  </Label>
-                </div>
-                <div class="form resol">
-                  <Label>resol
-                    <input type="text">
-                  </Label>
-                </div>
-                <div class="form resolWeek">
-                  <Label>resolWeek
-                    <input type="text">
-                  </Label>
-                </div>
-                <div class="form files">
-                  <Label>files
-                    <input type="text">
-                  </Label>
-                </div>
-                <div class="form prj">
-                  <Label>prj
-                    <input type="text">
-                  </Label>
-                </div>
-                <div class="form today">
-                  <Label>today
-                    <input type="text">
-                  </Label>
-                </div>
-
-                <button class="toSearch" id="toSearch-def">Поиск</button>
-            </div>
+            <button class="toSearch" id="toSearch-def">Поиск</button>
           <div class="result">
-              <div class="resultTitle center">Начните искать</div>
-              <div class="resultList"></div>
-              <div class="resultSteps"></div>
-        </div>
+            <div class="resultTitle center">Начните искать</div>
+            <div class="resultList"></div>
+            <div class="resultSteps"></div>
+          </div>
         </div>
       </div>
     </div>
