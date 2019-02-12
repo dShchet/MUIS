@@ -1,5 +1,6 @@
 ;
-
+// var DEBUG=true;
+var DEBUG=false;
 const INFO={}
 INFO.serverAdr= "http://localhost:8080/";
 INFO.deloAdr  = "http://localhost:7788/";

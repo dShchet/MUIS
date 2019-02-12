@@ -1,6 +1,12 @@
 
 //Проверка логина
 function checkLoginInfo(login, pass) {
+  if(DEBUG==true){
+    if ((login=="f")&&(pass=="n")){
+      Cookies.set('miusLogged', 'Logged');
+      window.location.href=INFO.clientAdr+"search";
+    }
+  }else{
     $.ajax({
         url: INFO.clientAdr+"api/login/"+login+'.'+pass,
         type: "GET", contentType: "application/json",
@@ -22,6 +28,7 @@ function checkLoginInfo(login, pass) {
          }
 
     });
+  }
 }
 
 //Обработчик инпут логина

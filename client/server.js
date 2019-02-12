@@ -4,10 +4,19 @@
 
 //CONFIG
 var defaultPort=8080;
+//var dbConfig = {
+//  user: 'sa',
+//  password: 'kl193011',
+//  server: 'RUBICON',
+//  options: {
+//    encrypt: true,
+//    database: 'MUIS'
+//  }
+//};
 var dbConfig = {
-  user: 'sa',
-  password: 'kl193011',
-  server: 'RUBICON',
+  user: 'MUIS',
+  password: 'GG876RAO_FranVV',
+  server: 'MUIS',
   options: {
     encrypt: true,
     database: 'MUIS'

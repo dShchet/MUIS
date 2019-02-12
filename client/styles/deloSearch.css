@@ -53,7 +53,7 @@
 }
 @media(max-width:550px) {}
 .deloSearch .main {
-  max-width: 1020px;
+  max-width: max-content;
   overflow: auto;
 }
 .deloSearch .selectType select{
@@ -62,7 +62,15 @@
   font-size: 16px;
   text-align: center;
 }
-
+.deloSearch .result-tr{
+  display: table-row;
+}
+.table{display:table}
+.tbody{display:table-row-group}
+.tbody a>div{display:table-cell;
+  padding: 5px;
+  border-right: 1px solid grey;
+  border-bottom: 1px solid grey;}
 /* .deloSearch .searchLeft {
   float: left;
   width: 260px;
@@ -206,7 +214,11 @@
 .deloSearch .notnodeR{
   color: initial;
 }
-.deloSearch .popFields{    max-height: 100%;}
+.deloSearch .popFields{    
+  /* max-height: 100%; */
+  max-height: calc(100vh - 85px);
+  height: 100%;
+}
 .docH_left .children{
   padding-left:22px
 }
@@ -401,6 +413,18 @@
   line-height: 18px;
   margin-bottom: 7px;
 }
+.notnodeR, .docH_parent_R, 
+.deloSearch .nodeR,
+.docH_right .sel:before,
+.removeOne,
+.oneGroup p,
+.toSearch,
+.addSel{
+  -webkit-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  -moz-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+  transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+}
 .addSel{
   background-color: #008cd2;
   color: #fff;
@@ -454,4 +478,4 @@
   border-radius: 0px;
 }
 .deloSearch .noGroup button{    float: right;}
-
+.deloSearch .mainHead{}

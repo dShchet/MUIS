@@ -19,6 +19,7 @@
     <script src="../js/config.js"></script>
     <script src="../js/main.js"></script>
     <script src="../js/datepicker.min.js"></script>
+    <script src="../js/docHJSON.js"></script>
     <link rel="stylesheet" href="../styles/main.css">
     <link rel="stylesheet" href="../styles/deloSearch.css">
     <link rel="stylesheet" href="../styles/datepicker.min.css">
@@ -71,6 +72,7 @@
       </div>
       <div class="mainWrap">
         <div class="main noGroup">
+          <div class="mainHead">
             <div class="title">Поиск по Дело</div>
             <div class="selectDate">
               <Label>Поиск с
@@ -84,9 +86,13 @@
               <p class="addSel">Уточнить группы документов</p>
             </div>
             <button class="toSearch" id="toSearch-def">Поиск</button>
+          </div>
           <div class="result">
             <div class="resultTitle center">Начните искать</div>
             <div class="resultList"></div>
+            <div class="resultTable table">
+              <div class="tbody"></div>
+            </div>
             <div class="resultSteps"></div>
           </div>
         </div>
