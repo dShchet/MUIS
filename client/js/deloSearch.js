@@ -45,7 +45,7 @@ function buildData(pageValue){
         list += buildRow(data);
         table+=buildTR(data);
     });
-   // $(".resultList").html(list);
+    $(".resultList").html(list);
     $(".resultTable .tbody").html(table);
 
     //привязать ссылки к элементам
@@ -97,8 +97,9 @@ function buildRow(data) {
     var row= "<a href='' class='result-row' data-rsisn='" + data.ISN + "' data-rstype='" + data.DOCKIND + "'>"+
                 "<div class='result-data'><b>" + data.RegNum + "</b>"+"<b style='float:right'>" + data.DocDate + "</b>"+
                     "<p>" + data.Contents + "</p>";
-            if((data.DOCKIND=="RCIN")&&(data.CORRESP)){
-                var el=data.CORRESP[0];
+            if((data.DOCKIND=="RCIN")&&(data.corresp)){
+                var el=data.corresp;
+                console.log(el);
                 var ORGANIZ=SIGN=OUTNUM=OUTDATE='';
                 if(el.ORGANIZ_NAME){ORGANIZ=el.ORGANIZ_NAME}
                 if(el.SIGN){SIGN="- "+el.SIGN}
@@ -107,16 +108,16 @@ function buildRow(data) {
                 if(el.OUTDATE){OUTDATE="от "+el.OUTDATE}
                 row+="<p>" + OUTNUM+OUTDATE+"</p>";
             }
-            if((data.DOCKIND=="RCLET")&&(data.AUTHOR)){
-                var el=data.AUTHOR[0];
+            if((data.DOCKIND=="RCLET")&&(data.author)){
+                var el=data.author;
                 var NAME=CITY='';
                 if(el.CITIZEN_NAME){NAME=el.CITIZEN_NAME}
                 if(el.CITIZEN_CITY){CITY=" "+el.CITIZEN_CITY}
                 if(el.SIGN){SIGN="- "+el.SIGN}
                 row+="<p>" + NAME + CITY+"</p>";
             }
-            if((data.DOCKIND=="RCOUT")&&(data.PERSONSIGN)){
-                var el=data.PERSONSIGN;
+            if((data.DOCKIND=="RCOUT")&&(data.personsign)){
+                var el=data.personsign;
                 var SIGN='';
                 if(el.WHO_SIGN_NAME){SIGN=el.WHO_SIGN_NAME}
                 row+="<p>" + SIGN+"</p>";
@@ -130,8 +131,8 @@ function buildTR(data) {
     var row= "<a href='' class='result-tr' data-rsisn='" + data.ISN + "' data-rstype='" + data.DOCKIND + "'>"+
                 "<div><b>" + data.RegNum +"</b></div><div><b>"+ data.DocDate + "</b></div>"+
                     "<div>" + data.Contents + "</div>";
-            if((data.DOCKIND=="RCIN")&&(data.CORRESP)){
-                var el=data.CORRESP[0];
+            if((data.DOCKIND=="RCIN")&&(data.corresp)){
+                var el=data.corresp;
                 var ORGANIZ=SIGN=OUTNUM=OUTDATE='';
                 if(el.ORGANIZ_NAME){ORGANIZ=el.ORGANIZ_NAME}
                 if(el.SIGN){SIGN="- "+el.SIGN}
@@ -140,16 +141,16 @@ function buildTR(data) {
                 if(el.OUTDATE){OUTDATE="от "+el.OUTDATE}
                 row+="<div>" + OUTNUM+OUTDATE+"</div>";
             }
-            if((data.DOCKIND=="RCLET")&&(data.AUTHOR)){
-                var el=data.AUTHOR[0];
+            if((data.DOCKIND=="RCLET")&&(data.author)){
+                var el=data.author;
                 var NAME=CITY='';
                 if(el.CITIZEN_NAME){NAME=el.CITIZEN_NAME}
                 if(el.CITIZEN_CITY){CITY=" "+el.CITIZEN_CITY}
                 if(el.SIGN){SIGN="- "+el.SIGN}
                 row+="<div>" + NAME + CITY+"</div>";
             }
-            if((data.DOCKIND=="RCOUT")&&(data.PERSONSIGN)){
-                var el=data.PERSONSIGN;
+            if((data.DOCKIND=="RCOUT")&&(data.personsign)){
+                var el=data.personsign;
                 var SIGN='1 ';
                 if(el.WHO_SIGN_NAME){SIGN=el.WHO_SIGN_NAME}
                 row+="<div><p>" + SIGN+"</p></div>";

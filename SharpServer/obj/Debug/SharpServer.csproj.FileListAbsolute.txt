@@ -5,3 +5,7 @@ C:\Users\Denis\Desktop\MUIS\SharpServer\obj\Debug\SharpServer.csproj.CoreCompile
 C:\Users\Denis\Desktop\MUIS\SharpServer\obj\Debug\SharpServer.exe
 C:\Users\Denis\Desktop\MUIS\SharpServer\obj\Debug\SharpServer.pdb
 C:\Users\Denis\Desktop\MUIS\SharpServer\obj\Debug\SharpServer.csprojAssemblyReference.cache
+C:\Users\Denis\Desktop\MUIS\SharpServer\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Denis\Desktop\MUIS\SharpServer\bin\Debug\Newtonsoft.Json.pdb
+C:\Users\Denis\Desktop\MUIS\SharpServer\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Denis\Desktop\MUIS\SharpServer\obj\Debug\SharpServer.csproj.CopyComplete
