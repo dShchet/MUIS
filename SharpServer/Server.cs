@@ -83,10 +83,6 @@ namespace SharpServer {
         class SearchRow {
             public int ISN;
             public string RegNum, DocDate, Contents, DOCKIND;
-            
-            public CORRESP    corresp    = new CORRESP();
-            public AUTHOR     author     = new AUTHOR();
-            public PERSONSIGN personsign = new PERSONSIGN();
             public class CORRESP {
                 public string ORGANIZ_NAME, OUTNUM, OUTDATE, SIGN;
             }
@@ -96,6 +92,9 @@ namespace SharpServer {
             public class PERSONSIGN {
                 public string WHO_SIGN_NAME;
             }
+            public CORRESP    corresp    = new CORRESP();
+            public AUTHOR     author     = new AUTHOR();
+            public PERSONSIGN personsign = new PERSONSIGN();
             public void processData(dynamic item) {
                 try { ISN = item.ISN; } catch { }
                 try { RegNum = item.RegNum; } catch { }
@@ -182,26 +181,610 @@ namespace SharpServer {
             }
         }
 
-        public class OneGet {
-            
-            public Dictionary<string, string> DOCGROUP = new Dictionary<string, string>();
-            public Dictionary<string, string> CARDREG = new Dictionary<string, string>();
-            public Dictionary<string, string> CABREG = new Dictionary<string, string>();
-            public Dictionary<string, string> SECURITY = new Dictionary<string, string>();
-            public Dictionary<string, string> LINKREF = new Dictionary<string, string>();
-            public Dictionary<string, string> RUBRIC = new Dictionary<string, string>();
-            public Dictionary<string, string> ADDPROPSRUBRIC = new Dictionary<string, string>();
-            public Dictionary<string, string> VALUEADDPROPSRUBRIC = new Dictionary<string, string>();
-            public Dictionary<string, string> ADDRel = new Dictionary<string, string>();
-            //List<ADDRel> ADDR = new List<ADDRel>();
+        //public class OneGet {
 
-            public int ISN;
-            //public string REGNUM, SPECIMEN, DOCDATE, CONSIST, CONTENTS, ACCESSMODE, NOTE, ADDRESS_FLAG, ISCONTROL, PLANDATE, FACTDATE, DELTA, LINKCNT, RUBRICCNT, ADDPROPSRUBRICCNT, ADDRCNT,,,,,,,,
+        //    public class docgroup {
+        //        public int ISN;
+        //        public string NAME;
+        //    }
+        //    public class cardreg {
+        //        public int ISN;
+        //        public string NAME;
+        //    }
+        //    public class cabreg {
+        //        public int ISN;
+        //        public string NAME;
+        //    }
+        //    public class security {
+        //        public int ISN;
+        //        public string NAME;
+        //    }
+        //    public class linkref {
+        //        public int ISN, ORDERNUM;
+        //        public string TYPELINK, LINKINFO, URL;
+        //    }
+        //    public List<linkref> LINKREF;
+        //    public class rubric {
+        //        public int ISN;
+        //        public string NAME, INDEX;
+        //    }
+        //    public List<rubric> RUBRIC;
+        //    public class addpropsrubric {
+        //        public int DOCGROUPCNT;
+        //        public string UINAME, APINAME;
+        //    }
+        //    public List<addpropsrubric> ADDPROPSRUBRIC;
+        //    public class valueaddpropsrubric {
+        //        public int DOCGROUPCNT;
+        //        public string UINAME, APINAME;
+        //    }
+        //    public List<valueaddpropsrubric> VALUEADDPROPSRUBRIC;
+        //    public class addr {
+        //        public int ISN, ORDERNUM;
+        //        public string NAME, REG_DATE, CONSIST, SENDDATE, PERSON, KINDADDR, NOTE, REG_N;
+        //        public class delivery {
+        //            public int ISN;
+        //            public string NAME;
+        //        }
+        //        public class organiz {
+        //            public int ISN;
+        //            public string POSTINDEX, CITY, NAME, ADDRESS, EMAIL;
+        //        }
+        //        public class citizen {
+        //            public int ISN;
+        //            public string NAME, ADDRESS, REGION, POSTINDEX, CITY, EMAIL;
+        //        }
+        //        public class department {
+        //            public int ISN;
+        //            public string NAME, EMAIL;
+        //        }
+        //    }
+        //    public List<addr> ADDR;
+        //    public class files {
+        //        public int ISN;
+        //        public string NAME, DESCRIPT, CONTENTS, EDSCNT, EDS;
+        //    }
+        //    public List<files> FILES;
+        //    public class journacq {
+        //        public int ISN;
+        //        public string EMPLOY;
+        //    }
+        //    public List<journacq> JOURNACQ;
+        //    public class protocol {
+        //        public string WHEN, WHAT;
+        //    }
+        //    public List<protocol> PROTOCOL;
+        //    public class resolution {
+        //        public int ISN, KIND, AUTHOR_ISN, ISCONTROL, REPLYCNT;
+        //        public string ITEMNUM, AUTHOR_NAME, SURNAME, TEXT, RESOLDATE, SENDDATE, ISPRIVATE, CANVIEW, ISCASCADE, PLANDATE, FACTDATE, RESPRJPRIORITY;
+        //        public bool ACCEPTFLAG;
+        //        public class reply {
+        //            public int ISN, EXECUTOR_ISN;
+        //            public string EXECUTOR_NAME;
+        //        }
+        //        public List<reply> REPLY;
+        //    }
+        //    public List<resolution> RESOLUTION;
+        //    public class journal {
+        //        public int ISN, ADDRESSEE_ISN, ORIGNUM;
+        //        public string ADDRESSEE_NAME, SENDDATE;
+        //        public bool ORIGFLAG;
+        //    }
+        //    public List<journal> JOURNAL;
+        //    public class forward {
+        //        public int ISN, ADR_ISN, USER_ISN;
+        //        public string ADR_NAME, USER_NAME, SENDDATE;
+        //    }
+        //    public List<forward> FORWARD;
+        //    public class addprops {
+        //        public int DOCGROUPCNT;
+        //        public string UINAME, APINAME, TYPE;
+        //    }
+        //    public List<addprops> ADDPROPS;
+        //    public class addresses {
+        //        public int ISN;
+        //        public string NAME;
+        //    }
+        //    public List<addresses> ADDRESSES;
+        //    public class delivery {
+        //        public int ISN;
+        //        public string NAME;
+        //    }
+        //    public class corresp {
+        //        public int ISN, KIND, ORGANIZ_ISN;
+        //        public string ORGANIZ_NAME, OUTNUM, OUTDATE, SIGN, CONTENTS, NOTE;
+        //    }
+        //    public List<corresp> CORRESP;
+        //    public class author {
+        //        public int ISN, CITIZEN_ISN, ORDERNUM;
+        //        public string CITIZEN_NAME, CITIZEN_ADDRESS, CITIZEN_REGION, CITIZEN_CITY, DATE_CR, DATE_UPD;
+        //    }
+        //    public List<author> AUTHOR;
+        //    public class personsigns {
+        //        public int WHO_SIGN_ISN, ORDERNUM;
+        //        public string WHO_SIGN_NAME;
+        //    }
+        //    public List<personsigns> PERSONSIGNS;
+        //    public class executor {
+        //        public int ISN;
+        //        public string NAME;
+        //    }
+        //    public class coexec {
+        //        public int ISN, ORGANIZ_ISN;
+        //        public string ORGANIZ_NAME, OUTNUM, OUTDATE, SIGN;
+        //    }
+        //    public List<coexec> COEXEC;
+        //    public class visa {
+        //        public int ISN, EMPLOY_ISN;
+        //        public string EMPLOY_NAME, NOTE, DATE;
+        //    }
+        //    public List<visa> VISA;
 
-            public void processData(dynamic item) {
+        //    public int ISN, LINKCNT, RUBRICCNT, ADDPROPSRUBRICCNT, ADDRCNT, FILESCNT, JOURNACQCNT, PROTCNT, RESOLCNT, JOURNALCNT, FORWARDCNT, ADDPROPSCNT, ADDRESSESCNT, CORRESPCNT, AUTHORCNT, PERSONSIGNSCNT, COEXECCNT, VISACNT;
+        //    public string REGNUM, SPECIMEN, DOCDATE, CONSIST, CONTENTS, ACCESSMODE, NOTE, ADDRESS_FLAG, ISCONTROL, PLANDATE, FACTDATE, DELTA, NUM_FLAG, CARDVIEW, ALLRESOL, VALUEADDPROPS, RESOL, DOCKIND, TELEGRAM, LINKS;
+        //    public bool ISCOLLECTIVE, ISANONIM;
 
-            }
-        }
+        //    public void processData(dynamic item) {
+        //        try { ISN = item.ISN; } catch { }
+        //        try { ISN = item.ISN; } catch { }
+        //        docgroup DOCGROUP = new docgroup();
+        //        try { DOCGROUP.ISN=item.DOCGROUP.ISN; } catch { }
+        //        try { DOCGROUP.NAME=item.DOCGROUP.NAME; } catch { }
+
+        //        try { REGNUM = item.REGNUM; } catch { Console.WriteLine("nN REGNUM"); }
+        //        try { SPECIMEN = item.SPECIMEN; } catch { Console.WriteLine("nN SPECIMEN"); }
+        //        try { DOCDATE = item.DOCDATE; } catch { Console.WriteLine("nN DOCDATE"); }
+        //        try { CONSIST = item.CONSIST; } catch { Console.WriteLine("nN CONSIST"); }
+        //        try { CONTENTS = item.CONTENTS.Replace("\"", "&quot;"); } catch { Console.WriteLine("nN CONTENTS"); }
+        //        try {
+        //            cardreg CARDREG = new cardreg();
+        //            CARDREG.ISN = item.CARDREG.ISN;
+        //            CARDREG.NAME = item.CARDREG.NAME;
+        //        } catch { Console.WriteLine("nN CARDREG"); }
+        //        try {
+        //            cabreg CABREG = new cabreg();
+        //            CABREG.ISN = item.CABREG.ISN;
+        //            CABREG.NAME = item.CABREG.NAME;
+        //        } catch { Console.WriteLine("nN CABREG"); }
+        //        try { ACCESSMODE = item.ACCESSMODE; } catch { Console.WriteLine("nN ACCESSMODE"); }
+        //        try {
+        //            security SECURITY = new security();
+        //            SECURITY.ISN = item.SECURITY.ISN;
+        //            SECURITY.NAME = item.SECURITY.NAME;
+        //        } catch { Console.WriteLine("nN SECURITY"); }
+        //        try { NOTE = item.NOTE; } catch { Console.WriteLine("nN NOTE"); }
+        //        try { ADDRESS_FLAG = item.ADDRESS_FLAG; } catch { Console.WriteLine("nN ADDRESS_FLAG"); }
+        //        try { ISCONTROL = item.ISCONTROL; } catch { Console.WriteLine("nN ISCONTROL"); }
+        //        try { PLANDATE = item.PLANDATE; } catch { Console.WriteLine("nN PLANDATE"); }
+        //        try { FACTDATE = item.FACTDATE; } catch { Console.WriteLine("nN FACTDATE"); }
+        //        try { DELTA = item.DELTA; } catch { Console.WriteLine("nN DELTA"); }
+        //        try {
+        //            LINKCNT = item.LINKCNT;
+        //            if (item.LINKCNT > 0) {
+        //                List<linkref> LINKREF = new List<linkref>();
+        //                for (int i = 0; i < item.LINKCNT; i++) {
+        //                    var currItem = item.LINKREF[i];
+        //                    linkref LINKREFel = new linkref();
+        //                    try { LINKREFel.ISN = currItem.ISN; } catch { Console.WriteLine("nN ISN"); }
+        //                    try { LINKREFel.TYPELINK = currItem.TYPELINK.NAME; } catch { Console.WriteLine("nN LINKREF.TYPELINK"); }
+        //                    try { LINKREFel.ORDERNUM = currItem.ORDERNUM; } catch { Console.WriteLine("nN LINKREF.ORDERNUM"); }
+        //                    try { LINKREFel.LINKINFO = currItem.LINKINFO; } catch { Console.WriteLine("nN LINKREF.LINKINFO"); }
+        //                    try { LINKREFel.URL = currItem.URL; } catch { Console.WriteLine("nN LINKREF.URL"); }
+        //                    LINKREF.Add(LINKREFel);
+        //                }
+        //            }
+        //        } catch { Console.WriteLine("nN LINKCNT"); }
+        //        try {
+        //            RUBRICCNT = item.RUBRICCNT;
+        //            if (item.RUBRICCNT > 0) {
+        //                List<rubric> RUBRIC = new List<rubric>();
+        //                for (int i = 0; i < item.RUBRICCNT; i++) {
+        //                    var currItem = item.RUBRIC[i];
+        //                    rubric RUBRICel = new rubric();
+        //                    try { RUBRICel.ISN = currItem.ISN; } catch { Console.WriteLine("nN ISN"); }
+        //                    try { RUBRICel.NAME = currItem.NAME; } catch { Console.WriteLine("nN NAME"); }
+        //                    try { RUBRICel.INDEX = currItem.INDEX; } catch { Console.WriteLine("nN INDEX  "); }
+        //                    RUBRIC.Add(RUBRICel);
+        //                }
+        //            }
+        //        } catch { Console.WriteLine("nN RUBRICCNT"); }
+        //        //try {
+        //        //    ADDPROPSRUBRICCNT = item.ADDPROPSRUBRICCNT;
+        //        //    if (item.ADDPROPSRUBRICCNT > 0) {
+        //        //        ADDPROPSRUBRIC\":[";
+        //        //        for (int i = 0; i < item.ADDPROPSRUBRICCNT; i++) {
+        //        //            if (i != 0) { json += ",{"; } else { json += "{"; }
+        //        //            var currItem = item.ADDPROPSRUBRIC[i];
+        //        //            try { ADDPROPSRUBRIC.DOCGROUPCNT = currItem.DOCGROUPCNT; } catch { Console.WriteLine("nN ADDPROPSRUBRIC DOCGROUPCNT"); }
+        //        //            try { ADDPROPSRUBRIC.UINAME = currItem.UINAME; } catch { Console.WriteLine("nN ADDPROPSRUBRIC UINAME"); }
+        //        //            try { ADDPROPSRUBRIC.APINAME = currItem.APINAME; } catch { Console.WriteLine("nN ADDPROPSRUBRIC APINAME"); }
+        //        //            json += "}";
+        //        //        }
+        //        //        json += "]";
+        //        //        VALUEADDPROPSRUBRIC\":[";
+        //        //        for (int i = 0; i < item.ADDPROPSRUBRICCNT; i++) {
+        //        //            if (i != 0) { json += ",{"; } else { json += "{"; }
+        //        //            var currItem = item.VALUEADDPROPSRUBRIC[i]["11111"];
+        //        //            try { VALUEADDPROPSRUBRIC.DOCGROUPCNT = currItem.DOCGROUPCNT; } catch { Console.WriteLine("nN VALUEADDPROPSRUBRIC DOCGROUPCNT"); }
+        //        //            try { VALUEADDPROPSRUBRIC.UINAME = currItem.UINAME; } catch { Console.WriteLine("nN VALUEADDPROPSRUBRIC UINAME"); }
+        //        //            try { VALUEADDPROPSRUBRIC.APINAME = currItem.APINAME; } catch { Console.WriteLine("nN VALUEADDPROPSRUBRIC APINAME"); }
+        //        //            json += "}";
+        //        //        }
+        //        //        json += "]";
+
+        //        //    }
+        //        //} catch { Console.WriteLine("nN ADDPROPSRUBRICCNT"); }
+        //        //try {
+        //        //    ADDRCNT = item.ADDRCNT;
+        //        //    if (item.ADDRCNT > 0) {
+        //        //        ADDR\":[";
+        //        //        for (int i = 0; i < item.ADDRCNT; i++) {
+        //        //            if (i != 0) { json += ",{"; } else { json += "{"; }
+        //        //            var currItem = item.ADDR[i];
+        //        //            try { ADDR.ISN = currItem.ISN; } catch { Console.WriteLine("nN ISN"); }
+        //        //            try { ADDR.REG_DATE = currItem.REG_DATE; } catch { Console.WriteLine("nN REG_DATE"); }
+        //        //            try { ADDR.CONSIST = currItem.CONSIST; } catch { Console.WriteLine("nN RCONSIST"); }
+        //        //            try { ADDR.SENDDATE = currItem.SENDDATE; } catch { Console.WriteLine("nN REG_DATE"); }
+        //        //            try { ADDR.ORDERNUM = currItem.ORDERNUM; } catch { Console.WriteLine("nN REG_ORDERNUM"); }
+        //        //            try { ADDR.PERSON = currItem.PERSON; } catch { Console.WriteLine("nN REG_DATE"); }
+        //        //            try { ADDR.KINDADDR = currItem.KINDADDR; } catch { Console.WriteLine("nN ADDR.KINDADDR"); }
+        //        //            try { ADDR.NOTE = currItem.NOTE; } catch { Console.WriteLine("nN ADDR.NOTE"); }
+        //        //            try { ADDR.REG_N = currItem.REG_N; } catch { Console.WriteLine("nN ADDR.REG_N"); }
+        //        //            try {
+        //        //                DELIVERY\":{";
+        //        //                try { ISN = currItem.DELIVERY.ISN; } catch { Console.WriteLine("nN ADDR.DELIVERY.ISN"); }
+        //        //                try { NAME = currItem.DELIVERY.NAME; } catch { Console.WriteLine("nN ADDR.DELIVERY.NAME"); }
+        //        //                json += "}";
+        //        //            } catch { Console.WriteLine("nN ADDR.DELIVERY"); }
+        //        //            if (currItem.KINDADDR == "ORGANIZ") {
+        //        //                ORGANIZ\":{";
+        //        //                try { ISN = currItem.ADDRESSEE.ISN; } catch { Console.WriteLine("nN ADDR.ORGANIZ.ADDRESSEE.ISN"); }
+        //        //                try { POSTINDEX = currItem.ADDRESSEE.POSTINDEX; } catch { Console.WriteLine("nN ADDRESSEE.POSTINDEX"); }
+        //        //                try { CITY = currItem.ADDRESSEE.CITY; } catch { Console.WriteLine("nN ADDRESSEE.CITY"); }
+        //        //                try { NAME = currItem.ADDRESSEE.NAME.Replace("\"", "&quot;"); } catch { Console.WriteLine("nN ADDRESSEE.NAME"); }
+        //        //                try { ADDRESS = currItem.ADDRESSEE.ADDRESS; } catch { Console.WriteLine("nN ADDRESS"); }
+        //        //                try { EMAIL = currItem.ADDRESSEE.EMAIL; } catch { Console.WriteLine("nN EMAIL"); }
+        //        //                json += "}";
+        //        //            }
+        //        //            if (currItem.KINDADDR == "CITIZEN") {
+        //        //                CITIZEN\":{";
+        //        //                try { ISN = currItem.ADDRESSEE.ISN; } catch { Console.WriteLine("nNADDRESSEE.ISN"); }
+        //        //                try { NAME = currItem.ADDRESSEE.NAME; } catch { Console.WriteLine("nN ADDRESSEE.NAME"); }
+        //        //                try { ADDRESS = currItem.ADDRESSEE.ADDRESS; } catch { Console.WriteLine("nN ADDRESSEE.ADDRESS"); }
+        //        //                try { REGION = currItem.ADDRESSEE.REGION.NAME; } catch { Console.WriteLine("nN ADDRESSEE.REGION.NAME"); }
+        //        //                try { POSTINDEX = currItem.ADDRESSEE.POSTINDEX; } catch { Console.WriteLine("nN ADDRESSEE.POSTINDEX"); }
+        //        //                try { CITY = currItem.ADDRESSEE.CITY; } catch { Console.WriteLine("nN ADDRESSEE.CITY"); }
+        //        //                try { EMAIL = currItem.ADDRESSEE.EMAIL; } catch { Console.WriteLine("nN ADDRESSEE.EMAIL"); }
+        //        //                json += "}";
+
+        //        //            }
+        //        //            if (currItem.KINDADDR == "DEPARTMENT") {
+        //        //                DEPARTMENT\":{";
+        //        //                try { ISN = currItem.ADDRESSEE.ISN; } catch { Console.WriteLine("nN ADDRESSEE.ISN"); }
+        //        //                try { NAME = currItem.ADDRESSEE.NAME; } catch { Console.WriteLine("nN ADDRESSEE.NAME"); }
+        //        //                try { EMAIL = currItem.ADDRESSEE.EMAIL; } catch { Console.WriteLine("nN ADDRESSEE.EMAIL"); }
+        //        //                json += "}";
+        //        //            }
+        //        //            json += "}";
+        //        //        }
+        //        //        json += "]";
+        //        //    }
+        //        //} catch { Console.WriteLine("nN ADDRCNT"); }
+        //        //try {
+        //        //    FILESCNT = item.FILESCNT;
+        //        //    if (item.FILESCNT > 0) {
+        //        //        FILES\":[";
+        //        //        for (int i2 = 0; i2 < item.FILESCNT; i2++) {
+        //        //            if (i2 != 0) { json += ",{"; } else { json += "{"; }
+        //        //            var currItem2 = item.FILES[i2];
+        //        //            try { ISN = currItem2.ISN; } catch { Console.WriteLine("nN ISN"); }
+        //        //            try { NAME = currItem2.NAME; } catch { Console.WriteLine("nN Files.NAME"); }
+        //        //            try { DESCRIPT = currItem2.DESCRIPT; } catch { Console.WriteLine("nN Files.DESCRIPT"); }
+        //        //            try { CONTENTS = currItem2.CONTENTS; } catch { Console.WriteLine("nN Files.CONTENTS"); }
+        //        //            try { EDSCNT = currItem2.EDSCNT; } catch { Console.WriteLine("nN Files.EDSCNT"); }
+        //        //            try { EDS = currItem2.EDS; } catch { Console.WriteLine("nN Files.EDS"); }
+        //        //            json += "}";
+        //        //        }
+        //        //        json += "]";
+        //        //    }
+        //        //} catch { Console.WriteLine("nN FILESCNT"); }
+        //        //try {
+        //        //    JOURNACQCNT = item.JOURNACQCNT;
+        //        //    if (item.JOURNACQCNT > 0) {
+        //        //        JOURNACQ\":[";
+        //        //        for (int i2 = item.JOURNACQCNT; i2 > 0; i2--) {
+        //        //            if (i2 != item.JOURNACQCNT) { json += ",{"; } else { json += "{"; }
+        //        //            var currItem2 = item.JOURNACQ[i2];
+        //        //            try { ISN = currItem2.ISN + "\","; } catch { Console.WriteLine("nN AUTHOR_NAME"); }
+        //        //            try { EMPLOY = currItem2.EMPLOY; } catch { Console.WriteLine("nN AUTHOR.ISN"); }
+        //        //            json += "}";
+        //        //        }
+        //        //        json += "]";
+        //        //    }
+        //        //} catch { Console.WriteLine("nN JOURNACQCNT"); }
+        //        //try { NUM_FLAG = item.NUM_FLAG; } catch { Console.WriteLine("nN NUM_FLAG"); }
+        //        //try {
+        //        //    PROTCNT = item.PROTCNT;
+        //        //    if (item.PROTCNT > 0) {
+        //        //        PROTOCOL\":[";
+        //        //        for (int i2 = 0; i2 < item.PROTCNT; i2++) {
+        //        //            if (i2 != 0) { json += ",{"; } else { json += "{"; }
+        //        //            var currItem2 = item.PROTOCOL[i2];
+        //        //            try { WHEN = currItem2.WHEN + "\","; } catch { Console.WriteLine("nN AUTHOR_NAME"); }
+        //        //            try { WHAT = currItem2.WHAT.Replace("\"", "&quot;"); } catch { Console.WriteLine("nN AUTHOR.ISN"); }
+
+        //        //            json += "}";
+        //        //        }
+        //        //        json += "]";
+        //        //    }
+        //        //} catch { Console.WriteLine("nN PROTCNT"); }
+        //        //try { CARDVIEW = item.CARDVIEW; } catch { Console.WriteLine("nN CARDVIEW"); }
+        //        //try { ALLRESOL = item.ALLRESOL; } catch { Console.WriteLine("nN ALLRESOL"); }
+        //        //try {
+        //        //    try { RESOLCNT = item.RESOLCNT; } catch { RESOLCNT\":0"; }
+        //        //    if (item.RESOLCNT > 0) {
+        //        //        RESOLUTION\":[";
+        //        //        for (int i = 0; i < item.RESOLCNT; i++) {
+        //        //            var currItem = item.RESOLUTION[i];
+        //        //            if (i != 0) { json += ",{"; } else { json += "{"; }
+        //        //            try { ISN = currItem.ISN; } catch { Console.WriteLine("ISN"); }
+        //        //            try { KIND = currItem.KIND; } catch { Console.WriteLine("WEIGHT"); }
+        //        //            try { ITEMNUM = currItem.ITEMNUM; } catch { Console.WriteLine("ITEMNUM"); }
+        //        //            try { AUTHOR_ISN = currItem.AUTHOR.ISN; } catch { Console.WriteLine("nTEXT"); }
+        //        //            try { AUTHOR_NAME = currItem.AUTHOR.NAME; } catch { Console.WriteLine("nTEXT"); }
+        //        //            try { SURNAME = currItem.AUTHOR.SURNAME; } catch { Console.WriteLine("nTEXT"); }
+        //        //            try { TEXT = currItem.TEXT; } catch { Console.WriteLine("TEXT"); }
+        //        //            try { RESOLDATE = currItem.RESOLDATE; } catch { Console.WriteLine("RESOLDATE"); }
+        //        //            try { SENDDATE = currItem.SENDDATE; } catch { Console.WriteLine("SENDDATE"); }
+        //        //            try { ACCEPTFLAG = currItem.ACCEPTFLAG; } catch { Console.WriteLine("ACCEPTFLAG"); }
+        //        //            try { ISCONTROL = currItem.ISCONTROL; } catch { Console.WriteLine("ISCONTROL"); }
+        //        //            try { ISPRIVATE = currItem.ISPRIVATE; } catch { Console.WriteLine("ISPRIVATE"); }
+        //        //            try { CANVIEW = currItem.CANVIEW; } catch { Console.WriteLine("CANVIEW"); }
+        //        //            try { ISCASCADE = currItem.ISCASCADE; } catch { Console.WriteLine("ISCASCADE"); }
+        //        //            try { PLANDATE = currItem.PLANDATE; } catch { Console.WriteLine("PLANDATE"); }
+        //        //            try { FACTDATE = currItem.FACTDATE; } catch { Console.WriteLine("FACTDATE"); }
+        //        //            try { RESPRJPRIORITY = currItem.RESPRJPRIORITY.NAME; } catch { Console.WriteLine("nN RESPRJPRIORITY"); }
+        //        //            try { REPLYCNT = currItem.REPLYCNT; } catch { Console.WriteLine("n REPLYCNT"); }
+        //        //            if (currItem.REPLYCNT > 0) {
+        //        //                REPLY\":[";
+        //        //                for (int i2 = 0; i2 < currItem.REPLYCNT; i2++) {
+        //        //                    if (i2 != 0) { json += ",{"; } else { json += "{"; }
+        //        //                    var currItem2 = currItem.REPLY[i2];
+        //        //                    try { ISN = currItem2.ISN; } catch { Console.WriteLine("nN REPLY.ISN"); }
+        //        //                    //try { DCODE=currItem2.EXECUTOR.DCODE; } catch { Console.WriteLine("nN REGION"); }
+        //        //                    try { EXECUTOR_ISN = currItem2.EXECUTOR.ISN; } catch { Console.WriteLine("nN REGION"); }
+        //        //                    try { EXECUTOR_NAME = currItem2.EXECUTOR.NAME; } catch { Console.WriteLine("nN NAME"); }
+        //        //                    json += "}";
+        //        //                }
+        //        //                json += "]";
+        //        //            }
+        //        //            try {
+        //        //                RESOLCNT = currItem.RESOLCNT;
+
+        //        //            } catch { Console.WriteLine("nRESOLCNT"); }
+        //        //            json += "}";
+        //        //        }
+        //        //        json += "]";
+        //        //    }
+        //        //} catch { Console.WriteLine("nN RESOLCNT"); }
+        //        //try {
+        //        //    try { JOURNALCNT = item.JOURNALCNT; } catch { JOURNALCNT\":0"; }
+        //        //    if (item.JOURNALCNT > 0) {
+        //        //        JOURNAL\":[";
+        //        //        for (int i = 0; i < item.JOURNALCNT; i++) {
+        //        //            if (i != 0) { json += ",{"; } else { json += "{"; }
+        //        //            var currItem = item.JOURNAL[i];
+        //        //            try { ISN = currItem.ISN; } catch { Console.WriteLine("nNISN"); }
+        //        //            try { ADDRESSEE_ISN = currItem.ADDRESSEE.ISN; } catch { Console.WriteLine("nN REGION"); }
+        //        //            try { ADDRESSEE_NAME = currItem.ADDRESSEE.NAME; } catch { Console.WriteLine("nN NAME"); }
+        //        //            try { ORIGFLAG = currItem.ORIGFLAG; } catch { Console.WriteLine("nNORIGFLAG"); }
+        //        //            try { ORIGNUM = currItem.ORIGNUM; } catch { Console.WriteLine("nN ORIGNUM"); }
+        //        //            try { SENDDATE = currItem.SENDDATE; } catch { Console.WriteLine("nNSENDDATE"); }
+        //        //            json += "}";
+        //        //        }
+        //        //        json += "]";
+        //        //    }
+        //        //} catch { Console.WriteLine("nN JOURNALCNT"); }
+        //        //try {
+        //        //    FORWARDCNT = item.FORWARDCNT;
+        //        //    if (item.FORWARDCNT > 0) {
+        //        //        FORWARD\":[";
+        //        //        for (int i2 = 0; i2 < item.FORWARDCNT; i2++) {
+        //        //            if (i2 != 0) { json += ",{"; } else { json += "{"; }
+        //        //            var currItem2 = item.FORWARD[i2];
+        //        //            try { ISN = currItem2.ISN; } catch { Console.WriteLine("nN AUTHOR_NAME"); }
+        //        //            try { ADR_ISN = currItem2.ADDRESSEE.ISN; } catch { }
+        //        //            try { ADR_NAME = currItem2.ADDRESSEE.NAME; } catch { }
+        //        //            try { USER_ISN = currItem2.USER.ISN; } catch { }
+        //        //            try { USER_NAME = currItem2.USER.NAME; } catch { }
+        //        //            try { SENDDATE = currItem2.SENDDATE; } catch { }
+        //        //            json += "}";
+        //        //        }
+        //        //        json += "]";
+        //        //    }
+        //        //} catch { Console.WriteLine("nN FORWARDCNT"); }
+        //        //try {
+        //        //    ADDPROPSCNT = item.ADDPROPSCNT;
+        //        //    if (item.ADDPROPSCNT > 0) {
+        //        //        ADDPROPS\":[";
+        //        //        for (int i2 = 0; i2 < item.ADDPROPSCNT; i2++) {
+        //        //            if (i2 != 0) { json += ",{"; } else { json += "{"; }
+        //        //            var currItem2 = item.ADDPROPS[i2];
+        //        //            try { DOCGROUPCNT = currItem2.DOCGROUPCNT; } catch { Console.WriteLine("nN DOCGROUPCNT"); }
+        //        //            try { UINAME = currItem2.UINAME; } catch { Console.WriteLine("nNUINAME"); }
+        //        //            try { APINAME = currItem2.APINAME; } catch { Console.WriteLine("nNAPINAME"); }
+        //        //            try { TYPE = currItem2.TYPE; } catch { Console.WriteLine("nNTYPE"); }
+        //        //            json += "}";
+        //        //        }
+        //        //        json += "]";
+        //        //    }
+        //        //} catch { Console.WriteLine("nN ADDPROPSCNT"); }
+        //        //try { VALUEADDPROPS = item.VALUEADDPROPS; } catch { Console.WriteLine("nN VALUEADDPROPS"); }
+        //        //try { RESOL = item.RESOL; } catch { Console.WriteLine("nN RESOL"); }
+
+        //        //if ((rcType == "RCIN") || (rcType == "RCLET")) {
+        //        //    try { DOCKIND = item.DOCKIND; } catch { Console.WriteLine("nN DOCKIND"); }
+        //        //    try {
+        //        //        ADDRESSESCNT = item.ADDRESSESCNT;
+        //        //        if (item.ADDRESSESCNT > 0) {
+        //        //            ADDRESSES\":[";
+        //        //            for (int i = 0; i < item.ADDRESSESCNT; i++) {
+        //        //                if (i != 0) { json += ",{"; } else { json += "{"; }
+        //        //                var currItem = item.ADDRESSES[i];
+        //        //                try { ISN = currItem.ISN; } catch { Console.WriteLine("nN ISN"); }
+        //        //                try { NAME = currItem.NAME; } catch { Console.WriteLine("nN NAME"); }
+        //        //                json += "}";
+        //        //            }
+        //        //            json += "]";
+        //        //        }
+        //        //    } catch { Console.WriteLine("nN ADDRESSESCNT"); }
+        //        //    try {
+        //        //        DELIVERY\":{";
+        //        //        try { ISN = item.DELIVERY.ISN; } catch { Console.WriteLine("nN ISN"); }
+        //        //        try { NAME = item.DELIVERY.NAME; } catch { Console.WriteLine("nN NAME"); }
+        //        //        json += "}";
+        //        //    } catch { Console.WriteLine("nN DELIVERY"); }
+
+        //        //    try { TELEGRAM = item.TELEGRAM; } catch { Console.WriteLine("nN TELEGRAM"); }
+        //        //    try {
+        //        //        if (rcType == "RCIN") {
+        //        //            if (item.CORRESPCNT > 0) {
+        //        //                var cnt = 0;
+        //        //                CORRESP\":[";
+        //        //                for (int i = 0; i < item.CORRESPCNT; i++) {
+        //        //                    var currItem = item.CORRESP[i];
+        //        //                    if (currItem.KIND == 1) {
+        //        //                        cnt = cnt + 1;
+        //        //                        if (i != 0) { json += ",{"; } else { json += "{"; }
+        //        //                        try { ISN = currItem.ISN; } catch { Console.WriteLine("nN CORRESP.ISN"); }
+        //        //                        try { KIND = currItem.KIND; } catch { Console.WriteLine("nN CORRESP.KIND"); }
+        //        //                        try { ORGANIZ_ISN = currItem.ORGANIZ.ISN; } catch { Console.WriteLine("nN ORGANIZ.ISN"); }
+        //        //                        try { ORGANIZ_NAME = currItem.ORGANIZ.NAME.Replace("\"", "&quot;"); } catch { Console.WriteLine("nN ORGANIZ.NAME"); }
+        //        //                        try { OUTNUM = currItem.OUTNUM; } catch { Console.WriteLine("nN CORRESP.OUTNUM"); }
+        //        //                        try { OUTDATE = currItem.OUTDATE; } catch { Console.WriteLine("nN CORRESP.OUTDATE"); }
+        //        //                        try { SIGN = currItem.SIGN; } catch { Console.WriteLine("nN CORRESP.SIGN"); }
+        //        //                        try { CONTENTS = currItem.CONTENTS; } catch { Console.WriteLine("nN CORRESP.CONTENTS"); }
+        //        //                        try { NOTE = currItem.NOTE; } catch { Console.WriteLine("nN CORRESP.NOTE"); }
+        //        //                        json += "}";
+        //        //                    }
+
+        //        //                }
+        //        //                json += "]";
+        //        //                CORRESPCNT = cnt;
+        //        //            }
+        //        //        } else {
+        //        //            CORRESPCNT = item.CORRESPCNT;
+        //        //            if (item.CORRESPCNT > 0) {
+        //        //                CORRESP\":[";
+        //        //                for (int i = 0; i < item.CORRESPCNT; i++) {
+        //        //                    if (i != 0) { json += ",{"; } else { json += "{"; }
+        //        //                    var currItem = item.CORRESP[i];
+        //        //                    try { ISN = currItem.ISN; } catch { Console.WriteLine("nN CORRESP.ISN"); }
+        //        //                    try { KIND = currItem.KIND; } catch { Console.WriteLine("nN CORRESP.KIND"); }
+        //        //                    try { ORGANIZ_ISN = currItem.ORGANIZ.ISN; } catch { Console.WriteLine("nN ORGANIZ.ISN"); }
+        //        //                    try { ORGANIZ_NAME = currItem.ORGANIZ.NAME.Replace("\"", "&quot;"); } catch { Console.WriteLine("nN ORGANIZ.NAME"); }
+        //        //                    try { OUTNUM = currItem.OUTNUM; } catch { Console.WriteLine("nN CORRESP.OUTNUM"); }
+        //        //                    try { OUTDATE = currItem.OUTDATE; } catch { Console.WriteLine("nN CORRESP.OUTDATE"); }
+        //        //                    try { SIGN = currItem.SIGN; } catch { Console.WriteLine("nN CORRESP.SIGN"); }
+        //        //                    try { CONTENTS = currItem.CONTENTS; } catch { Console.WriteLine("nN CORRESP.CONTENTS"); }
+        //        //                    try { NOTE = currItem.NOTE; } catch { Console.WriteLine("nN CORRESP.NOTE"); }
+        //        //                    json += "}";
+        //        //                }
+        //        //                json += "]";
+        //        //            }
+        //        //        }
+        //        //    } catch { Console.WriteLine("nN CORRESPCNT"); }
+        //        //    try { LINKS = item.LINKS; } catch { Console.WriteLine("nN LINKS"); }
+        //        //}
+        //        //if (rcType == "RCLET") {
+        //        //    try { ISCOLLECTIVE = item.ISCOLLECTIVE; } catch { Console.WriteLine("nN ISCOLLECTIVE"); }
+        //        //    try { ISANONIM = item.ISANONIM; } catch { Console.WriteLine("nN ISANONIM"); }
+        //        //    try {
+        //        //        AUTHORCNT = item.AUTHORCNT;
+        //        //        if (item.AUTHORCNT > 0) {
+        //        //            AUTHOR\":[";
+        //        //            for (int i = 0; i < item.AUTHORCNT; i++) {
+        //        //                if (i != 0) { json += ",{"; } else { json += "{"; }
+        //        //                var currItem = item.AUTHOR[i];
+        //        //                try { ISN = currItem.ISN; } catch { Console.WriteLine("nN AUTHOR.ORGANIZ.ISN"); }
+        //        //                try { CITIZEN_ISN = currItem.CITIZEN.ISN; } catch { Console.WriteLine("nN AUTHOR.CITIZEN.ISN"); }
+        //        //                try { CITIZEN_NAME = currItem.CITIZEN.NAME; } catch { Console.WriteLine("nN AUTHOR.CITIZEN.NAME"); }
+        //        //                try { CITIZEN_ADDRESS = currItem.CITIZEN.ADDRESS; } catch { Console.WriteLine("nN AUTHOR.CITIZEN.ADDRESS"); }
+        //        //                try { CITIZEN_REGION = currItem.CITIZEN.REGION; } catch { Console.WriteLine("nN AUTHOR.CITIZEN.REGION"); }
+        //        //                try { CITIZEN_CITY = currItem.CITIZEN.CITY; } catch { Console.WriteLine("nN AUTHOR.CITIZEN.CITY"); }
+        //        //                try { ORDERNUM = currItem.ORDERNUM; } catch { Console.WriteLine("nN AUTHOR.OUTNUM"); }
+        //        //                try { DATE_CR = currItem.DATE_CR; } catch { Console.WriteLine("nN AUTHOR.DATE_CR"); }
+        //        //                try { DATE_UPD = currItem.DATE_UPD; } catch { Console.WriteLine("nN AUTHOR.NOTE"); }
+        //        //                json += "}";
+        //        //            }
+        //        //            json += "]";
+        //        //        }
+        //        //    } catch { Console.WriteLine("nN CORRESPCNT"); }
+        //        //}
+        //        //if (rcType == "RCOUT") {
+        //        //    try {
+        //        //        PERSONSIGNSCNT = item.PERSONSIGNSCNT;
+        //        //        if (item.PERSONSIGNSCNT > 0) {
+        //        //            PERSONSIGNS\":[";
+        //        //            for (int i = 0; i < item.PERSONSIGNSCNT; i++) {
+        //        //                if (i != 0) { json += ",{"; } else { json += "{"; }
+        //        //                var currItem = item.PERSONSIGNS[i];
+        //        //                try { WHO_SIGN_ISN = currItem.WHO_SIGN.ISN; } catch { Console.WriteLine("nN PERSONSIGNS.WHO_SIGN_ISN"); }
+        //        //                try { WHO_SIGN_NAME = currItem.WHO_SIGN.NAME; } catch { Console.WriteLine("nN PERSONSIGNS.WHO_SIGN_NAME"); }
+        //        //                try { ORDERNUM = currItem.ORDERNUM; } catch { Console.WriteLine("nN PERSONSIGNS.ORDERNUM"); }
+        //        //                json += "}";
+        //        //            }
+        //        //            json += "]";
+        //        //        }
+
+        //        //    } catch { Console.WriteLine("nN PERSONSIGNSCNT"); }
+        //        //    try {
+        //        //        EXECUTOR\":{";
+        //        //        try { ISN = item.EXECUTOR.ISN; } catch { }
+        //        //        try { NAME = item.EXECUTOR.NAME; } catch { }
+        //        //        json += "}";
+        //        //    } catch { Console.WriteLine("nN EXECUTOR"); }
+        //        //    try {
+        //        //        COEXECCNT = item.COEXECCNT;
+        //        //        if (item.COEXECCNT > 0) {
+        //        //            COEXEC\":[";
+        //        //            for (int i = 0; i < item.COEXECCNT; i++) {
+        //        //                if (i != 0) { json += ",{"; } else { json += "{"; }
+        //        //                var currItem = item.COEXEC[i];
+        //        //                try { ISN = currItem.ISN; } catch { }
+        //        //                try { ORGANIZ_ISN = currItem.ORGANIZ.ISN; } catch { }
+        //        //                try { ORGANIZ_NAME = currItem.ORGANIZ.NAME; } catch { }
+        //        //                try { OUTNUM = currItem.OUTNUM; } catch { }
+        //        //                try { OUTDATE = currItem.OUTDATE; } catch { }
+        //        //                try { SIGN = currItem.SIGN; } catch { }
+        //        //                json += "}";
+        //        //            }
+        //        //            json += "]";
+        //        //        }
+        //        //    } catch { Console.WriteLine("nN COEXECCNT"); }
+        //        //    try {
+        //        //        VISACNT = item.VISACNT;
+        //        //        if (item.VISACNT > 0) {
+        //        //            VISA\":[";
+        //        //            for (int i = 0; i < item.VISACNT; i++) {
+        //        //                if (i != 0) { json += ",{"; } else { json += "{"; }
+        //        //                var currItem = item.VISA[i];
+        //        //                try { ISN = currItem.ISN; } catch { Console.WriteLine("nN ISN"); }
+        //        //                try { EMPLOY_ISN = currItem.EMPLOY.ISN; } catch { }
+        //        //                try { EMPLOY_NAME = currItem.EMPLOY.NAME; } catch { }
+        //        //                try { NOTE = currItem.NOTE; } catch { }
+        //        //                try { DATE = currItem.DATE; } catch { }
+        //        //                json += "}";
+        //        //            }
+        //        //            json += "]";
+        //        //        }
+        //        //    } catch { Console.WriteLine("nN VISACNT"); }
+        //        //    try { LINKS = item.LINKS; } catch { Console.WriteLine("nN LINKS"); }
+        //        //}
+        //        //json += "}]";
+        //    }
+        //}
+
         public string EOSOneGet(int isn, string rcType) {
             Type headType = Type.GetTypeFromProgID("Eapi.Head");//создать класса головных объектов
             dynamic head = null;
@@ -342,7 +925,7 @@ namespace SharpServer {
                                 if (i != 0) { json += ",{"; } else { json += "{"; }
                                 var currItem = item.ADDR[i];
                                 try { json += "\"ISN\":\"" + currItem.ISN + "\""; } catch { Console.WriteLine("nN ISN"); }
-                                try { json += ",\"REG_DATE\":\"" + currItem.REG_DATE + "\""; } catch { Console.WriteLine("nN REG_DATE"); }
+                                try { json += ",\"REG_DATE\":\"" + currItem.REG_DATE.toString() + "\""; } catch { Console.WriteLine("nN REG_DATE"); }
                                 try { json += ",\"CONSIST\":\"" + currItem.CONSIST + "\""; } catch { Console.WriteLine("nN RCONSIST"); }
                                 try { json += ",\"SENDDATE\":\"" + currItem.SENDDATE + "\""; } catch { Console.WriteLine("nN REG_DATE"); }
                                 try { json += ",\"ORDERNUM\":\"" + currItem.ORDERNUM + "\""; } catch { Console.WriteLine("nN REG_ORDERNUM"); }
@@ -445,8 +1028,8 @@ namespace SharpServer {
                         if (item.RESOLCNT > 0) {
                             json += ",\"RESOLUTION\":[";
                             for (int i = 0; i < item.RESOLCNT; i++) {
-                                if (i != 0) { json += ",{"; } else { json += "{"; }
                                 var currItem = item.RESOLUTION[i];
+                                if (i != 0) { json += ",{"; } else { json += "{"; }
                                 try { json += ",\"ISN\":\"" + currItem.ISN.ToString() + "\""; } catch { Console.WriteLine("ISN"); }
                                 try { json += ",\"KIND\":\"" + currItem.KIND.ToString() + "\""; } catch { Console.WriteLine("WEIGHT"); }
                                 try { json += ",\"ITEMNUM\":\"" + currItem.ITEMNUM.ToString() + "\""; } catch { Console.WriteLine("ITEMNUM"); }
@@ -704,10 +1287,10 @@ namespace SharpServer {
                     json += "}]";
                     return json;
                 } else {
-                    OneGet itemDoc = new OneGet();
-                    itemDoc.processData(item);
-                    json = JsonConvert.SerializeObject(itemDoc);
-                    return json;
+                    //OneGet itemDoc = new OneGet();
+                    //itemDoc.processData(item);
+                    //json = JsonConvert.SerializeObject(itemDoc);
+                    //return json;
                 }
                 
 
